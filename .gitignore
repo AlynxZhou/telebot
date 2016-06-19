@@ -1,0 +1,15 @@
+# My token
+ShaXRPiBot.token
+ShaXTestBot.token
+
+# Image
+Image/*
+
+# Video
+Video/*
+
+# Audio
+Audio/*
+
+# File
+File/*

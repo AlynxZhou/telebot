@@ -1,0 +1,12 @@
+### DO NOT DELETE THIS LINE!PLEASE KEEP IT IN LINE 1!This file contains a help list for user,you can write any help you like after the following $.
+$Help List
+You can use following word to communicate with me:
+/start - Begin a talk.
+/help - Show a help list.
+/hello - I'll say a random greeting to you.
+/time - I'll give you the time now.
+/joke - I'll tell you a joke.
+/fuck - You know.
+/cmd - You type /cmd,xxx and I will run the command xxx in shell(only for special users for safety).
+/code - I'll send myself to you.
+$
