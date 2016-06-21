@@ -258,7 +258,7 @@ print("# adminuser:%s"%(ADMIN))
 print("#")
 print("############################################")
 
-print ("Bot:I am listening...")
+print("Bot:I am listening...")
 print("--------------------------------------------")
 
 try:

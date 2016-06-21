@@ -123,7 +123,7 @@ print('# firstname:%s'%(info['first_name']))
 print('#')
 print('############################################')
 
-print ('Bot:I am listening...')
+print('Bot:I am listening...')
 print('--------------------------------------------')
 
 try:
