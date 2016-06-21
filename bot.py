@@ -113,83 +113,91 @@ class TeleBot(telepot.helper.ChatHandler):
     def on_chat_message(self,msg):
         self._count += 1
         now = str(datetime.datetime.now())
-        #print(">>> %s"%(now))
+        print(">>> %s"%(now))
         content_type,chat_type,chat_id = telepot.glance(msg)
-        first_name = msg["from"]["first_name"]
-        username = msg["from"]["username"]
-        msg_id = msg["message_id"]
+        self._first_name = msg["from"]["first_name"]
+        self._username = msg["from"]["username"]
+        self._msg_id = msg["message_id"]
 
         ## To judge if the content is a text and deal with it.
         if content_type == "text":
-            text = msg["text"]
-            textlist = text.split(";% ")
-            text_1 = textlist[0]
-            text_2 = textlist[-1]
+            self._text = msg["text"]
+            self._textlist = self._text.split(";% ")
+            self._text_1 = self._textlist[0]
+            self._text_2 = self._textlist[-1]
 
-            if text == "/start" or text == "/start@" + info["username"]:
-                answer = "Welcome!\nPlease type \"/help\" to get a help list."
-            elif text == "/help" or text == "/help@" + info["username"]:
-                answer = bhelp_list[0]
-            elif text == "/hello" or text == "/hello@" + info["username"]:
-                greeting = random.choice(greeting_list)
-                answer = "Hello," + first_name + "!"+greeting
-            elif text == "/joke" or text == "/joke@" + info["username"]:
-                answer = random.choice(joke_list)
-            elif text == "/time" or text =="/time@" + info["username"]:
-                time = str(datetime.datetime.now())
-                answer = "Now is " + time + "."
-            elif text == "/fuck" or text == "/fuck@" + info["username"]:
-                answer = "NO!I\"m not a GAY!"
+            if self._text == "/start" or self._text == "/start@" + info["username"]:
+                self._answer = "Welcome!\nPlease type \"/help\" to get a help list."
+            elif self._text == "/help" or self._text == "/help@" + info["username"]:
+                self._answer = bhelp_list[0]
+            elif self._text == "/hello" or self._text == "/hello@" + info["username"]:
+                self._answer = "Hello," + self._first_name + "!"+ random.choice(greeting_list)
+            elif self._text == "/joke" or self._text == "/joke@" + info["username"]:
+                self._answer = random.choice(joke_list)
+            elif self._text == "/time" or self._text == "/time@" + info["username"]:
+                self._answer = "Now is " + str(datetime.datetime.now()) + "."
+            elif self._text == "/fuck" or self._text == "/fuck@" + info["username"]:
+                self._answer = "NO!I\"m not a GAY!"
                 self._fuck += 1
-            elif text == "fuck again" and self._fuck == 1:
-                answer = "Fuck you!"
-            elif text == "/count" or text == "/count@" + info["username"]:
-                answer = self._count
-            elif text_1 == "/cmd" or text_1 == "/cmd@" + info["username"]:
-                if username == ADMIN:
-                    answer = "Result:\n" + subprocess.check_output(text_2,shell=True,stderr=subprocess.STDOUT,universal_newlines=True)
+            elif self._text == "fuck again" and self._fuck == 1:
+                self._answer = "Fuck you!"
+            elif self._text == "/count" or self._text == "/count@" + info["username"]:
+                self._answer = self._count
+            elif self._text_1 == "/cmd" or self._text_1 == "/cmd@" + info["username"]:
+                if self._username == ADMIN:
+                    self._answer = "Result:\n" + subprocess.check_output(self._text_2,shell=True,stderr=subprocess.STDOUT,universal_newlines=True)
                 else:
-                    answer = "Sorry,you are not allowed to run a command in order to keep the bot safe."
-            elif text_1 == "/send" or text_1 == "/send@" + info["username"]:
-                if username == ADMIN:
+                    self._answer = "Sorry,you are not allowed to run a command in order to keep the bot safe."
+            elif self._text_1 == "/send" or self._text_1 == "/send@" + info["username"]:
+                if self._username == ADMIN:
                     self.sender.sendChatAction("upload_document")
-
                     try:
-                        with open(text_2) as document:
-                            self.sender.sendDocument(document)
+                        with open(self._text_2) as self._document:
+                            self.sender.sendDocument(self._document)
                     except:
-                        with open(text_2,"rb") as document:
-                            self.sender.sendDocument(document)
-                    answer = "Sended."
+                        with open(self._text_2,"rb") as self._document:
+                            self.sender.sendDocument(self._document)
+                    self._answer = "Sended."
                 else:
-                    answer = "Sorry,you are not allowed to get a file in order to keep the bot safe."
-            elif text == "/code" or text =="/code@" + info["username"]:
-                with open("bot.py") as bot_py:
+                    self._answer = "Sorry,you are not allowed to get a file in order to keep the bot safe."
+            elif self._text == "/code" or self._text =="/code@" + info["username"]:
+                with open("bot.py") as self._bot_py:
                     self.sender.sendChatAction("upload_document")
-                    self.sender.sendDocument(bot_py)
-                with open("greeting.txt") as greeting_txt:
+                    self.sender.sendDocument(self._bot_py)
+                with open("greeting.txt") as self._greeting_txt:
                     self.sender.sendChatAction("upload_document")
-                    self.sender.sendDocument(greeting_txt)
-                with open("bhelp.txt") as bhelp_txt:
+                    self.sender.sendDocument(self._greeting_txt)
+                with open("bhelp.txt") as self._bhelp_txt:
                     self.sender.sendChatAction("upload_document")
-                    self.sender.sendDocument(bhelp_txt)
-                with open("joke.txt") as joke_txt:
+                    self.sender.sendDocument(self._bhelp_txt)
+                with open("joke.txt") as self._joke_txt:
                     self.sender.sendChatAction("upload_document")
-                    self.sender.sendDocument(joke_txt)
-                answer = "Sent code.\nYou should make dictionaries \"Image/\" \"Video/\" \"Audio/\" \"File/\" before you run it."
+                    self.sender.sendDocument(self._joke_txt)
+                with open("talk.txt") as self._talk_txt:
+                    self.sender.sendChatAction("upload_document")
+                    self.sender.sendDocument(self._talk_txt)
+                self._answer = "Sent code.\nYou should make dictionaries \"Image/\" \"Video/\" \"Audio/\" \"File/\" before you run it."
             else:
-                answer = None
+                self._answer = None
 
 
             ## Send result.
-            if answer != None:
+            if self._answer != None:
                 self.sender.sendChatAction("typing")
-                self.sender.sendMessage(answer,reply_to_message_id=msg_id)
-                #bot.sendMessage(chat_id,"%s"%(answer),reply_to_message_id=msg_id)
+                self.sender.sendMessage(self._answer,reply_to_message_id=self._msg_id)
                 ## Give a journal.
-                print(">>> %s"%(now))
-                print("Bot:Got text \"%s\" from @%s and answered with \"%s\"."%(text,username,answer))
-                print("--------------------------------------------")
+                #print(">>> %s"%(now))
+                print("Bot:Got text \"%s\" from @%s and answered with \"%s\"."%(self._text,self._username,self._answer))
+            else:
+                print("Bot:Got text \"%s\" from @%s."%(self._text,self._username))
+            print("--------------------------------------------")
+
+
+    def on_close(self, exception):
+        now = str(datetime.datetime.now())
+        print(">>> %s"%(now))
+        print("Bot:Close an delegator with @%s by calling on_close\(\) due to timeout."%(self._username))
+        print("--------------------------------------------")
 
 
 ## To judge if the content is a photo.
