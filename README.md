@@ -1,4 +1,4 @@
-### TeleBot
+# TeleBot
 A telegram bot program.
 
 ## Usage:
