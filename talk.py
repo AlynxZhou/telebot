@@ -3,28 +3,34 @@
 
 ### Filename:bot.py
 
+### Launching.
 import os
-import sys
-import time
 import random
 import datetime
 import argparse
-import telepot
-from telepot.delegate import per_from_id, create_open
+import subprocess
 
-### Launching.
-AUTHOR = 'S-X-ShaX'
-VERSION = '3.3'
+AUTHOR = "S-X-ShaX"
+VERSION = "3.3"
 now = str(datetime.datetime.now())
-print('A telegram bot program written by %s,Ver %s.'%(AUTHOR,VERSION))
-print('Starting bot at %s...'%(now))
+print("A telegram bot program written by %s,Ver %s."%(AUTHOR,VERSION))
+print("Starting bot at %s..."%(now))
 
+try:
+    import telepot
+    from telepot.delegate import per_from_id, create_open
+except ImportError:
+    print("ERROR:It seems that there is no telepot api installed.")
+    print("Maybe you should install it first via \"# pip3 install telepot\"?")
+    exit()
+
+
+## Deal with the args.
 parser = argparse.ArgumentParser(description='A telegram bot program.')
 parser.add_argument('-t','--token',help='Get the file that stored the bot token.',action='store')
 #parser.add_argument('-a','--admin',help='Get the admin user\' name',action='store')
 args = parser.parse_args()
 
-## Deal with the args.
 token_file = args.token
 if token_file == None:
 	print('\nWARNING:It seems that you haven\'t choose a token file.')
@@ -49,9 +55,7 @@ else:
 def talk():
 	try:
 		with open('talk.txt') as greeting_open:
-			talk_list = greeting_open.read().split('\n$')
-#			talk_list.pop(0)
-			talk_list.pop(-1)
+			talk_list = greeting_open.read().split('\n$')[0:-1]
 
 	except FileNotFoundError:
 		print('ERROR:No avaliable \'talk.txt\' was found.')
@@ -81,6 +85,8 @@ class TalkBot(telepot.helper.ChatHandler):
 		self.sender.sendMessage(talk_list[self._count],reply_to_message_id=msg_id)
 		print('Bot:Got text \'%s\' from @%s and answered with \'%s\'.'%(text,username,talk_list[self._count]))
 		print('--------------------------------------------')
+
+
 ### Now it start run.
 print('Getting bot information...')
 
@@ -94,9 +100,12 @@ bot = telepot.DelegatorBot(
 	,]
 )
 
+
 ### Now it prints your bot information.
 try:
 	info = bot.getMe()
+except KeyboardInterrupt:
+    exit()
 except:
 	print('ERROR:Your token is invaild.')
 	print('Please check what your token file \'%s\' contains.'%(token_file))
@@ -117,4 +126,7 @@ print('############################################')
 print ('Bot:I am listening...')
 print('--------------------------------------------')
 
-bot.message_loop(run_forever=True)
+try:
+    bot.message_loop(run_forever=True)
+except KeyboardInterrupt:
+    exit()

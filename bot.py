@@ -10,13 +10,11 @@ import datetime
 import argparse
 import subprocess
 
-
 AUTHOR = "S-X-ShaX"
 VERSION = "3.3"
 now = str(datetime.datetime.now())
 print("A telegram bot program written by %s,Ver %s."%(AUTHOR,VERSION))
 print("Starting bot at %s..."%(now))
-
 
 try:
     import telepot
