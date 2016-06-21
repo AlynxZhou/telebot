@@ -1,0 +1,27 @@
+{
+  "username": "",
+  "clientToken": "8c4d59fe-062a-456b-a54b-41285026d1f5",
+  "enableShadow": false,
+  "theme": 0,
+  "logintype": 0,
+  "downloadtype": 0,
+  "configurations": {
+    "Default": {
+      "name": "Default",
+      "selectedMinecraftVersion": "1.8",
+      "minecraftArgs": "",
+      "gameDir": "/home/shax/.minecraft",
+      "javaDir": "",
+      "precalledCommand": "",
+      "serverIp": "",
+      "java": "",
+      "fullscreen": false,
+      "debug": false,
+      "noJVMArgs": false,
+      "canceledWrapper": false,
+      "launcherVisibility": 0,
+      "gameDirType": 0
+    }
+  },
+  "yggdrasil": {}
+}
