@@ -109,6 +109,7 @@ class TeleBot(telepot.helper.ChatHandler):
         super(TeleBot,self).__init__(seed_tuple,timeout)
         self._count = 0
         self._fuck = 0
+        self._parse = None
 
     def on_chat_message(self,msg):
         self._count += 1
@@ -130,6 +131,7 @@ class TeleBot(telepot.helper.ChatHandler):
                 self._answer = "Welcome!\nPlease type \"/help\" to get a help list."
             elif self._text == "/help" or self._text == "/help@" + info["username"]:
                 self._answer = bhelp_list[0]
+                self._parse = "HTML"
             elif self._text == "/hello" or self._text == "/hello@" + info["username"]:
                 self._answer = "Hello," + self._first_name + "!"+ random.choice(greeting_list)
             elif self._text == "/joke" or self._text == "/joke@" + info["username"]:
@@ -139,7 +141,7 @@ class TeleBot(telepot.helper.ChatHandler):
             elif self._text == "/fuck" or self._text == "/fuck@" + info["username"]:
                 self._answer = "NO!I\"m not a GAY!"
                 self._fuck += 1
-            elif self._text == "fuck again" and self._fuck == 1:
+            elif (self._text == "/fuckagain" or self._text == "/fuckagain@" + info["username"]) and self._fuck == 1:
                 self._answer = "Fuck you!"
             elif self._text == "/count" or self._text == "/count@" + info["username"]:
                 self._answer = self._count
@@ -184,12 +186,16 @@ class TeleBot(telepot.helper.ChatHandler):
             ## Send result.
             if self._answer != None:
                 self.sender.sendChatAction("typing")
-                self.sender.sendMessage(self._answer,reply_to_message_id=self._msg_id)
+                if self._parse != None:
+                    self.sender.sendMessage(self._answer,reply_to_message_id=self._msg_id,parse_mode=self._parse)
+                else:
+                    self.sender.sendMessage(self._answer,reply_to_message_id=self._msg_id)
                 ## Give a journal.
                 #print(">>> %s"%(now))
                 print("Bot:Got text \"%s\" from @%s and answered with \"%s\"."%(self._text,self._username,self._answer))
             else:
                 print("Bot:Got text \"%s\" from @%s."%(self._text,self._username))
+            self._parse = None
             print("--------------------------------------------")
 
 

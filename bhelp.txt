@@ -1,12 +1,14 @@
 ### DO NOT DELETE THIS LINE!PLEASE KEEP IT IN LINE 1!This file contains a help list for user,you can write any help you like after the following $.
-$Help List
+$<strong>Help List</strong>
 You can use following word to communicate with me:
-/start - Begin a talk.
-/help - Show a help list.
-/hello - I'll say a random greeting to you.
-/time - I'll give you the time now.
-/joke - I'll tell you a joke.
-/fuck - You know.
-/cmd - You type /cmd,xxx and I will run the command xxx in shell(only for special users for safety).
-/code - I'll send myself to you.
+<em>/start</em> - Begin a talk.
+<em>/help</em> - Show a help list.
+<em>/hello</em> - I'll say a random greeting to you.
+<em>/time</em> - I'll give you the time now.
+<em>/joke</em> - I'll tell you a joke.
+<em>/fuck</em> - You know.
+<em>/fuckagain</em> - If you have sent a "/fuck",you can send this in follow.
+<em>/count</em> - I'll count how many massages you have sent in our chat.
+<em>/cmd</em> - You type /cmd,xxx and I will run the command xxx in shell(<strong>only for special users for safety</strong>).
+<em>/code</em> - I'll send myself to you.
 $
