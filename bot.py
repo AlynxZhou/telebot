@@ -178,7 +178,11 @@ class TeleBot(telepot.helper.ChatHandler):
                 with open("talk.txt") as self._talk_txt:
                     self.sender.sendChatAction("upload_document")
                     self.sender.sendDocument(self._talk_txt)
-                self._answer = "Sent code.\nYou should make dictionaries \"Image/\" \"Video/\" \"Audio/\" \"File/\" before you run it."
+                with open("README.md") as self._README_md:
+                    self.sender.sendChatAction("upload_document")
+                    self.sender.sendDocument(self._README_md)
+                self._answer = "Sent code.\nYou should make directories as \"Image/\" \"Video/\" \"Audio/\" \"File/\" before you run it.\nFor more information,click <a herf=\"https://github.com/S-X-ShaX/telebot/\">My TeleBot on GitHub</a>."
+                self._parse = "HTML"
             else:
                 self._answer = None
 
