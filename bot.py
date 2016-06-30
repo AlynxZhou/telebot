@@ -139,7 +139,7 @@ class TeleBot(telepot.helper.ChatHandler):
             elif self._text == "/time" or self._text == "/time@" + info["username"]:
                 self._answer = "Now is " + str(datetime.datetime.now()) + "."
             elif self._text == "/fuck" or self._text == "/fuck@" + info["username"]:
-                self._answer = "NO!I\"m not a GAY!"
+                self._answer = "NO!'m not a GAY!"
                 self._fuck += 1
             elif (self._text == "/fuckagain" or self._text == "/fuckagain@" + info["username"]) and self._fuck == 1:
                 self._answer = "Fuck you!"
