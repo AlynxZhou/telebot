@@ -12,3 +12,6 @@ Audio/*
 
 # File
 File/*
+
+# Python Cache
+__pycache__

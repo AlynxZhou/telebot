@@ -10,6 +10,10 @@ import datetime
 import argparse
 import subprocess
 
+from urllib.request import urlopen
+from html.parser import HTMLParser
+from ipcn import IPCNParser
+
 AUTHOR = "S-X-ShaX"
 VERSION = "3.3"
 now = str(datetime.datetime.now())
@@ -27,10 +31,10 @@ except ImportError:
 
 
 ## Deal with the args.
-parser = argparse.ArgumentParser(description="A telegram bot program.")
-parser.add_argument("-t","--token",help="Get the file that stored the bot token.",action="store")
-parser.add_argument("-a","--admin",help="Get the admin user\" name",action="store")
-args = parser.parse_args()
+aparser = argparse.ArgumentParser(description="A telegram bot program.")
+aparser.add_argument("-t","--token",help="Get the file that stored the bot token.",action="store")
+aparser.add_argument("-a","--admin",help="Get the admin user\" name",action="store")
+args = aparser.parse_args()
 
 token_file = args.token
 if token_file == None:
@@ -118,6 +122,7 @@ fuck_list = [
 #class UserClose(TelepotException):
 #    pass
 
+
 ## Define a bot class.
 class TeleBot(telepot.helper.ChatHandler):
     def __init__(self,seed_tuple,timeout):
@@ -181,6 +186,14 @@ class TeleBot(telepot.helper.ChatHandler):
             elif self._text == "/count":
                 self._answer = self._count
 
+            elif self._text == "/ipcn":
+#                self._ipcn = urlopen("http://ip.cn/").read().decode("utf-8")
+
+                iparser = IPCNParser()
+                self._ipcn = urlopen("http://ip.cn/").read().decode("utf-8")
+                iparser.feed(self._ipcn)
+                self._answer = iparser.result
+
             elif self._text == "/cmd":
                 if self._text_2 != None:
                     if self._username == ADMIN:
@@ -203,7 +216,7 @@ class TeleBot(telepot.helper.ChatHandler):
                         except:
                             with open(self._text_2,"rb") as self._document:
                                 self.sender.sendDocument(self._document)
-                        self._answer = "Sended."
+                        self._answer = "Sent."
                     else:
                         self._answer = "Sorry,you are not allowed to get a file in order to keep the bot safe."
                 else:
@@ -213,6 +226,9 @@ class TeleBot(telepot.helper.ChatHandler):
                 with open("bot.py") as self._bot_py:
                     self.sender.sendChatAction("upload_document")
                     self.sender.sendDocument(self._bot_py)
+                with open("ipcn.py") as self._ipcn_py:
+                    self.sender.sendChatAction("upload_document")
+                    self.sender.sendDocument(self._ipcn_py)
                 with open("greeting.txt") as self._greeting_txt:
                     self.sender.sendChatAction("upload_document")
                     self.sender.sendDocument(self._greeting_txt)
