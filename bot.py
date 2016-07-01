@@ -158,11 +158,12 @@ class TeleBot(telepot.helper.ChatHandler):
             elif self._text == "/time" or (self._text == "/time@" + info["username"]):
                 self._answer = "Now is " + str(datetime.datetime.now()) + "."
             elif self._text == "/fuck" or (self._text == "/fuck@" + info["username"]):
-#                self._answer = "NO!'m not a GAY!"
-                self._answer = fuck_list[self._fuck]
-                self._fuck += 1
-#            elif (self._text == "/fuckagain" or (self._text == "/fuckagain@" + info["username"])) and self._fuck >= 1:
-#                self._answer = "Fuck you!"
+                try:
+                    self._answer = fuck_list[self._fuck]
+                    self._fuck += 1
+                except IndexError:
+                    self._fuck = 0
+                    self._answer = fuck_list[self._fuck]
             elif self._text == "/count" or (self._text == "/count@" + info["username"]):
                 self._answer = self._count
             elif self._text_1 == "/cmd" or (self._text_1 == "/cmd@" + info["username"]):
