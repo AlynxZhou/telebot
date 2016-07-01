@@ -209,7 +209,7 @@ class TeleBot(telepot.helper.ChatHandler):
     def on_close(self, exception):
         now = str(datetime.datetime.now())
         print(">>> %s"%(now))
-        print("Bot:Close an delegator with @%s by calling on_close() due to timeout."%(self._username))
+        print("Bot:Close an delegator with @%s by calling on_close()."%(self._username))
         print("--------------------------------------------")
 
 
