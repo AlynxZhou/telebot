@@ -19,6 +19,7 @@ print("Starting bot at %s..."%(now))
 try:
     import telepot
     from telepot.delegate import per_from_id, create_open
+    from telepot.exception import TelepotException
 except ImportError:
     print("ERROR:It seems that there is no telepot api installed.")
     print("Maybe you should install it first via \"# pip3 install telepot\"?")
@@ -104,6 +105,11 @@ joke_list = joke()
 #    self._count += 1
 #    self.sender.sendMessage(self._count)
 
+## Define an expection.
+#class UserClose(TelepotException):
+#    pass
+
+## Define a bot class.
 class TeleBot(telepot.helper.ChatHandler):
     def __init__(self,seed_tuple,timeout):
         super(TeleBot,self).__init__(seed_tuple,timeout)
@@ -113,6 +119,7 @@ class TeleBot(telepot.helper.ChatHandler):
 
     def on_chat_message(self,msg):
         self._count += 1
+        self._parse = None
         now = str(datetime.datetime.now())
         print(">>> %s"%(now))
         content_type,chat_type,chat_id = telepot.glance(msg)
@@ -186,8 +193,9 @@ class TeleBot(telepot.helper.ChatHandler):
                     self.sender.sendDocument(self._README_md)
                 self._answer = "Sent code.\nYou should make directories as \"Image/\" \"Video/\" \"Audio/\" \"File/\" before you run it.\nFor more information,click <a href=\"https://github.com/S-X-ShaX/telebot/\">My TeleBot on GitHub</a>."
                 self._parse = "HTML"
-            elif self._text == "/close" or (self._text == "/close@" + info["username"]):
-                self.on_close()
+#            elif self._text == "/close" or (self._text == "/close@" + info["username"]):
+#                self.on_close(UserClose)
+#                self._answer = None
             else:
                 self._answer = None
 
@@ -205,7 +213,6 @@ class TeleBot(telepot.helper.ChatHandler):
                 print("Bot:Got text \"%s\" from @%s and answered with \"%s\"."%(self._text,self._username,self._answer))
             else:
                 print("Bot:Got text \"%s\" from @%s."%(self._text,self._username))
-            self._parse = None
             print("--------------------------------------------")
 
 

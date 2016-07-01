@@ -9,6 +9,6 @@ You can use following word to communicate with me:
 <em>/fuck</em> - You know.
 <em>/fuckagain</em> - If you have sent a "/fuck",you can send this in follow.
 <em>/count</em> - I'll count how many massages you have sent in our chat.
-<em>/cmd</em> - You type /cmd,xxx and I will run the command xxx in shell(<strong>only for special users for safety</strong>).
+<em>/cmd</em> - You type "/cmd;% xxx" and I will run the command "xxx" in shell(<strong>only for special users for safety</strong>).
 <em>/code</em> - I'll send myself to you.
-$
+$<em>/close</em> - I'll close a delegator.
