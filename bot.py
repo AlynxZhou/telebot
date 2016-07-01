@@ -221,7 +221,8 @@ class TeleBot(telepot.helper.ChatHandler):
                     self.sender.sendDocument(self._bhelp_txt)
                 with open("joke.txt") as self._joke_txt:
                     self.sender.sendChatAction("upload_document")
-                    self.sender.sendDocument(self._joke_txt)                with open("talk.txt") as self._talk_txt:
+                    self.sender.sendDocument(self._joke_txt)
+                with open("talk.txt") as self._talk_txt:
                     self.sender.sendChatAction("upload_document")
                     self.sender.sendDocument(self._talk_txt)
                 with open("README.md") as self._README_md:
