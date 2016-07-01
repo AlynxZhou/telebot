@@ -97,8 +97,8 @@ joke_list = joke()
 
 fuck_list = [
     "NO!I'm not a bad girl and I haven't!",
-    "I know as a good girl I must behave myself but I had to say,Fuck you!",
-    "It's so painful!",
+    "I know as a good girl I must behave myself but I had to say.Fuck you!",
+    "It's so painful and unbearable!",
     "Oh!NO!Don't move!",
     "Ya Mie Die!Softly,please!",
     "Ah,seems end,so comfortable.",
@@ -221,8 +221,7 @@ class TeleBot(telepot.helper.ChatHandler):
                     self.sender.sendDocument(self._bhelp_txt)
                 with open("joke.txt") as self._joke_txt:
                     self.sender.sendChatAction("upload_document")
-                    self.sender.sendDocument(self._joke_txt)
-                with open("talk.txt") as self._talk_txt:
+                    self.sender.sendDocument(self._joke_txt)                with open("talk.txt") as self._talk_txt:
                     self.sender.sendChatAction("upload_document")
                     self.sender.sendDocument(self._talk_txt)
                 with open("README.md") as self._README_md:
