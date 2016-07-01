@@ -130,30 +130,30 @@ class TeleBot(telepot.helper.ChatHandler):
             except IndexError:
                 self._text_1 = self._text_2 = None
 
-            if self._text == "/start" or self._text == "/start@" + info["username"]:
+            if self._text == "/start" or (self._text == "/start@" + info["username"]):
                 self._answer = "Welcome!\nPlease type \"/help\" to get a help list."
-            elif self._text == "/help" or self._text == "/help@" + info["username"]:
+            elif self._text == "/help" or (self._text == "/help@" + info["username"]):
                 self._answer = bhelp_list[0]
                 self._parse = "HTML"
-            elif self._text == "/hello" or self._text == "/hello@" + info["username"]:
+            elif self._text == "/hello" or (self._text == "/hello@" + info["username"]):
                 self._answer = "Hello," + self._first_name + "!"+ random.choice(greeting_list)
-            elif self._text == "/joke" or self._text == "/joke@" + info["username"]:
+            elif self._text == "/joke" or (self._text == "/joke@" + info["username"]):
                 self._answer = random.choice(joke_list)
-            elif self._text == "/time" or self._text == "/time@" + info["username"]:
+            elif self._text == "/time" or (self._text == "/time@" + info["username"]):
                 self._answer = "Now is " + str(datetime.datetime.now()) + "."
-            elif self._text == "/fuck" or self._text == "/fuck@" + info["username"]:
+            elif self._text == "/fuck" or (self._text == "/fuck@" + info["username"]):
                 self._answer = "NO!'m not a GAY!"
                 self._fuck += 1
-            elif (self._text == "/fuckagain" or self._text == "/fuckagain@" + info["username"]) and self._fuck >= 1:
+            elif (self._text == "/fuckagain" or (self._text == "/fuckagain@" + info["username"])) and self._fuck >= 1:
                 self._answer = "Fuck you!"
-            elif self._text == "/count" or self._text == "/count@" + info["username"]:
+            elif self._text == "/count" or (self._text == "/count@" + info["username"]):
                 self._answer = self._count
-            elif self._text_1 == "/cmd" or self._text_1 == "/cmd@" + info["username"]:
+            elif self._text_1 == "/cmd" or (self._text_1 == "/cmd@" + info["username"]):
                 if self._username == ADMIN:
                     self._answer = "Result:\n" + subprocess.check_output(self._text_2,shell=True,stderr=subprocess.STDOUT,universal_newlines=True)
                 else:
                     self._answer = "Sorry,you are not allowed to run a command in order to keep the bot safe."
-            elif self._text_1 == "/send" or self._text_1 == "/send@" + info["username"]:
+            elif self._text_1 == "/send" or (self._text_1 == "/send@" + info["username"]):
                 if self._username == ADMIN:
                     self.sender.sendChatAction("upload_document")
                     try:
@@ -165,7 +165,7 @@ class TeleBot(telepot.helper.ChatHandler):
                     self._answer = "Sended."
                 else:
                     self._answer = "Sorry,you are not allowed to get a file in order to keep the bot safe."
-            elif self._text == "/code" or self._text =="/code@" + info["username"]:
+            elif self._text == "/code" or (self._text == "/code@" + info["username"]):
                 with open("bot.py") as self._bot_py:
                     self.sender.sendChatAction("upload_document")
                     self.sender.sendDocument(self._bot_py)
@@ -186,12 +186,15 @@ class TeleBot(telepot.helper.ChatHandler):
                     self.sender.sendDocument(self._README_md)
                 self._answer = "Sent code.\nYou should make directories as \"Image/\" \"Video/\" \"Audio/\" \"File/\" before you run it.\nFor more information,click <a href=\"https://github.com/S-X-ShaX/telebot/\">My TeleBot on GitHub</a>."
                 self._parse = "HTML"
+            elif self._text == "/close" or (self._text == "/close@" + info["username"]):
+                self.on_close()
             else:
                 self._answer = None
 
 
-            ## Send result.
+### Return.
             if self._answer != None:
+                ## Send result.
                 self.sender.sendChatAction("typing")
                 if self._parse != None:
                     self.sender.sendMessage(self._answer,reply_to_message_id=self._msg_id,parse_mode=self._parse)
