@@ -164,6 +164,7 @@ class TeleBot(telepot.helper.ChatHandler):
                 except IndexError:
                     self._fuck = 0
                     self._answer = fuck_list[self._fuck]
+                    self._fuck += 1
             elif self._text == "/count" or (self._text == "/count@" + info["username"]):
                 self._answer = self._count
             elif self._text_1 == "/cmd" or (self._text_1 == "/cmd@" + info["username"]):
