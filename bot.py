@@ -129,8 +129,10 @@ class TeleBot(telepot.helper.ChatHandler):
     def on_chat_message(self,msg):
         self._count += 1
         self._parse = None
+
         now = str(datetime.datetime.now())
         print(">>> %s"%(now))
+
         content_type,chat_type,chat_id = telepot.glance(msg)
         self._first_name = msg["from"]["first_name"]
         self._username = msg["from"]["username"]
@@ -138,26 +140,36 @@ class TeleBot(telepot.helper.ChatHandler):
 
         ## To judge if the content is a text and deal with it.
         if content_type == "text":
-            self._text = msg["text"]
-            try:
-                self._textlist = self._text.split(";% ")
-                self._text_1 = self._textlist[0]
-                self._text_2 = self._textlist[1]
-            except IndexError:
-                self._text_1 = self._text_2 = None
+            self._text_orig = msg["text"]
 
-            if self._text == "/start" or (self._text == "/start@" + info["username"]):
+            try:
+                self._text_list = self._text_orig.split(";% ",1)
+                self._text = self._text_list[0]
+                self._text_2 = self._text_list[1]
+            except IndexError:
+                self._text_2 = None
+            if ('@' + info["username"]) in self._text:
+                self._text = self._text.split('@' + info["username"],1)[0]
+
+
+            # Handle.
+            if self._text == "/start":
                 self._answer = "Welcome!\nPlease type \"/help\" to get a help list."
-            elif self._text == "/help" or (self._text == "/help@" + info["username"]):
+
+            elif self._text == "/help":
                 self._answer = bhelp_list[0]
                 self._parse = "HTML"
-            elif self._text == "/hello" or (self._text == "/hello@" + info["username"]):
+
+            elif self._text == "/hello":
                 self._answer = "Hello," + self._first_name + "!"+ random.choice(greeting_list)
-            elif self._text == "/joke" or (self._text == "/joke@" + info["username"]):
+
+            elif self._text == "/joke":
                 self._answer = random.choice(joke_list)
-            elif self._text == "/time" or (self._text == "/time@" + info["username"]):
+
+            elif self._text == "/time":
                 self._answer = "Now is " + str(datetime.datetime.now()) + "."
-            elif self._text == "/fuck" or (self._text == "/fuck@" + info["username"]):
+
+            elif self._text == "/fuck":
                 try:
                     self._answer = fuck_list[self._fuck]
                     self._fuck += 1
@@ -165,26 +177,39 @@ class TeleBot(telepot.helper.ChatHandler):
                     self._fuck = 0
                     self._answer = fuck_list[self._fuck]
                     self._fuck += 1
-            elif self._text == "/count" or (self._text == "/count@" + info["username"]):
+
+            elif self._text == "/count":
                 self._answer = self._count
-            elif self._text_1 == "/cmd" or (self._text_1 == "/cmd@" + info["username"]):
-                if self._username == ADMIN:
-                    self._answer = "Result:\n" + subprocess.check_output(self._text_2,shell=True,stderr=subprocess.STDOUT,universal_newlines=True)
+
+            elif self._text == "/cmd":
+                if self._text_2 != None:
+                    if self._username == ADMIN:
+                        try:
+                            self._answer = "Result:\n" + subprocess.check_output(self._text_2,shell=True,stderr=subprocess.STDOUT,universal_newlines=True)
+                        except subprocess.CalledProcessError:
+                            self._answer = "Sorry,invalid command."
+                    else:
+                        self._answer = "Sorry,you are not allowed to run a command in order to keep the bot safe."
                 else:
-                    self._answer = "Sorry,you are not allowed to run a command in order to keep the bot safe."
-            elif self._text_1 == "/send" or (self._text_1 == "/send@" + info["username"]):
-                if self._username == ADMIN:
-                    self.sender.sendChatAction("upload_document")
-                    try:
-                        with open(self._text_2) as self._document:
-                            self.sender.sendDocument(self._document)
-                    except:
-                        with open(self._text_2,"rb") as self._document:
-                            self.sender.sendDocument(self._document)
-                    self._answer = "Sended."
+                    self._answer = None
+
+            elif self._text == "/send":
+                if self._text_2 != None:
+                    if self._username == ADMIN:
+                        self.sender.sendChatAction("upload_document")
+                        try:
+                            with open(self._text_2) as self._document:
+                                self.sender.sendDocument(self._document)
+                        except:
+                            with open(self._text_2,"rb") as self._document:
+                                self.sender.sendDocument(self._document)
+                        self._answer = "Sended."
+                    else:
+                        self._answer = "Sorry,you are not allowed to get a file in order to keep the bot safe."
                 else:
-                    self._answer = "Sorry,you are not allowed to get a file in order to keep the bot safe."
-            elif self._text == "/code" or (self._text == "/code@" + info["username"]):
+                    self._answer = None
+
+            elif self._text == "/code":
                 with open("bot.py") as self._bot_py:
                     self.sender.sendChatAction("upload_document")
                     self.sender.sendDocument(self._bot_py)
@@ -205,9 +230,11 @@ class TeleBot(telepot.helper.ChatHandler):
                     self.sender.sendDocument(self._README_md)
                 self._answer = "Sent code.\nYou should make directories as \"Image/\" \"Video/\" \"Audio/\" \"File/\" before you run it.\nFor more information,click <a href=\"https://github.com/S-X-ShaX/telebot/\">My TeleBot on GitHub</a>."
                 self._parse = "HTML"
-#            elif self._text == "/close" or (self._text == "/close@" + info["username"]):
+
+#            elif self._text == "/close":
 #                self.on_close(UserClose)
 #                self._answer = None
+
             else:
                 self._answer = None
 
@@ -222,7 +249,7 @@ class TeleBot(telepot.helper.ChatHandler):
                     self.sender.sendMessage(self._answer,reply_to_message_id=self._msg_id)
                 ## Give a journal.
                 #print(">>> %s"%(now))
-                print("Bot:Got text \"%s\" from @%s and answered with \"%s\"."%(self._text,self._username,self._answer))
+                print("Bot:Got text \"%s\" from @%s and answered with \"%s\"."%(self._text_orig,self._username,self._answer))
             else:
                 print("Bot:Got text \"%s\" from @%s."%(self._text,self._username))
             print("--------------------------------------------")
