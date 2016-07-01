@@ -4,7 +4,7 @@ A telegram bot program.
 ## Usage:
 
 ````bash
-$ ./bot.py --token TOKEN_FILE --admin ADMIN_USER
+$ python3 bot.py --token TOKEN_FILE --admin ADMIN_USER
 ````
 
 ADMIN\_USER should be *your telegram username(nickname)*.
@@ -20,13 +20,14 @@ $ sudo pip3 install telepot
 Then after you *sign up a new bot* from the **BotFather**,put you token into a token file:
 
 ````bash
+$ cd /Where/you/cloned/TeleBot/
 $ echo "YOUR_TOKEN" > ANYNAME.token
 ````
 
 Then run:
 
 ````bash
-$ python3 ./bot.py --token ANYNAME.token --admin YOURUSERNAME
+$ python3 bot.py --token ANYNAME.token --admin YOURUSERNAME
 ````
 
 Do not kill it.You could use *GNU Screen*.
