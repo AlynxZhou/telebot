@@ -96,13 +96,13 @@ def joke():
 joke_list = joke()
 
 fuck_list = [
-    "NO!'m not a GAY!",
-    "Fuck you!",
-    "So painful!",
-    "Oh!NO!",
-    "Ya Mie Die!",
-    "Ah,so comfortable.",
-    "Good boy,since then I am your girl."
+    "NO!I'm not a bad girl and I haven't!",
+    "I know as a good girl I must behave myself but I had to say,Fuck you!",
+    "It's so painful!",
+    "Oh!NO!Don't move!",
+    "Ya Mie Die!Softly,please!",
+    "Ah,seems end,so comfortable.",
+    "Good boy,now I become your girl."
 ]
 
 #class MessageCounter(telepot.helper.ChatHandler):
