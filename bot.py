@@ -123,9 +123,12 @@ class TeleBot(telepot.helper.ChatHandler):
         ## To judge if the content is a text and deal with it.
         if content_type == "text":
             self._text = msg["text"]
-            self._textlist = self._text.split(";% ")
-            self._text_1 = self._textlist[0]
-            self._text_2 = self._textlist[1]
+            try:
+                self._textlist = self._text.split(";% ")
+                self._text_1 = self._textlist[0]
+                self._text_2 = self._textlist[1]
+            except IndexError:
+                self._text_1 = self._text_2 = None
 
             if self._text == "/start" or self._text == "/start@" + info["username"]:
                 self._answer = "Welcome!\nPlease type \"/help\" to get a help list."
