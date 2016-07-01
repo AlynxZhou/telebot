@@ -51,7 +51,7 @@ if ADMIN == None:
     print("The admin user is usually yourself,so you should find your username which maybe also called nickname in the Settings of Telegram,notice the \'@\' is not a part of your username.if you haven\'t set it,you should set a username,and run the program again by \"$ python3 ./bot.py --token YOURBOTNAME.token --admin ADMINUSER\".")
     ADMIN = input("However,you can also type your admin user name here and then press [ENTER] to make it continue: ")
 
-### Check dictonaries.
+### Check directories.
 if os.path.exists("Image") == False:
     os.mkdir("Image")
 if os.path.exists("Video") == False:
@@ -61,7 +61,7 @@ if os.path.exists("Audio") == False:
 if os.path.exists("File") == False:
     os.mkdir("File")
 
-### This is some assistant function.
+### These are some assistant function.
 def greet():
     try:
         with open("greeting.txt") as greeting_open:
@@ -141,7 +141,7 @@ class TeleBot(telepot.helper.ChatHandler):
             elif self._text == "/fuck" or self._text == "/fuck@" + info["username"]:
                 self._answer = "NO!'m not a GAY!"
                 self._fuck += 1
-            elif (self._text == "/fuckagain" or self._text == "/fuckagain@" + info["username"]) and self._fuck == 1:
+            elif (self._text == "/fuckagain" or self._text == "/fuckagain@" + info["username"]) and self._fuck >= 1:
                 self._answer = "Fuck you!"
             elif self._text == "/count" or self._text == "/count@" + info["username"]:
                 self._answer = self._count
