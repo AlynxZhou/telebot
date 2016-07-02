@@ -174,7 +174,7 @@ class TeleBot(telepot.helper.UserHandler):
                 if self._text_2 != None:
                     self._answer = get_wea(self._text_2)
                 else:
-                    self._answer = "Please add a valid city,for instance,\"/weather 上海\"."
+                    self._answer = "Please add a valid place,for instance,\"/weather 上海\" or \"/weather 安徽 合肥\" or \"/weather 中国 辽宁 大连\"."
 
             elif self._text == "/fuck":
                 try:
