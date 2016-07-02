@@ -13,6 +13,7 @@ import subprocess
 from urllib.request import urlopen
 #from html.parser import HTMLParser
 from ipcn import IPCNParser
+from yahoowea import get_wea
 
 AUTHOR = "S-X-ShaX"
 VERSION = "3.3"
@@ -177,6 +178,11 @@ class TeleBot(telepot.helper.ChatHandler):
 
             elif self._text == "/time":
                 self._answer = "Now is " + str(datetime.datetime.now()) + "."
+            elif self._text == "/weather":
+                if self._text_2 != None:
+                    self._answer = get_wea(self._text_2)
+                else:
+                    self._answer = "Please add a valid city,for instance,\"/weather;% 上海\"."
 
             elif self._text == "/fuck":
                 try:
