@@ -103,13 +103,13 @@ def joke():
 joke_list = joke()
 
 fuck_list = [
-    "NO!I'm not a bad girl and I haven't!",
-    "I know as a good girl I must behave myself but I had to say.Fuck you!",
-    "It's so painful and unbearable!",
-    "Oh!NO!Don't move!",
-    "Ya Mie Die!Softly,please!",
-    "Ah,seems end,so comfortable.",
-    "Good boy,now I become your girl."
+    "NO!I'm not a bad girl and I haven't!😡",
+    "I know as a good girl I must behave myself but I had to say.Fuck you!💢",
+    "It's so painful and unbearable!😖",
+    "Oh!NO!Don't move!😲",
+    "Ya Mie Die!Softly,please!😫",
+    "Ah,seems end,so comfortable.😌",
+    "Good boy,now I become your girl.😁"
 ]
 
 ## Define an expection.
@@ -145,7 +145,7 @@ class TeleBot(telepot.helper.UserHandler):
             self._text_orig = msg["text"]
 
             try:
-                self._text_list = self._text_orig.split(";% ",1)
+                self._text_list = self._text_orig.split(' ',1)
                 self._text = self._text_list[0]
                 self._text_2 = self._text_list[1]
             except IndexError:
@@ -174,7 +174,7 @@ class TeleBot(telepot.helper.UserHandler):
                 if self._text_2 != None:
                     self._answer = get_wea(self._text_2)
                 else:
-                    self._answer = "Please add a valid city,for instance,\"/weather;% 上海\"."
+                    self._answer = "Please add a valid city,for instance,\"/weather 上海\"."
 
             elif self._text == "/fuck":
                 try:
@@ -209,13 +209,13 @@ class TeleBot(telepot.helper.UserHandler):
             elif self._text == "/send":
                 if self._text_2 != None:
                     if self._username == ADMIN:
-                        self.sender.sendChatAction("upload_document")
+                        bot.sendChatAction(chat_id,"upload_document")
                         try:
                             with open(self._text_2) as self._document:
-                                self.sender.sendDocument(self._document)
+                                bot.sendDocument(chat_id,self._document)
                         except:
                             with open(self._text_2,"rb") as self._document:
-                                self.sender.sendDocument(self._document)
+                                bot.sendDocument(chat_id,self._document)
                         self._answer = "Sent."
                     else:
                         self._answer = "Sorry,you are not allowed to get a file in order to keep the bot safe."
@@ -223,9 +223,20 @@ class TeleBot(telepot.helper.UserHandler):
                     self._answer = None
 
             elif self._text == "/code":
-                with open("bot.py") as self._bot_py:
-                    self.sender.sendChatAction("upload_document")
-                    self.sender.sendDocument(self._bot_py)
+                dir = [
+                    "bot.py",
+                    "ipcn.py",
+                    "yahoowea.py",
+                    "greeting.txt",
+                    "bhelp.txt",
+                    "joke.txt",
+                    "README.md"
+                ]
+                for self._code_file in dir:
+                    with open(self._code_file) as self._code_byte:
+                        bot.sendChatAction(chat_id,"upload_document")
+                        bot.sendDocument(chat_id,self._code_byte)
+                """
                 with open("ipcn.py") as self._ipcn_py:
                     self.sender.sendChatAction("upload_document")
                     self.sender.sendDocument(self._ipcn_py)
@@ -244,6 +255,7 @@ class TeleBot(telepot.helper.UserHandler):
                 with open("README.md") as self._README_md:
                     self.sender.sendChatAction("upload_document")
                     self.sender.sendDocument(self._README_md)
+            """
                 self._answer = "Sent code.\nYou should make directories as \"Image/\" \"Video/\" \"Audio/\" \"File/\" before you run it.\nFor more information,click <a href=\"https://github.com/S-X-ShaX/telebot/\">My TeleBot on GitHub</a>."
                 self._parse = "HTML"
 

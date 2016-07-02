@@ -6,9 +6,10 @@ You can use following word to communicate with me:
 <em>/hello</em> - I'll say a random greeting to you.
 <em>/time</em> - I'll give you the time now.
 <em>/joke</em> - I'll tell you a joke.
+<em>/weather</em> - You type "/weather CITY" and I'll get forecast from <em>Yahoo</em>.
 <em>/fuck</em> - You know.
 <em>/count</em> - I'll count how many massages you have sent in our chat.
-<em>/cmd</em> - You type "/cmd;% xxx" and I will run the command "xxx" in shell(<strong>only for special users for safety</strong>).
+<em>/cmd</em> - You type "/cmd xxx" and I will run the command "xxx" in shell(<strong>only for special users for safety</strong>).
 <em>/code</em> - I'll send myself to you.
 $<em>/fuckagain</em> - If you have sent a "/fuck",you can send this in follow.
 <em>/close</em> - I'll close a delegator.
