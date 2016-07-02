@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+#-*- coding: utf-8 -*-
 
 ### Filename:bot.py
 
@@ -11,7 +11,7 @@ import argparse
 import subprocess
 
 from urllib.request import urlopen
-from html.parser import HTMLParser
+#from html.parser import HTMLParser
 from ipcn import IPCNParser
 
 AUTHOR = "S-X-ShaX"
@@ -23,7 +23,7 @@ print("Starting bot at %s..."%(now))
 try:
     import telepot
     from telepot.delegate import per_from_id, create_open
-    from telepot.exception import TelepotException
+#    from telepot.exception import TelepotException
 except ImportError:
     print("ERROR:It seems that there is no telepot api installed.")
     print("Maybe you should install it first via \"# pip3 install telepot\"?")
@@ -86,6 +86,7 @@ def bhelp():
         print("ERROR:No avaliable \"bhelp.txt\" was found.")
         exit()
     return bhelp_list
+
 bhelp_list = bhelp()
 
 
@@ -97,6 +98,7 @@ def joke():
         print("ERROR:No avaliable \"joke.txt\" was found.")
         exit()
     return joke_list
+
 joke_list = joke()
 
 fuck_list = [
@@ -127,16 +129,18 @@ fuck_list = [
 class TeleBot(telepot.helper.ChatHandler):
     def __init__(self,seed_tuple,timeout):
         super(TeleBot,self).__init__(seed_tuple,timeout)
-        self._count = 0
-        self._fuck = 0
-        self._parse = None
+        self._count = {
+            "chat":0,
+            "fuck":0
+        }
+
 
     def on_chat_message(self,msg):
-        self._count += 1
-        self._parse = None
-
         now = str(datetime.datetime.now())
         print(">>> %s"%(now))
+
+        self._count["chat"] += 1
+        self._parse = None
 
         content_type,chat_type,chat_id = telepot.glance(msg)
         self._first_name = msg["from"]["first_name"]
@@ -176,19 +180,17 @@ class TeleBot(telepot.helper.ChatHandler):
 
             elif self._text == "/fuck":
                 try:
-                    self._answer = fuck_list[self._fuck]
-                    self._fuck += 1
+                    self._answer = fuck_list[self._count["fuck"]]
+                    self._count["fuck"] += 1
                 except IndexError:
-                    self._fuck = 0
-                    self._answer = fuck_list[self._fuck]
-                    self._fuck += 1
+                    self._count["fuck"] = 0
+                    self._answer = fuck_list[self._count["fuck"]]
+                    self._count["fuck"] += 1
 
             elif self._text == "/count":
-                self._answer = self._count
+                self._answer = self._count["chat"]
 
             elif self._text == "/ipcn":
-#                self._ipcn = urlopen("http://ip.cn/").read().decode("utf-8")
-
                 iparser = IPCNParser()
                 self._ipcn = urlopen("http://ip.cn/").read().decode("utf-8")
                 iparser.feed(self._ipcn)
@@ -259,12 +261,7 @@ class TeleBot(telepot.helper.ChatHandler):
             if self._answer != None:
                 ## Send result.
                 self.sender.sendChatAction("typing")
-                if self._parse != None:
-                    self.sender.sendMessage(self._answer,reply_to_message_id=self._msg_id,parse_mode=self._parse)
-                else:
-                    self.sender.sendMessage(self._answer,reply_to_message_id=self._msg_id)
-                ## Give a journal.
-                #print(">>> %s"%(now))
+                self.sender.sendMessage(self._answer,reply_to_message_id=self._msg_id,parse_mode=self._parse)
                 print("Bot:Got text \"%s\" from @%s and answered with \"%s\"."%(self._text_orig,self._username,self._answer))
             else:
                 print("Bot:Got text \"%s\" from @%s."%(self._text,self._username))

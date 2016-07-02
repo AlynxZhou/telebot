@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 #-*- coding:utf-8 -*-
 
-from urllib.request import urlopen
+#from urllib.request import urlopen
 from html.parser import HTMLParser
 
 #ipcn = urlopen("http://ip.cn/").read().decode("utf-8")
