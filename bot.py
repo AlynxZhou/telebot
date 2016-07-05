@@ -133,6 +133,7 @@ class TeleBot(telepot.helper.UserHandler):
 
         self._count["chat"] += 1
         self._parse = None
+        self._diswebview = None
 
         content_type,chat_type,chat_id = telepot.glance(msg)
 #        self.sender = telepot.helper.Sender(self.bot,msg["chat"]["id"])
@@ -161,6 +162,7 @@ class TeleBot(telepot.helper.UserHandler):
             elif self._text == "/help":
                 self._answer = bhelp_list[0]
                 self._parse = "HTML"
+                self._diswebview = True
 
             elif self._text == "/hello":
                 self._answer = "Hello," + self._first_name + "!"+ random.choice(greeting_list)
@@ -275,7 +277,7 @@ class TeleBot(telepot.helper.UserHandler):
             if self._answer != None:
                 ## Send result.
                 bot.sendChatAction(chat_id,"typing")
-                bot.sendMessage(chat_id,self._answer,reply_to_message_id=self._msg_id,parse_mode=self._parse)
+                bot.sendMessage(chat_id,self._answer,reply_to_message_id=self._msg_id,parse_mode=self._parse,disable_web_page_preview=self._diswebview)
                 print(">>> %s\nBot:Got text \"%s\" from @%s and answered with \"%s\"."%(self._now,self._text_orig,self._username,self._answer))
             else:
                 print(">>> %s\nBot:Got text \"%s\" from @%s."%(self._now,self._text,self._username))
