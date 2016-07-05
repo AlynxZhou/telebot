@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 #-*- coding:utf-8 -*-
 
-#from urllib.request import urlopen
-from html.parser import HTMLParser
+### Filename:ipcn.py
 
-#ipcn = urlopen("http://ip.cn/").read().decode("utf-8")
+from urllib.request import urlopen
+from html.parser import HTMLParser
 
 class IPCNParser(HTMLParser):
     def __init__(self):
@@ -29,6 +29,11 @@ class IPCNParser(HTMLParser):
         if self._okay and self._code == 1:
             self.result = data
 
-#iparser = IPCNParser()
+iparser = IPCNParser()
 
-#iparser.feed(ipcn)
+def get_ip():
+    ipcn = urlopen("http://ip.cn/").read().decode("utf-8")
+    iparser.feed(ipcn)
+    return iparser.result
+
+#print(get_ip())
