@@ -189,10 +189,13 @@ class TeleBot(telepot.helper.UserHandler):
                 self._answer = self._count["chat"]
 
             elif self._text == "/ipcn":
-                iparser = IPCNParser()
-                self._ipcn = urlopen("http://ip.cn/").read().decode("utf-8")
-                iparser.feed(self._ipcn)
-                self._answer = iparser.result
+                if self._username == ADMIN:
+                    iparser = IPCNParser()
+                    self._ipcn = urlopen("http://ip.cn/").read().decode("utf-8")
+                    iparser.feed(self._ipcn)
+                    self._answer = iparser.result
+                else:
+                    self._answer = "Sorry,you are not allowed to obtain the ip address in order to keep the bot safe."
 
             elif self._text == "/cmd":
                 if self._text_2 != None:
