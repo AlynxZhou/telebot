@@ -293,7 +293,6 @@ class TeleBot(telepot.helper.UserHandler):
         self._now = str(datetime.datetime.now())
         ## Store message.
         redo_dict[self._username] = self._text_redo
-        print(redo_dict)
         ## Journal.
         print(">>> %s\nBot:Close an delegator with @%s by calling on_close()."%(self._now,self._username))
         print("--------------------------------------------")
