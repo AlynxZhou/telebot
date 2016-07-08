@@ -88,6 +88,9 @@ talk_list = resource.file_to_list("talk.txt")
 #class UserClose(TelepotException):
 #    pass
 
+### Used to store the message when a delegator closed.
+last = []
+ll = None
 
 ## Define a bot class.
 class TeleBot(telepot.helper.UserHandler):
@@ -115,7 +118,18 @@ class TeleBot(telepot.helper.UserHandler):
 
         ## To judge if the content is a text and deal with it.
         if content_type == "text":
-            self._text_orig = msg["text"]
+            self._text_orig = self._text_log = msg["text"]
+
+            ## Last message?
+            if self._text_orig == "//" or (self._text_orig == "//@" + info["username"]):
+                try:
+                    self._text_orig = self._text_last
+                except AttributeError:
+                    try:
+                        self._text_orig = self._text_last = last[ll]
+                        last.pop(ll)
+                    except TypeError:
+                        self._answer = "Sorry,but no last message was found."
 
             try:
                 self._text_list = self._text_orig.split(' ',1)
@@ -225,18 +239,24 @@ class TeleBot(telepot.helper.UserHandler):
                 self._answer = "Sent code.\nYou should make directories as \"Image/\" \"Video/\" \"Audio/\" \"File/\" before you run it.\nFor more information,click <a href=\"https://github.com/S-X-ShaX/telebot/\">My TeleBot on GitHub</a>."
                 self._parse = "HTML"
 
+            elif self._text == "//":
+                ## This aims at protecting the answer "Sorry,but no last message was found." not being chenged to None.
+                pass
+
             else:
                 self._answer = None
 
 
             # Return.
             if self._answer != None:
+                ## Store last message.
+                self._text_last = self._text_orig
                 ## Send result.
                 bot.sendChatAction(chat_id,"typing")
                 bot.sendMessage(chat_id,self._answer,reply_to_message_id=self._msg_id,parse_mode=self._parse,disable_web_page_preview=self._diswebview)
-                print(">>> %s\nBot:Got text \"%s\" from @%s and answered with \"%s\"."%(self._now,self._text_orig,self._username,self._answer))
+                print(">>> %s\nBot:Got text \"%s\" from @%s and answered with \"%s\"."%(self._now,self._text_log,self._username,self._answer))
             else:
-                print(">>> %s\nBot:Got text \"%s\" from @%s."%(self._now,self._text,self._username))
+                print(">>> %s\nBot:Got text \"%s\" from @%s."%(self._now,self._text_log,self._username))
             print("--------------------------------------------")
 
         """
@@ -270,8 +290,13 @@ class TeleBot(telepot.helper.UserHandler):
         print("--------------------------------------------")
         """
 
-    def on_close(self, exception):
+    def on_close(self,exception):
         self._now = str(datetime.datetime.now())
+        ## Store message.
+        global ll
+        ll = len(last)
+        last.append(self._text_last)
+        ## Journal.
         print(">>> %s\nBot:Close an delegator with @%s by calling on_close()."%(self._now,self._username))
         print("--------------------------------------------")
 

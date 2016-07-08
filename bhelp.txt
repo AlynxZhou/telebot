@@ -14,5 +14,6 @@ You can use following word to communicate with me:
 <em>/send</em> - You type "/send /path/to/the/file" and I'll send you the file(<strong>only for special users for safety</strong>).
 <em>/cmd</em> - You type "/cmd xxx" and I will run the command "xxx" in shell(<strong>only for special users for safety</strong>).
 <em>/code</em> - I'll send myself to you.
+<em>//</em> - I'll do the last thing again.
 $<em>/fuckagain</em> - If you have sent a "/fuck",you can send this in follow.
 <em>/close</em> - I'll close a delegator.
