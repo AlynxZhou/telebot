@@ -89,7 +89,7 @@ talk_list = resource.file_to_list("talk.txt")
 #    pass
 
 ### Used to store the message when a delegator closed.
-last = []
+last = {}
 ll = None
 
 ## Define a bot class.
@@ -294,8 +294,8 @@ class TeleBot(telepot.helper.UserHandler):
         self._now = str(datetime.datetime.now())
         ## Store message.
         global ll
-        ll = len(last)
-        last.append(self._text_last)
+        ll = self._username
+        last.setdefault(self._username,self._text_last)
         ## Journal.
         print(">>> %s\nBot:Close an delegator with @%s by calling on_close()."%(self._now,self._username))
         print("--------------------------------------------")
