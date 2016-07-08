@@ -13,14 +13,14 @@ def get_wea(place="上海"):
     result = urlopen(yql_url).read().decode("utf-8")
 
     data = json.loads(result)
-    des = "<strong>"+data["query"]["results"]["channel"]["description"]+"</strong>\n"
+    des = "<strong>"+data["query"]["results"]["channel"]["description"]+"</strong>\n\n"
     c = '℃'
-    now = data["query"]["results"]["channel"]["item"]["condition"]["date"] + ":\n" + data["query"]["results"]["channel"]["item"]["condition"]["temp"] + c + ' ' + data["query"]["results"]["channel"]["item"]["condition"]["text"] + "\n"
+    now = data["query"]["results"]["channel"]["item"]["condition"]["date"] + ":\n" + data["query"]["results"]["channel"]["item"]["condition"]["temp"] + c + ' ' + data["query"]["results"]["channel"]["item"]["condition"]["text"] + "\n\n"
     fore = ''
     for x in data["query"]["results"]["channel"]["item"]["forecast"]:
-        a = x["day"] + ", " + x["date"] + ":\n" + x["low"] + c + " - " + x["high"] + c + ' ' + x["text"] + '\n'
+        a = x["day"] + ", " + x["date"] + ":\n" + x["low"] + c + " - " + x["high"] + c + ' ' + x["text"] + "\n\n"
         fore += a
-    answer = des + now + fore.rstrip('\n')
+    answer = des + now + fore.rstrip("\n\n")
 
     return answer
 
