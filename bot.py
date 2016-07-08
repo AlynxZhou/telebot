@@ -89,8 +89,7 @@ talk_list = resource.file_to_list("talk.txt")
 #    pass
 
 ### Used to store the message when a delegator closed.
-last = {}
-ll = None
+redo_dict = {}
 
 ## Define a bot class.
 class TeleBot(telepot.helper.UserHandler):
@@ -120,16 +119,16 @@ class TeleBot(telepot.helper.UserHandler):
         if content_type == "text":
             self._text_orig = self._text_log = msg["text"]
 
-            ## Last message?
+            ## Redo message?
             if self._text_orig == "/redo" or (self._text_orig == "/redo@" + info["username"]):
                 try:
-                    self._text_orig = self._text_last
+                    self._text_orig = self._text_redo
                 except AttributeError:
                     try:
-                        self._text_orig = self._text_last = last[ll]
-                        last.pop(ll)
-                    except TypeError:
-                        self._answer = "Sorry,but no last message was found."
+                        self._text_orig = self._text_redo = redo_dict[self._username]
+                        redo_dict.pop(self._username)
+                    except KeyError:
+                        self._answer = "Sorry,but no your last message was found."
 
             try:
                 self._text_list = self._text_orig.split(' ',1)
@@ -240,7 +239,7 @@ class TeleBot(telepot.helper.UserHandler):
                 self._parse = "HTML"
 
             elif self._text == "/redo":
-                ## This aims at protecting the answer "Sorry,but no last message was found." not being chenged to None.
+                ## This aims at protecting the answer "Sorry,but no your last message was found." not being chenged to None.
                 pass
 
             else:
@@ -249,8 +248,8 @@ class TeleBot(telepot.helper.UserHandler):
 
             # Return.
             if self._answer != None:
-                ## Store last message.
-                self._text_last = self._text_orig
+                ## Store redo message.
+                self._text_redo = self._text_orig
                 ## Send result.
                 bot.sendChatAction(chat_id,"typing")
                 bot.sendMessage(chat_id,self._answer,reply_to_message_id=self._msg_id,parse_mode=self._parse,disable_web_page_preview=self._diswebview)
@@ -293,9 +292,8 @@ class TeleBot(telepot.helper.UserHandler):
     def on_close(self,exception):
         self._now = str(datetime.datetime.now())
         ## Store message.
-        global ll
-        ll = self._username
-        last.setdefault(self._username,self._text_last)
+        redo_dict[self._username] = self._text_redo
+        print(redo_dict)
         ## Journal.
         print(">>> %s\nBot:Close an delegator with @%s by calling on_close()."%(self._now,self._username))
         print("--------------------------------------------")
