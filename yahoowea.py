@@ -4,7 +4,7 @@
 from urllib.parse import urlencode
 from urllib.request import urlopen
 import json
-#from pprint import pprint
+
 
 def get_wea(place="上海"):
     base_url = "https://query.yahooapis.com/v1/public/yql?"
@@ -13,6 +13,19 @@ def get_wea(place="上海"):
     result = urlopen(yql_url).read().decode("utf-8")
 
     data = json.loads(result)
-#    pprint(data)
-    return data["query"]["results"]["channel"]["item"]["forecast"]
-#pprint(data["query"]["results"]["channel"]["item"]["forecast"])
+    des = "<strong>"+data["query"]["results"]["channel"]["description"]+"</strong>\n"
+    c = '℃'
+    now = data["query"]["results"]["channel"]["item"]["condition"]["date"] + ": " + data["query"]["results"]["channel"]["item"]["condition"]["temp"] + c + ' ' + data["query"]["results"]["channel"]["item"]["condition"]["text"] + "\n"
+    fore = ''
+    for x in data["query"]["results"]["channel"]["item"]["forecast"]:
+        a = x["day"] + ", " + x["date"] + ": " + x["low"] + c + " - " + x["high"] + c + ' ' + x["text"] + '\n'
+        fore += a
+    answer = des + now + fore.rstrip('\n')
+
+    return answer
+
+
+if __name__ == "__main__":
+#    from pprint import pprint
+#    pprint(get_wea())
+    print(get_wea())

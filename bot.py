@@ -147,6 +147,7 @@ class TeleBot(telepot.helper.UserHandler):
             elif self._text == "/weather":
                 if self._text_2 != None:
                     self._answer = yahoowea.get_wea(self._text_2)
+                    self._parse = "HTML"
                 else:
                     self._answer = "Please add a valid place,for instance,\"/weather 上海\" or \"/weather 安徽 合肥\" or \"/weather 中国 辽宁 大连\"."
 
