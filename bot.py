@@ -195,7 +195,7 @@ class TeleBot(telepot.helper.UserHandler):
                 if self._text_2 != None:
                     if self._username == ADMIN:
                         try:
-                            self._answer = "Result:\n" + subprocess.check_output(self._text_2,shell=True,stderr=subprocess.STDOUT,universal_newlines=True)
+                            self._answer = subprocess.check_output(self._text_2,shell=True,stderr=subprocess.STDOUT,universal_newlines=True)
                         except subprocess.CalledProcessError:
                             self._answer = "Sorry,invalid command."
                     else:
