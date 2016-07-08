@@ -121,7 +121,7 @@ class TeleBot(telepot.helper.UserHandler):
             self._text_orig = self._text_log = msg["text"]
 
             ## Last message?
-            if self._text_orig == "//" or (self._text_orig == "//@" + info["username"]):
+            if self._text_orig == "/redo" or (self._text_orig == "/redo@" + info["username"]):
                 try:
                     self._text_orig = self._text_last
                 except AttributeError:
@@ -239,7 +239,7 @@ class TeleBot(telepot.helper.UserHandler):
                 self._answer = "Sent code.\nYou should make directories as \"Image/\" \"Video/\" \"Audio/\" \"File/\" before you run it.\nFor more information,click <a href=\"https://github.com/S-X-ShaX/telebot/\">My TeleBot on GitHub</a>."
                 self._parse = "HTML"
 
-            elif self._text == "//":
+            elif self._text == "/redo":
                 ## This aims at protecting the answer "Sorry,but no last message was found." not being chenged to None.
                 pass
 
