@@ -9,6 +9,9 @@ import random
 import datetime
 import argparse
 import subprocess
+from urllib.request import urlopen
+from urllib.parse import urlencode
+import json
 
 ## Custom modules
 import resource
@@ -174,6 +177,9 @@ class TeleBot(telepot.helper.UserHandler):
                     self._count["fuck"] += 1
 
             elif self._text == "/talk":
+                self._answer = json.loads(urlopen("http://api.qingyunke.com/api.php?" + urlencode({"key":"free","appid":"0","msg":self._text_2})).read().decode("utf-8"))["content"]
+
+                """
                 try:
                     self._answer = talk_list[self._count["talk"]]
                     self._count["talk"] += 1
@@ -181,6 +187,7 @@ class TeleBot(telepot.helper.UserHandler):
                     self._count["talk"] = 0
                     self._answer = talk_list[self._count["talk"]]
                     self._count["talk"] += 1
+                """
 
             elif self._text == "/count":
                 self._answer = self._count["chat"]
