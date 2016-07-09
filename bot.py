@@ -9,14 +9,11 @@ import random
 import datetime
 import argparse
 import subprocess
-from urllib.request import urlopen
-from urllib.parse import urlencode
-import json
 
 ## Custom modules
 import resource
 import ipcn
-import yahoowea
+import httpapi
 
 
 AUTHOR = "S-X-ShaX"
@@ -134,7 +131,7 @@ class TeleBot(telepot.helper.UserHandler):
                         self._answer = "Sorry,but no your last message was found."
 
             try:
-                self._text_list = self._text_orig.split(' ',1)
+                self._text_list = self._text_orig.split(None,1) # When sep was None,it will be any number spaces,and 1 means split once.Be care that S.split(,1) will get an error,use S.split(None,1) instead(from the help doc).
                 self._text = self._text_list[0]
                 self._text_2 = self._text_list[1]
             except IndexError:
@@ -153,7 +150,7 @@ class TeleBot(telepot.helper.UserHandler):
                 self._diswebview = True
 
             elif self._text == "/hello":
-                self._answer = "Hello," + self._first_name + "!"+ random.choice(greeting_list)
+                self._answer = "Hello," + self._first_name + "!" + random.choice(greeting_list)
 
             elif self._text == "/joke":
                 self._answer = random.choice(joke_list)
@@ -162,7 +159,7 @@ class TeleBot(telepot.helper.UserHandler):
                 self._answer = "Now is " + str(datetime.datetime.now()) + "."
             elif self._text == "/weather":
                 if self._text_2 != None:
-                    self._answer = yahoowea.get_wea(self._text_2)
+                    self._answer = httpapi.get_wea(self._text_2)
                     self._parse = "HTML"
                 else:
                     self._answer = "Please add a valid place,for instance,\"/weather 上海\" or \"/weather 安徽 合肥\" or \"/weather 中国 辽宁 大连\"."
@@ -177,8 +174,10 @@ class TeleBot(telepot.helper.UserHandler):
                     self._count["fuck"] += 1
 
             elif self._text == "/talk":
-                self._answer = json.loads(urlopen("http://api.qingyunke.com/api.php?" + urlencode({"key":"free","appid":"0","msg":self._text_2})).read().decode("utf-8"))["content"]
-
+                if self._text_2 != None:
+                    self._answer = httpapi.get_talk(self._text_2)
+                else:
+                    self._answer = "Please add what you want to talk about,for example \"/talk 你好\"."
                 """
                 try:
                     self._answer = talk_list[self._count["talk"]]
@@ -231,11 +230,11 @@ class TeleBot(telepot.helper.UserHandler):
                     "bot.py",
                     "resource.py",
                     "ipcn.py",
-                    "yahoowea.py",
+                    "httpapi.py",
                     "greeting.txt",
                     "bhelp.txt",
                     "joke.txt",
-                    "talk.txt",
+#                    "talk.txt",
                     "README.md"
                 ]
                 for self._code_file in codes:

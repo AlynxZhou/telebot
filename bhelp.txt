@@ -1,19 +1,19 @@
 ### DO NOT DELETE THIS LINE!PLEASE KEEP IT IN LINE 1!This file contains a help list for user,you can write any help you like after the following $.
 $<strong>Help List</strong>
 You can use following word to communicate with me:
-<em>/start</em> - Begin a talk.
-<em>/help</em> - Show a help list.
+<em>/start</em> - To begin a talk.
+<em>/help</em> - I'll show you a help list.
 <em>/hello</em> - I'll say a random greeting to you.
 <em>/time</em> - I'll give you the time now.
 <em>/joke</em> - I'll tell you a joke.
-<em>/weather</em> - You type "/weather COUNTRY PROVINCE CITY" and I'll get forecast from <em>Yahoo</em>.
+<em>/weather</em> - You type "/weather <em>COUNTRY PROVINCE CITY</em>" and I'll get forecast from <em>Yahoo</em>.
 <em>/fuck</em> - You know.
-<em>/talk</em> - I'll tell you something(<strong>testing so for now only 逍遥游 is available</strong>).
+<em>/talk</em> - You use "/talk <em>YOUR WORDS</em>" to talk to me and I'll have a talk with you something(powered by<a href="http://api.qingyunke.com/">Qingyunke Chat Api</a>).
 <em>/count</em> - I'll count how many massages you have sent in our chat.
 <em>/ipcn</em> - I'll connect to <a href="http://ip.cn/">ip.cn</a> to get my ip address and return it for you(<strong>only for special users for safety</strong>).
-<em>/send</em> - You type "/send /path/to/the/file" and I'll send you the file(<strong>only for special users for safety</strong>).
-<em>/cmd</em> - You type "/cmd xxx" and I will run the command "xxx" in shell(<strong>only for special users for safety</strong>).
+<em>/send</em> - You type "/send <em>/PATH/TO/THE/FILE</em>" and I'll send you the file(<strong>only for special users for safety</strong>).
+<em>/cmd</em> - You type "/cmd <em>XXX</em>" and I will run the command "XXX" in shell(<strong>only for special users for safety</strong>).
 <em>/code</em> - I'll send myself to you.
-<em>/redo</em> - I'll redo the last thing command.
+<em>/redo</em> - I'll redo the last command.
 $<em>/fuckagain</em> - If you have sent a "/fuck",you can send this in follow.
 <em>/close</em> - I'll close a delegator.
