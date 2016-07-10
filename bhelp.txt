@@ -1,4 +1,4 @@
-### DO NOT DELETE THIS LINE!PLEASE KEEP IT IN LINE 1!This file contains a help list for user,you can write any help you like after the following $.
+### DO NOT DELETE THIS LINE! PLEASE KEEP IT IN LINE 1! This file contains a help list for user, you can write any help you like after the following $.
 $<strong>Help List</strong>
 You can use following word to communicate with me:
 <em>/start</em> - To begin a talk.
@@ -15,5 +15,5 @@ You can use following word to communicate with me:
 <em>/cmd</em> - You type "/cmd <em>XXX</em>" and I will run the command "XXX" in shell(<strong>only for special users for safety</strong>).
 <em>/code</em> - I'll send myself to you.
 <em>/redo</em> - I'll redo the last command.
-$<em>/fuckagain</em> - If you have sent a "/fuck",you can send this in follow.
+$<em>/fuckagain</em> - If you have sent a "/fuck", you can send this in follow.
 <em>/close</em> - I'll close a delegator.

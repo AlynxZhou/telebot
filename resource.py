@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
 
-### Filename:prepare.py
+### Filename: prepare.py
 
 import os
 
@@ -21,11 +21,11 @@ def file_to_list(filename):
 
 
 fuck_list = [
-    "NO!I'm not a bad girl and I haven't!😡",
-    "I know as a good girl I must behave myself but I had to say.Fuck you!💢",
-    "It's so painful and unbearable!😖",
-    "Oh!NO!Don't move!😲",
-    "Ya Mie Die!Softly,please!😫",
-    "Ah,seems end,so comfortable.😌",
-    "Good boy,now I become your girl.😁"
+    "NO! I'm not a bad girl and I haven't! 😡",
+    "I know as a good girl I must behave myself but I had to say. Fuck you! 💢",
+    "It's so painful and unbearable! 😖",
+    "Oh! NO! Don't move! 😲",
+    "Ya Mie Die! Softly, please! 😫",
+    "Ah, seems end, so comfortable. 😌",
+    "Good boy, now I become your girl. 😁"
 ]

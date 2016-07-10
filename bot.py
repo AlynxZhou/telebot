@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
 
-### Filename:bot.py
+### Filename: bot.py
 
 ### Launch.
 
@@ -22,13 +22,13 @@ VERSION = "3.7"
 
 ## Get args.
 aparser = argparse.ArgumentParser(description="A telegram bot program.")
-aparser.add_argument("-t","--token",help="Get the file that stored the bot token.",action="store")
-aparser.add_argument("-a","--admin",help="Get the admin user\'s name",action="store")
+aparser.add_argument("-t", "--token", help="Get the file that stored the bot token.", action="store")
+aparser.add_argument("-a", "--admin", help="Get the admin user\'s name", action="store")
 args = aparser.parse_args()
 
 
 now = str(datetime.datetime.now())
-print("A telegram bot program written by %s,Ver %s."%(AUTHOR,VERSION))
+print("A telegram bot program written by %s, ver %s."%(AUTHOR,VERSION))
 print("Starting bot at %s..."%(now))
 
 
@@ -38,30 +38,30 @@ try:
     from telepot.delegate import per_from_id, create_open
 #    from telepot.exception import TelepotException
 except ImportError:
-    print("ERROR:It seems that there is no telepot api installed.")
+    print("ERROR: It seems that there is no telepot api installed.")
     print("Maybe you should install it first via \"# pip3 install telepot\"?")
     exit()
 
 ## Deal with args.
 token_file = args.token
 if token_file == None:
-    print("\nWARNING:It seems that you haven\'t choose a token file.")
-    print("You are expected to make a tokenfile like YOURBOTNAME.token,which contains you bot token from the BotFather,and then run the program again by \"$ python3 ./bot.py --token YOURBOTNAME.token --admin ADMINUSER\".")
-    TOKEN = input("However,you can also type your token here and then press [ENTER] to make it continue: ")
+    print("\nWARNING: It seems that you haven\'t choose a token file.")
+    print("You are expected to make a tokenfile like YOURBOTNAME.token, which contains you bot token from the BotFather, and then run the program again by \"$ python3 ./bot.py --token YOURBOTNAME.token --admin ADMINUSER\".")
+    TOKEN = input("However, you can also type your token here and then press [ENTER] to make it continue: ")
 else:
     try:
         with open(token_file) as token_open:
             TOKEN = token_open.read().rstrip()
     except FileNotFoundError:
-        print("ERROR:No avaliable \"%s\" was found."%(token_file))
+        print("ERROR: No avaliable \"%s\" was found."%(token_file))
         exit()
 
 ADMIN = args.admin
 if ADMIN == None:
-    print("\nWARNING:It seems that you haven\'t choose an admin user.")
+    print("\nWARNING: It seems that you haven\'t choose an admin user.")
     print("You are expected to choose an adminuser to use some advanced functions.")
-    print("The admin user is usually yourself,so you should find your username which maybe also called nickname in the Settings of Telegram,notice the \'@\' is not a part of your username.if you haven\'t set it,you should set a username,and run the program again by \"$ python3 ./bot.py --token YOURBOTNAME.token --admin ADMINUSER\".")
-    ADMIN = input("However,you can also type your admin user name here and then press [ENTER] to make it continue: ")
+    print("The admin user is usually yourself, so you should find your username which maybe also called nickname in the Settings of Telegram, notice the \'@\' is not a part of your username. if you haven\'t set it, you should set a username, and run the program again by \"$ python3 ./bot.py --token YOURBOTNAME.token --admin ADMINUSER\".")
+    ADMIN = input("However, you can also type your admin user name here and then press [ENTER] to make it continue: ")
 
 
 
@@ -94,23 +94,23 @@ redo_dict = {}
 ## Define a bot class.
 class TeleBot(telepot.helper.UserHandler):
 
-    def __init__(self,seed_tuple,timeout):
-        super(TeleBot,self).__init__(seed_tuple,timeout)
+    def __init__(self, seed_tuple,timeout):
+        super(TeleBot, self).__init__(seed_tuple, timeout)
         self._count = {
-            "chat":0,
-            "fuck":0,
-            "talk":0
+            "chat": 0,
+            "fuck": 0,
+            "talk": 0
         }
 
 
-    def on_chat_message(self,msg):
+    def on_chat_message(self, msg):
         self._now = str(datetime.datetime.now())
 
         self._count["chat"] += 1
         self._parse = None
         self._diswebview = None
 
-        content_type,chat_type,chat_id = telepot.glance(msg)
+        content_type, chat_type, chat_id = telepot.glance(msg)
         self._first_name = msg["from"]["first_name"]
         self._username = msg["from"]["username"]
         self._msg_id = msg["message_id"]
@@ -131,18 +131,18 @@ class TeleBot(telepot.helper.UserHandler):
                         self._answer = "Sorry,but no your last message was found."
 
             try:
-                self._text_list = self._text_orig.split(None,1) # When sep was None,it will be any number spaces,and 1 means split once.Be care that S.split(,1) will get an error,use S.split(None,1) instead(from the help doc).
+                self._text_list = self._text_orig.split(None, 1) # When sep was None,it will be any number spaces, and 1 means split once. Be care that S.split(, 1) will get an error,use S.split(None, 1) instead(from the help doc).
                 self._text = self._text_list[0]
                 self._text_2 = self._text_list[1]
             except IndexError:
                 self._text_2 = None
             if ('@' + info["username"]) in self._text:
-                self._text = self._text.split('@' + info["username"],1)[0]
+                self._text = self._text.split('@' + info["username"], 1)[0]
 
 
             # Handle.
             if self._text == "/start":
-                self._answer = "Welcome!\nPlease type \"/help\" to get a help list."
+                self._answer = "Welcome! \nPlease type \"/help\" to get a help list."
 
             elif self._text == "/help":
                 self._answer = bhelp_list[0]
@@ -150,7 +150,7 @@ class TeleBot(telepot.helper.UserHandler):
                 self._diswebview = True
 
             elif self._text == "/hello":
-                self._answer = "Hello," + self._first_name + "!" + random.choice(greeting_list)
+                self._answer = "Hello, " + self._first_name + "! " + random.choice(greeting_list)
 
             elif self._text == "/joke":
                 self._answer = random.choice(joke_list)
@@ -162,7 +162,7 @@ class TeleBot(telepot.helper.UserHandler):
                     self._answer = httpapi.get_wea(self._text_2)
                     self._parse = "HTML"
                 else:
-                    self._answer = "Please add a valid place,for instance,\"/weather 上海\" or \"/weather 安徽 合肥\" or \"/weather 中国 辽宁 大连\"."
+                    self._answer = "Please add a valid place, for instance, \"/weather 上海\" or \"/weather 安徽 合肥\" or \"/weather 中国 辽宁 大连\"."
 
             elif self._text == "/fuck":
                 try:
@@ -177,7 +177,7 @@ class TeleBot(telepot.helper.UserHandler):
                 if self._text_2 != None:
                     self._answer = httpapi.get_talk(self._text_2)
                 else:
-                    self._answer = "Please add what you want to talk about,for example \"/talk 你好\"."
+                    self._answer = "Please add what you want to talk about, for example \"/talk 你好\"."
                 """
                 try:
                     self._answer = talk_list[self._count["talk"]]
@@ -195,7 +195,7 @@ class TeleBot(telepot.helper.UserHandler):
                 if self._username == ADMIN:
                     self._answer = ipcn.get_ip()
                 else:
-                    self._answer = "Sorry,you are not allowed to obtain the ip address in order to keep the bot safe."
+                    self._answer = "Sorry, you are not allowed to obtain the ip address in order to keep the bot safe."
 
             elif self._text == "/cmd":
                 if self._text_2 != None:
@@ -203,25 +203,25 @@ class TeleBot(telepot.helper.UserHandler):
                         try:
                             self._answer = subprocess.check_output(self._text_2,shell=True,stderr=subprocess.STDOUT,universal_newlines=True)
                         except subprocess.CalledProcessError:
-                            self._answer = "Sorry,invalid command."
+                            self._answer = "Sorry, invalid command."
                     else:
-                        self._answer = "Sorry,you are not allowed to run a command in order to keep the bot safe."
+                        self._answer = "Sorry, you are not allowed to run a command in order to keep the bot safe."
                 else:
                     self._answer = None
 
             elif self._text == "/send":
                 if self._text_2 != None:
                     if self._username == ADMIN:
-                        bot.sendChatAction(chat_id,"upload_document")
+                        bot.sendChatAction(chat_id, "upload_document")
                         try:
                             with open(self._text_2) as self._document:
-                                bot.sendDocument(chat_id,self._document)
+                                bot.sendDocument(chat_id, self._document)
                         except:
-                            with open(self._text_2,"rb") as self._document:
-                                bot.sendDocument(chat_id,self._document)
+                            with open(self._text_2, "rb") as self._document:
+                                bot.sendDocument(chat_id, self._document)
                         self._answer = "Sent."
                     else:
-                        self._answer = "Sorry,you are not allowed to get a file in order to keep the bot safe."
+                        self._answer = "Sorry, you are not allowed to get a file in order to keep the bot safe."
                 else:
                     self._answer = None
 
@@ -234,18 +234,17 @@ class TeleBot(telepot.helper.UserHandler):
                     "greeting.txt",
                     "bhelp.txt",
                     "joke.txt",
-#                    "talk.txt",
                     "README.md"
                 ]
                 for self._code_file in codes:
                     with open(self._code_file) as self._code_byte:
-                        bot.sendChatAction(chat_id,"upload_document")
-                        bot.sendDocument(chat_id,self._code_byte)
-                self._answer = "Sent code.\nYou should make directories as \"Image/\" \"Video/\" \"Audio/\" \"File/\" before you run it.\nFor more information,click <a href=\"https://github.com/S-X-ShaX/telebot/\">My TeleBot on GitHub</a>."
+                        bot.sendChatAction(chat_id, "upload_document")
+                        bot.sendDocument(chat_id, self._code_byte)
+                self._answer = "Sent code.\nYou should make directories as \"Image/\" \"Video/\" \"Audio/\" \"File/\" before you run it.\nFor more information, click <a href=\"https: //github.com/S-X-ShaX/telebot/\">My TeleBot on GitHub</a>."
                 self._parse = "HTML"
 
             elif self._text == "/redo":
-                ## This aims at protecting the answer "Sorry,but no your last message was found." not being chenged to None.
+                ## This aims at protecting the answer "Sorry, but no your last message was found." not being chenged to None.
                 pass
 
             else:
@@ -257,11 +256,11 @@ class TeleBot(telepot.helper.UserHandler):
                 ## Store redo message.
                 self._text_redo = self._text_orig
                 ## Send result.
-                bot.sendChatAction(chat_id,"typing")
-                bot.sendMessage(chat_id,self._answer,reply_to_message_id=self._msg_id,parse_mode=self._parse,disable_web_page_preview=self._diswebview)
-                print(">>> %s\nBot:Got text \"%s\" from @%s and answered with \"%s\"."%(self._now,self._text_log,self._username,self._answer))
+                bot.sendChatAction(chat_id, "typing")
+                bot.sendMessage(chat_id, self._answer, reply_to_message_id=self._msg_id, parse_mode=self._parse, disable_web_page_preview=self._diswebview)
+                print(">>> %s\nBot: Got text \"%s\" from @%s and answered with \"%s\"."%(self._now, self._text_log, self._username, self._answer))
             else:
-                print(">>> %s\nBot:Got text \"%s\" from @%s."%(self._now,self._text_log,self._username))
+                print(">>> %s\nBot: Got text \"%s\" from @%s."%(self._now, self._text_log, self._username))
             print("--------------------------------------------")
 
         """
@@ -270,14 +269,14 @@ class TeleBot(telepot.helper.UserHandler):
             file_id = msg["photo"][-1]["file_id"]
             if chat_type == "private":
                 if username == ADMIN:
-                    now = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
+                    now = datetime.datetime.now().strftime("%Y-%m-%d_%H: %M: %S")
                     bot.downloadFile(file_id, "Image/IMG_%s.jpg"%(now))
-                    bot.sendMessage(chat_id,"Got photo IMG_%s.jpg in Image/."%(now),reply_to_message_id=msg_id)
-                    print("Bot:Got photo Image/IMG_%s.jpg from @%s."%(now,username))
+                    bot.sendMessage(chat_id, "Got photo IMG_%s.jpg in Image/."%(now), reply_to_message_id=msg_id)
+                    print("Bot: Got photo Image/IMG_%s.jpg from @%s."%(now, username))
                 else:
-                    answer = "Sorry,only the admin user can save a photo on the bot."
-                    bot.sendMessage(chat_id,"%s"%(answer),reply_to_message_id=msg_id)
-                    print("Bot:Refused save a photo from @%s."%(username))
+                    answer = "Sorry, only the admin user can save a photo on the bot."
+                    bot.sendMessage(chat_id, "%s"%(answer), reply_to_message_id=msg_id)
+                    print("Bot: Refused save a photo from @%s."%(username))
 
 
         elif content_type == "document":
@@ -285,22 +284,22 @@ class TeleBot(telepot.helper.UserHandler):
             file_name = msg["document"]["file_name"]
             if chat_type == "private":
                 if username == ADMIN:
-                    bot.downloadFile(file_id, "File/%s"%(file_name))
-                    bot.sendMessage(chat_id,"Got file %s in File/."%(file_name),reply_to_message_id=msg_id)
-                    print("Bot:Got file File/%s from @%s."%(file_name,username))
+                    bot.downloadFile(file_id,  "File/%s"%(file_name))
+                    bot.sendMessage(chat_id, "Got file %s in File/."%(file_name), reply_to_message_id=msg_id)
+                    print("Bot: Got file File/%s from @%s."%(file_name, username))
                 else:
-                    answer = "Sorry,only the admin user can save a file on the bot."
-                    bot.sendMessage(chat_id,"%s"%(answer),reply_to_message_id=msg_id)
-                    print("Bot:Refused save a file from @%s."%(username))
+                    answer = "Sorry, only the admin user can save a file on the bot."
+                    bot.sendMessage(chat_id, "%s"%(answer), reply_to_message_id=msg_id)
+                    print("Bot: Refused save a file from @%s."%(username))
         print("--------------------------------------------")
         """
 
-    def on_close(self,exception):
+    def on_close(self, exception):
         self._now = str(datetime.datetime.now())
         ## Store message.
         redo_dict[self._username] = self._text_redo
         ## Journal.
-        print(">>> %s\nBot:Close an delegator with @%s by calling on_close()."%(self._now,self._username))
+        print(">>> %s\nBot: Close an delegator with @%s by calling on_close()."%(self._now, self._username))
         print("--------------------------------------------")
 
 
@@ -316,7 +315,7 @@ bot = telepot.DelegatorBot(
     [
         (
             per_from_id(),
-            create_open(TeleBot,timeout=30)
+            create_open(TeleBot, timeout=30)
         )
     ]
 )
@@ -328,26 +327,27 @@ try:
 except KeyboardInterrupt:
     exit()
 except:
-    print("ERROR:Your token is invaild.")
+    print("ERROR: Your token is invaild.")
     print("Please check what your token file \"%s\" contains."%(token_file))
-    print("It should only contain your token in one line,without anything else.")
-    print("Or you may need to check your network and system time,you can\'t connect to the bot server if your time is wrong or your network is down,and your bot token canalso be considered invaild.")
+    print("It should only contain your token in one line, without anything else.")
+    print("Or you may need to check your network and system time, you can\'t connect to the bot server if your time is wrong or your network is down, and your bot token canalso be considered invaild.")
     exit()
 
 print("############################################")
 print("#")
-print("# tokenfile:%s"%(token_file))
-print("# botid:%s"%(info["id"]))
-print("# username:%s"%(info["username"]))
-print("# firstname:%s"%(info["first_name"]))
-print("# adminuser:%s"%(ADMIN))
+print("# tokenfile: %s"%(token_file))
+print("# botid: %s"%(info["id"]))
+print("# username: %s"%(info["username"]))
+print("# firstname: %s"%(info["first_name"]))
+print("# adminuser: %s"%(ADMIN))
 print("#")
 print("############################################")
 
-print("Bot:I am listening...")
+print("Bot: I am listening...")
 print("--------------------------------------------")
 
 try:
     bot.message_loop(run_forever=True)
 except KeyboardInterrupt:
+
     exit()

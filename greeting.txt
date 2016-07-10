@@ -1,4 +1,4 @@
-### DO NOT DELETE THIS LINE!PLEASE KEEP IT IN LINE 1!This file contains various greetings,you can write any greetings you like after the following $.Once you finished a greeting,please press [ENTER],and now type a $ to let the bot konw a new greeting begins.
+### DO NOT DELETE THIS LINE! PLEASE KEEP IT IN LINE 1! This file contains various greetings, you can write any greetings you like after the following $. Once you finished a greeting, please press [ENTER], and now type a $ to let the bot konw a new greeting begins.
 $What's up?
 $How do you do?
 $Nice to meet you!
