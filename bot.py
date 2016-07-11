@@ -3,8 +3,8 @@
 
 ### Filename: bot.py
 
-### Launch.
 
+### Launch.
 import random
 import datetime
 import argparse
@@ -42,6 +42,7 @@ except ImportError:
     print("Maybe you should install it first via \"# pip3 install telepot\"?")
     exit()
 
+
 ## Deal with args.
 token_file = args.token
 if token_file == None:
@@ -60,9 +61,8 @@ ADMIN = args.admin
 if ADMIN == None:
     print("\nWARNING: It seems that you haven\'t choose an admin user.")
     print("You are expected to choose an adminuser to use some advanced functions.")
-    print("The admin user is usually yourself, so you should find your username which maybe also called nickname in the Settings of Telegram, notice the \'@\' is not a part of your username. if you haven\'t set it, you should set a username, and run the program again by \"$ python3 ./bot.py --token YOURBOTNAME.token --admin ADMINUSER\".")
+    print("The admin user is usually yourself, so you should find your username which maybe also called nickname in the Settings of Telegram, notice the \'@\' is not a part of your username. If you haven\'t set it, you should set a username, and run the program again by \"$ python3 ./bot.py --token YOURBOTNAME.token --admin ADMINUSER\".")
     ADMIN = input("However, you can also type your admin user name here and then press [ENTER] to make it continue: ")
-
 
 
 ### Check directories.
@@ -81,7 +81,7 @@ bhelp_list = resource.file_to_list("bhelp.txt")
 greeting_list = resource.file_to_list("greeting.txt")
 joke_list = resource.file_to_list("joke.txt")
 fuck_list = resource.fuck_list
-talk_list = resource.file_to_list("talk.txt")
+#talk_list = resource.file_to_list("talk.txt")
 
 
 ## Define an expection.
@@ -98,8 +98,8 @@ class TeleBot(telepot.helper.UserHandler):
         super(TeleBot, self).__init__(seed_tuple, timeout)
         self._count = {
             "chat": 0,
-            "fuck": 0,
-            "talk": 0
+            "fuck": 0
+#            "talk": 0
         }
 
 
@@ -131,7 +131,7 @@ class TeleBot(telepot.helper.UserHandler):
                         self._answer = "Sorry,but no your last message was found."
 
             try:
-                self._text_list = self._text_orig.split(None, 1) # When sep was None,it will be any number spaces, and 1 means split once. Be care that S.split(, 1) will get an error,use S.split(None, 1) instead(from the help doc).
+                self._text_list = self._text_orig.split(None, 1)    # When sep was None, it will be any number spaces, and 1 means split once. Be care that S.split(, 1) will get an error,use S.split(None, 1) instead (from the help doc).
                 self._text = self._text_list[0]
                 self._text_2 = self._text_list[1]
             except IndexError:
@@ -162,7 +162,7 @@ class TeleBot(telepot.helper.UserHandler):
                     self._answer = httpapi.get_wea(self._text_2)
                     self._parse = "HTML"
                 else:
-                    self._answer = "Please add a valid place, for instance, \"/weather 上海\" or \"/weather 安徽 合肥\" or \"/weather 中国 辽宁 大连\"."
+                    self._answer = "Please add a valid place, for instance, \"/weather 上海\", \"/weather 安徽 合肥\" or \"/weather 中国 辽宁 大连\"."
 
             elif self._text == "/fuck":
                 try:
@@ -201,7 +201,7 @@ class TeleBot(telepot.helper.UserHandler):
                 if self._text_2 != None:
                     if self._username == ADMIN:
                         try:
-                            self._answer = subprocess.check_output(self._text_2,shell=True,stderr=subprocess.STDOUT,universal_newlines=True)
+                            self._answer = subprocess.check_output(self._text_2, shell=True, stderr=subprocess.STDOUT, universal_newlines=True)
                         except subprocess.CalledProcessError:
                             self._answer = "Sorry, invalid command."
                     else:
@@ -240,11 +240,11 @@ class TeleBot(telepot.helper.UserHandler):
                     with open(self._code_file) as self._code_byte:
                         bot.sendChatAction(chat_id, "upload_document")
                         bot.sendDocument(chat_id, self._code_byte)
-                self._answer = "Sent code.\nYou should make directories as \"Image/\" \"Video/\" \"Audio/\" \"File/\" before you run it.\nFor more information, click <a href=\"https: //github.com/S-X-ShaX/telebot/\">My TeleBot on GitHub</a>."
+                self._answer = "Sent code.\nYou should make directories as \"Image/\", \"Video/\", \"Audio/\", \"File/\" before you run it.\nFor more information, click <a href=\"https: //github.com/S-X-ShaX/telebot/\">My TeleBot on GitHub</a>."
                 self._parse = "HTML"
 
             elif self._text == "/redo":
-                ## This aims at protecting the answer "Sorry, but no your last message was found." not being chenged to None.
+                ## This aims at protecting the answer "Sorry, but no your last message was found." not being chenged to None(or)
                 pass
 
             else:
@@ -303,9 +303,6 @@ class TeleBot(telepot.helper.UserHandler):
         print("--------------------------------------------")
 
 
-
-
-
 ### Now it starts run.
 print("Getting bot information...")
 
@@ -343,11 +340,12 @@ print("# adminuser: %s"%(ADMIN))
 print("#")
 print("############################################")
 
+
 print("Bot: I am listening...")
 print("--------------------------------------------")
+
 
 try:
     bot.message_loop(run_forever=True)
 except KeyboardInterrupt:
-
     exit()
