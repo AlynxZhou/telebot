@@ -5,13 +5,40 @@
 
 
 ### Launch.
-import json
-import random
-import datetime
-import argparse
-import subprocess
 
-## Custom modules
+### Importing.
+try:
+    import json
+    import random
+    import datetime
+    import argparse
+    import subprocess
+
+    import telepot
+    from telepot.delegate import per_from_id, create_open
+    #from telepot.exception import TelepotException
+except ImportError:
+    print("Some requirements are lost...")
+    print("Installing requirements via \"$ sudo pip3 install -r requirements.txt\"...")
+    try:
+        import subprocess
+        subprocess.check_output("sudo pip3 install -r requirements.txt", shell=True, stderr=subprocess.STDOUT, universal_newlines=True)
+    except:
+        print("ERROR: Install failed.")
+        print("Maybe you should run \"$ sudo pip3 install -r requirements.txt\" by yourself?")
+        exit()
+
+    import json
+    import random
+    import datetime
+    import argparse
+    import subprocess
+
+    import telepot
+    from telepot.delegate import per_from_id, create_open
+    #from telepot.exception import TelepotException
+
+## Custom modules.
 import resource
 import ipcn
 import httpapi
@@ -35,14 +62,6 @@ print("Starting bot at %s..."%(now))
 
 
 ## Import telepot.
-try:
-    import telepot
-    from telepot.delegate import per_from_id, create_open
-#    from telepot.exception import TelepotException
-except ImportError:
-    print("ERROR: It seems that there is no telepot api installed.")
-    print("Maybe you should install it first via \"# pip3 install telepot\"?")
-    exit()
 
 
 ## Deal with args.
