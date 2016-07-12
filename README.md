@@ -1,25 +1,17 @@
 # TeleBot
 
-A telegram bot program.
+A telegram bot program\.
 
 ## Usage:
 
-````bash
-$ python3 ./bot.py YOURBOTNAME.json
-````
-
-ADMIN\_USER should be *your telegram username(nickname)*.
-
-## You should install telepot via pip.
-
-Such as:
+1. You need to install python3, pip3 and use pip to install telepot, if you forget to install telepot, the program will install by itself\. Such as:
 
 ````bash
 $ sudo apt-get install python3-pip
 $ sudo pip3 install telepot
 ````
 
-Then after you *sign up a new bot* from the **BotFather**, put you token into a token file:
+2. Now you have to **sign up a new bot** from [the BotFather](https://telegram.me/BotFather), then put your token and your username into a config file:
 
 ````bash
 $ cd /Where/you/cloned/TeleBot/
@@ -27,12 +19,14 @@ $ cp example_bot.json YOURBOTNAME.json
 $ ${EDITOR} YOURBOTNAME.json
 ````
 
-Then run:
+After `"token": ` was your bot token, after `"admin": ` was your username\(nikename, no '@'\!\), and if you want, [get Tuling Chat Api Key](http://tuling123.com/), add it after `"tuling_api_key: "`\. Dont't forget json format\.
+
+3. Finally run:
 
 ````bash
 $ python3 ./bot.py YOURBOTNAME.json
 ````
 
-Do not kill it. You could use *GNU Screen*.
+Do not kill it\. You could use [GNU Screen](https://www.gnu.org/software/screen/)\.
 
-I will complete it gradually. Thanks.
+I will complete it gradually\. Thanks\.
