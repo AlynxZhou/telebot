@@ -116,6 +116,7 @@ class TeleBot(telepot.helper.UserHandler):
         content_type, chat_type, chat_id = telepot.glance(msg)
         self._first_name = msg["from"]["first_name"]
         self._username = msg["from"]["username"]
+        self._user_id = msg["from"]["id"]
         self._msg_id = msg["message_id"]
 
         ## To judge if the content is a text and deal with it.
@@ -178,7 +179,7 @@ class TeleBot(telepot.helper.UserHandler):
 
             elif self._text == "/talk":
                 if self._text_2 != None:
-                    self._answer = httpapi.get_talk(APIKey, self._text_2)
+                    self._answer = httpapi.get_talk(APIKey, self._text_2, str(self._user_id))
                 else:
                     self._answer = "Please add what you want to talk about, for example \"/talk 你好\"."
                 """

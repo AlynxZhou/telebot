@@ -81,9 +81,9 @@ def get_wea(place="上海"):
 
 
 ### For Tuling chat api.
-def get_talk(APIKey, info="你好"):
+def get_talk(APIKey, info="你好", user_id=None):
     base_url = "http://www.tuling123.com/openapi/api"
-    json_data = json.dumps({"key": APIKey, "info": info})
+    json_data = json.dumps({"key": APIKey, "info": info, "userid": user_id})
     #post_data = "POST http://www.tuling123.com/ HTTP/1.1\nContent-Type: application/json;charset=utf-8\n\n" + json_data
 
     req = Request(base_url, json_data.encode("utf-8"), headers={"Content-Type": "application/json"})
