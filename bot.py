@@ -175,7 +175,8 @@ class TeleBot(telepot.helper.UserHandler):
                         self._text_orig = self._text_redo = redo_dict[self._username]
                         redo_dict.pop(self._username)
                     except KeyError:
-                        self._answer = "Sorry,but no your last message was found."
+                        #self._answer = "Sorry, but no your last message was found."
+                        pass
 
             try:
                 self._text_list = self._text_orig.split(None, 1)    # When sep was None, it will be any number spaces, and 1 means split once. Be care that S.split(, 1) will get an error,use S.split(None, 1) instead (from the help doc).
@@ -295,9 +296,7 @@ class TeleBot(telepot.helper.UserHandler):
                 self._parse = "HTML"
 
             elif self._text == "/redo":
-                ## This aims at protecting the answer "Sorry, but no your last message was found." not being chenged to None(or)
-                pass
-
+                self._answer = "Sorry, but no your last message was found."
             else:
                 self._answer = None
 
