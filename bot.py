@@ -65,7 +65,8 @@ print("Starting bot at %s..."%(now))
 
 
 ## Deal with args.
-conf_create = False
+conf_rewrite = False
+
 config_file = args.config
 if config_file == None:
     print("\nWARNING: It seems that you haven\'t choose a config file.")
@@ -85,7 +86,7 @@ except FileNotFoundError:
     tuling_api_key = None
     print("\nWarning: No avaliable \"%s\" was found."%(config_file))
     print("Writing a new config file with following settings...")
-    conf_create = True
+    conf_rewrite = True
 
 
 if TOKEN == None or TOKEN == '' or TOKEN == "123456789:ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHI":
@@ -94,6 +95,7 @@ if TOKEN == None or TOKEN == '' or TOKEN == "123456789:ABCDEFGHIJKLMNOPQRSTUVWXY
     print("If you haven\'t got it, you should ask the BotFather, and run the program again by \"$ python3 ./bot.py YOURBOTNAME.json\".")
     TOKEN = input("However, you can also type your bot token here and then press [ENTER] to make it continue: ")
     print('\n')
+    conf_rewrite = True
 
 if ADMIN == None or ADMIN == '' or ADMIN == "Nobody":
     print("\nWARNING: It seems that you haven\'t choose an admin user.")
@@ -101,6 +103,7 @@ if ADMIN == None or ADMIN == '' or ADMIN == "Nobody":
     print("The admin user is usually yourself, so you should find your username which maybe also called nickname in the Settings of Telegram, notice the \'@\' is not a part of your username. If you haven\'t set it, you should set a username, and run the program again by \"$ python3 ./bot.py YOURBOTNAME.json\".")
     ADMIN = input("However, you can also type your admin user name here and then press [ENTER] to make it continue: ")
     print('\n')
+    conf_rewrite = True
 
 if tuling_api_key == None or tuling_api_key == '' or tuling_api_key == "get_it_from_tuling123.com":
     print("\nWARNING: It seems that you haven\'t set a Tuling Chat Api Key.")
@@ -110,7 +113,7 @@ if tuling_api_key == None or tuling_api_key == '' or tuling_api_key == "get_it_f
     tuling_api_key == None
 
 
-if conf_create:
+if conf_rewrite:
     with open(config_file, 'w') as c:
         c.write(json.dumps({"token": TOKEN, "admin": ADMIN, "tuling_api_key": "get_it_from_tuling123.com"}))
 
