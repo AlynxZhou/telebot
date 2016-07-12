@@ -8,7 +8,7 @@ You can use following word to communicate with me:
 <em>/joke</em> - I'll tell you a joke.
 <em>/weather</em> - You type "/weather <em>COUNTRY PROVINCE CITY</em>" and I'll get forecast from <em>Yahoo</em>.
 <em>/fuck</em> - You know.
-<em>/talk</em> - You use "/talk <em>YOUR WORDS</em>" to talk to me and I'll have a talk with you something (powered by <a href="http://api.qingyunke.com/">Qingyunke Chat Api</a>).
+<em>/talk</em> - You use "/talk <em>YOUR WORDS</em>" to talk to me and I'll have a talk with you something.
 <em>/count</em> - I'll count how many massages you have sent in our chat.
 <em>/ipcn</em> - I'll connect to <a href="http://ip.cn/">ip.cn</a> to get my ip address and return it for you (<strong>only for special users for safety</strong>).
 <em>/send</em> - You type "/send <em>/PATH/TO/THE/FILE</em>" and I'll send you the file (<strong>only for special users for safety</strong>).
@@ -17,3 +17,4 @@ You can use following word to communicate with me:
 <em>/redo</em> - I'll redo the last command.
 $<em>/fuckagain</em> - If you have sent a "/fuck", you can send this in follow.
 <em>/close</em> - I'll close a delegator.
+ (powered by <a href="http://api.qingyunke.com/">Qingyunke Chat Api</a>)
