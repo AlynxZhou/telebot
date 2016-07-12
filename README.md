@@ -19,7 +19,7 @@ $ cp example_bot.json YOURBOTNAME.json
 $ ${EDITOR} YOURBOTNAME.json
 ````
 
-After `"token": ` was your bot token, after `"admin": ` was your username \(nikename, no '@'\!\), and if you want, [get Tuling Chat Api Key](http://tuling123.com/), add it after `"tuling_api_key: "`\. Don't forget json format\.
+After `"token": ` was your bot token, after `"admin": ` was your username \(nikename, no '@'\!\), and if you want, [get Tuling Chat Api Key](http://tuling123.com/), add it after `"tuling_api_key": `\. Don't forget json format\.
 
 Finally run:
 
