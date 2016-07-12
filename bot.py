@@ -46,6 +46,7 @@ except ImportError:
 
 
 ## Deal with args.
+conf_create = False
 config_file = args.config
 if config_file == None:
     print("\nWARNING: It seems that you haven\'t choose a config file.")
@@ -63,8 +64,9 @@ except FileNotFoundError:
     TOKEN = None
     ADMIN = None
     tuling_api_key = None
-    print("ERROR: No avaliable \"%s\" was found. Writing a new config file with following settings..."%(config_file))
-    conf = open(config_file)
+    print("\nWarning: No avaliable \"%s\" was found."%(config_file))
+    print("Writing a new config file with following settings...")
+    conf_create = True
 
 
 if TOKEN == None or TOKEN == '' or TOKEN == "123456789:ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHI":
@@ -87,6 +89,11 @@ if tuling_api_key == None or tuling_api_key == '' or tuling_api_key == "get_it_f
     print("For a better chat experience, please go to http://turling123.com, sign up for a key, and run the program again by \"$ python3 ./bot.py YOURBOTNAME.json\".")
     print('\n')
     tuling_api_key == None
+
+
+if conf_create:
+    with open(config_file, 'w') as c:
+        c.write(json.dumps({"token": TOKEN, "admin": ADMIN, "tuling_api_key": "get_it_from_tuling123.com"}))
 
 
 ### Check directories.
