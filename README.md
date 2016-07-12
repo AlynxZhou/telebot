@@ -7,7 +7,7 @@ A telegram bot program\.
 You need to install python3, pip3 and use pip to install telepot, if you forget to install telepot, the program will install by itself\. Such as:
 
 ````bash
-$ sudo apt-get install python3-pip
+$ sudo apt-get install python3 python3-pip
 $ sudo pip3 install telepot
 ````
 
