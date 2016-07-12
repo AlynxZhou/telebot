@@ -5,6 +5,7 @@
 
 
 ### Launch.
+import json
 import random
 import datetime
 import argparse
@@ -22,8 +23,9 @@ VERSION = "3.7"
 
 ## Get args.
 aparser = argparse.ArgumentParser(description="A telegram bot program.")
-aparser.add_argument("-t", "--token", help="Get the file that stored the bot token.", action="store")
-aparser.add_argument("-a", "--admin", help="Get the admin user\'s name", action="store")
+#aparser.add_argument("-t", "--token", help="Get the file that stored the bot token.", action="store")
+#aparser.add_argument("-a", "--admin", help="Get the admin user\'s name", action="store")
+aparser.add_argument("config", action="store", type=str, help="The bot config file.")
 args = aparser.parse_args()
 
 
@@ -44,28 +46,47 @@ except ImportError:
 
 
 ## Deal with args.
-token_file = args.token
-if token_file == None:
-    print("\nWARNING: It seems that you haven\'t choose a token file.")
-    print("You are expected to make a tokenfile like YOURBOTNAME.token, which contains you bot token from the BotFather, and then run the program again by \"$ python3 ./bot.py --token YOURBOTNAME.token --admin ADMINUSER\".")
-    TOKEN = input("However, you can also type your token here and then press [ENTER] to make it continue: ")
-else:
-    try:
-        with open(token_file) as token_open:
-            TOKEN = token_open.read().rstrip()
-    except FileNotFoundError:
-        print("ERROR: No avaliable \"%s\" was found."%(token_file))
-        exit()
-APIKey = TOKEN.split('\n')[1]
-TOKEN = TOKEN.split('\n')[0]
+config_file = args.config
+if config_file == None:
+    print("\nWARNING: It seems that you haven\'t choose a config file.")
+    print("You are expected to make a config file like YOURBOTNAME.json, which contains you bot token from the BotFather, the admin user name and the Tuling Chat API Key, then run the program again by \"$ python3 ./bot.py YOURBOTNAME.json\".")
+    config_file = input("However, you can also type your config file here and then press [ENTER] to make it continue: ")
+    print('\n')
+
+try:
+    with open(config_file) as config_open:
+        bot_json = json.loads(config_open.read())
+    TOKEN = bot_json["token"]
+    ADMIN = bot_json["admin"]
+    tuling_api_key = bot_json["tuling_api_key"]
+except FileNotFoundError:
+    TOKEN = None
+    ADMIN = None
+    tuling_api_key = None
+    print("ERROR: No avaliable \"%s\" was found. Writing a new config file with following settings..."%(config_file))
+    conf = open(config_file)
 
 
-ADMIN = args.admin
-if ADMIN == None:
+if TOKEN == None or TOKEN == '' or TOKEN == "123456789:ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHI":
+    print("\nWARNING: It seems that you doesn't have an avalible bot token.")
+    print("You are expected to get a bot token from the BotFather. It's a string on behalf of your bot.")
+    print("If you haven\'t got it, you should ask the BotFather, and run the program again by \"$ python3 ./bot.py YOURBOTNAME.json\".")
+    TOKEN = input("However, you can also type your bot token here and then press [ENTER] to make it continue: ")
+    print('\n')
+
+if ADMIN == None or ADMIN == '' or ADMIN == "Nobody":
     print("\nWARNING: It seems that you haven\'t choose an admin user.")
     print("You are expected to choose an adminuser to use some advanced functions.")
-    print("The admin user is usually yourself, so you should find your username which maybe also called nickname in the Settings of Telegram, notice the \'@\' is not a part of your username. If you haven\'t set it, you should set a username, and run the program again by \"$ python3 ./bot.py --token YOURBOTNAME.token --admin ADMINUSER\".")
+    print("The admin user is usually yourself, so you should find your username which maybe also called nickname in the Settings of Telegram, notice the \'@\' is not a part of your username. If you haven\'t set it, you should set a username, and run the program again by \"$ python3 ./bot.py YOURBOTNAME.json\".")
     ADMIN = input("However, you can also type your admin user name here and then press [ENTER] to make it continue: ")
+    print('\n')
+
+if tuling_api_key == None or tuling_api_key == '' or tuling_api_key == "get_it_from_tuling123.com":
+    print("\nWARNING: It seems that you haven\'t set a Tuling Chat Api Key.")
+    print("If no key the program will fallback to Qingyunke Chat Api, which doesn\'t need a key.")
+    print("For a better chat experience, please go to http://turling123.com, sign up for a key, and run the program again by \"$ python3 ./bot.py YOURBOTNAME.json\".")
+    print('\n')
+    tuling_api_key == None
 
 
 ### Check directories.
@@ -179,7 +200,10 @@ class TeleBot(telepot.helper.UserHandler):
 
             elif self._text == "/talk":
                 if self._text_2 != None:
-                    self._answer = httpapi.get_talk(APIKey, self._text_2, str(self._user_id))
+                    if tuling_api_key == None:
+                        self._answer = httpapi.get_qtalk(self._text_2)
+                    else:
+                        self._answer = httpapi.get_ttalk(tuling_api_key, self._text_2, str(self._user_id))
                 else:
                     self._answer = "Please add what you want to talk about, for example \"/talk 你好\"."
                 """
@@ -329,14 +353,14 @@ except KeyboardInterrupt:
     exit()
 except:
     print("ERROR: Your token is invaild.")
-    print("Please check what your token file \"%s\" contains."%(token_file))
-    print("It should only contain your token in one line, without anything else.")
-    print("Or you may need to check your network and system time, you can\'t connect to the bot server if your time is wrong or your network is down, and your bot token canalso be considered invaild.")
+    print("Please check what your config file \"%s\" contains."%(config_file))
+    print("It should contain your token string in the token line, without anything else.")
+    print("Or you may need to check your network and system time, you can\'t connect to the bot server if your time is wrong or your network is down, and your bot token may also be considered invaild by the program.")
     exit()
 
 print("############################################")
 print("#")
-print("# tokenfile: %s"%(token_file))
+print("# configfile: %s"%(config_file))
 print("# botid: %s"%(info["id"]))
 print("# username: %s"%(info["username"]))
 print("# firstname: %s"%(info["first_name"]))

@@ -81,7 +81,7 @@ def get_wea(place="上海"):
 
 
 ### For Tuling chat api.
-def get_talk(APIKey, info="你好", user_id=None):
+def get_ttalk(APIKey, info="你好", user_id=None):
     base_url = "http://www.tuling123.com/openapi/api"
     json_data = json.dumps({"key": APIKey, "info": info, "userid": user_id})
     #post_data = "POST http://www.tuling123.com/ HTTP/1.1\nContent-Type: application/json;charset=utf-8\n\n" + json_data
@@ -94,8 +94,7 @@ def get_talk(APIKey, info="你好", user_id=None):
 
 
 ### For qingyunke chat api.
-"""
-def get_talk(msg="你好"):
+def get_qtalk(msg="你好"):
     base_url = "http://api.qingyunke.com/api.php?"
     all_url = base_url + urlencode({"key": "free", "appid": "0", "msg": msg})
     data = json.loads(urlopen(all_url).read().decode("utf-8"))
@@ -106,7 +105,7 @@ def get_talk(msg="你好"):
         result = "Sorry, but something seems wrong."
 
     return result
-"""
+
 
 if __name__ == "__main__":
 #    from pprint import pprint
