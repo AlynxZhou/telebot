@@ -269,7 +269,7 @@ class TeleBot(telepot.helper.UserHandler):
                     with open(self._code_file) as self._code_byte:
                         bot.sendChatAction(chat_id, "upload_document")
                         bot.sendDocument(chat_id, self._code_byte)
-                self._answer = "Sent code.\nYou should make directories as \"Image/\", \"Video/\", \"Audio/\", \"File/\" before you run it.\nFor more information, click <a href=\"https: //github.com/S-X-ShaX/telebot/\">My TeleBot on GitHub</a>."
+                self._answer = "Sent code.\nYou should make directories as \"Image/\", \"Video/\", \"Audio/\", \"File/\" before you run it.\nFor more information, click <a href=\"https://github.com/S-X-ShaX/telebot/\">My TeleBot on GitHub</a>."
                 self._parse = "HTML"
 
             elif self._text == "/redo":

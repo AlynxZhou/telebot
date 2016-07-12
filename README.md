@@ -5,7 +5,7 @@ A telegram bot program.
 ## Usage:
 
 ````bash
-$ python3 bot.py --token TOKEN_FILE --admin ADMIN_USER
+$ python3 ./bot.py YOURBOTNAME.json
 ````
 
 ADMIN\_USER should be *your telegram username(nickname)*.
@@ -23,13 +23,14 @@ Then after you *sign up a new bot* from the **BotFather**, put you token into a 
 
 ````bash
 $ cd /Where/you/cloned/TeleBot/
-$ echo "YOUR_TOKEN" > ANYNAME.token
+$ cp example_bot.json YOURBOTNAME.json
+$ ${EDITOR} YOURBOTNAME.json
 ````
 
 Then run:
 
 ````bash
-$ python3 bot.py --token ANYNAME.token --admin YOURUSERNAME
+$ python3 ./bot.py YOURBOTNAME.json
 ````
 
 Do not kill it. You could use *GNU Screen*.
