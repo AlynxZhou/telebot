@@ -262,6 +262,7 @@ class TeleBot(telepot.helper.UserHandler):
                     "greeting.txt",
                     "bhelp.txt",
                     "joke.txt",
+                    "example_bot.json",
                     "README.md"
                 ]
                 for self._code_file in codes:
