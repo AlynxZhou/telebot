@@ -5,7 +5,7 @@
 
 
 from urllib.parse import urlencode
-from urllib.request import urlopen
+from urllib.request import urlopen, Request
 import json
 
 
@@ -80,7 +80,21 @@ def get_wea(place="上海"):
     return answer
 
 
+### For Tuling chat api.
+def get_talk(APIKey, info="你好"):
+    base_url = "http://www.tuling123.com/openapi/api"
+    json_data = json.dumps({"key": APIKey, "info": info})
+    #post_data = "POST http://www.tuling123.com/ HTTP/1.1\nContent-Type: application/json;charset=utf-8\n\n" + json_data
+
+    req = Request(base_url, json_data.encode("utf-8"), headers={"Content-Type": "application/json"})
+    with urlopen(req) as r:
+        result = json.loads(r.read().decode("utf-8"))
+
+    return result["text"]
+
+
 ### For qingyunke chat api.
+"""
 def get_talk(msg="你好"):
     base_url = "http://api.qingyunke.com/api.php?"
     all_url = base_url + urlencode({"key": "free", "appid": "0", "msg": msg})
@@ -92,9 +106,10 @@ def get_talk(msg="你好"):
         result = "Sorry, but something seems wrong."
 
     return result
-
+"""
 
 if __name__ == "__main__":
 #    from pprint import pprint
 #    pprint(get_wea())
     print(get_wea())
+    print(get_talk(APIKey))

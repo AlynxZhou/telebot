@@ -56,6 +56,9 @@ else:
     except FileNotFoundError:
         print("ERROR: No avaliable \"%s\" was found."%(token_file))
         exit()
+APIKey = TOKEN.split('\n')[1]
+TOKEN = TOKEN.split('\n')[0]
+
 
 ADMIN = args.admin
 if ADMIN == None:
@@ -175,7 +178,7 @@ class TeleBot(telepot.helper.UserHandler):
 
             elif self._text == "/talk":
                 if self._text_2 != None:
-                    self._answer = httpapi.get_talk(self._text_2)
+                    self._answer = httpapi.get_talk(APIKey, self._text_2)
                 else:
                     self._answer = "Please add what you want to talk about, for example \"/talk 你好\"."
                 """
