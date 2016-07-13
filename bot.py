@@ -314,16 +314,15 @@ class TeleBot(telepot.helper.UserHandler):
                 self._parse = "HTML"
 
             elif self._text == "/rule":
-                if self._text_2 != None:
-                    try:
+                if self._text_2 != None and ",," in self._text_2:
                         self._rule_list = self._text_2.split(",,")
                         for self._rule_key in self._rule_list[0:-1]:
                             rule_dict['/' + self._rule_key] = self._rule_list[-1]
                         self._answer = "Get rule!"
                     except AttributeError:
-                        self._answer = "Not an avalible rule!"
+                        self._answer = "No avalible rule! You should use \"/rule KEY1,,KEY2,,...,,ANSWER\" to set a rule."
                 else:
-                    self._answer = "Sorry, but you should use \"/rule KEY1,,KEY2,,...,,ANSWER\" to set a rule."
+                    self._answer = "No avalible rule! You should use \"/rule KEY1,,KEY2,,...,,ANSWER\" to set a rule."
 
             elif self._text == "/redo":
                 self._answer = "Sorry, but no your last message was found."
