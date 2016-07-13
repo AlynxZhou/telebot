@@ -4,6 +4,12 @@ A telegram bot program\.
 
 ## Usage:
 
+First clone it via git.
+
+````
+$ git clone git@github.com:S-X-ShaX/telebot.git
+````
+
 You need to install python3, pip3 and use pip to install telepot, if you forget to install telepot, the program will install by itself\. Such as:
 
 ````bash
