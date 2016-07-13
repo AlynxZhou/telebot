@@ -323,8 +323,8 @@ class TeleBot(telepot.helper.UserHandler):
                         for self._rule_key in self._rule_list[0:-1]:
                             if self._rule_key != '' and self._rule_list[-1] != '':
                                 global rule_dict
-                                #rule_dict['/' + self._rule_key] = self._rule_list[-1]
-                                rule_dict[self._rule_key] = self._rule_list[-1]
+                                rule_dict['/' + self._rule_key] = self._rule_list[-1]
+                                #rule_dict[self._rule_key] = self._rule_list[-1]
                                 self._answer = "Get rule!"
                             else:
                                 self._answer = "No avalible rule! You should use \"/rule KEY1,,KEY2,,...,,ANSWER\" to set a rule."
