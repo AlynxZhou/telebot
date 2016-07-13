@@ -317,6 +317,7 @@ class TeleBot(telepot.helper.UserHandler):
 
             elif self._text == "/rule":
                 if self._text_2 != None and ",," in self._text_2:
+                    try:
                         self._rule_list = self._text_2.split(",,")
                         for self._rule_key in self._rule_list[0:-1]:
                             rule_dict['/' + self._rule_key] = self._rule_list[-1]
