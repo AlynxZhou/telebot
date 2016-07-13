@@ -389,12 +389,11 @@ class TeleBot(telepot.helper.UserHandler):
     def on_close(self, exception):
         self._now = str(datetime.datetime.now())
 
-        global redo_dict
-        global rule_dict
-
         ## Store message.
+        global redo_dict
         redo_dict[self._username] = self._text_redo
 
+        global rule_dict
         if len(rule_dict) > 77:
             rule_dict = {}
         if len(redo_dict) > 77:
