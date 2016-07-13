@@ -192,6 +192,7 @@ class TeleBot(telepot.helper.UserHandler):
                 self._text = self._text_list[0]
                 self._text_2 = self._text_list[1]
             except IndexError:
+                self._text = self._text_list[0]
                 self._text_2 = None
             if ('@' + info["username"]) in self._text:
                 self._text = self._text.split('@' + info["username"], 1)[0]
