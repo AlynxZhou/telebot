@@ -131,6 +131,7 @@ joke_list = resource.file_to_list("joke.txt")
 fuck_list = resource.fuck_list
 #talk_list = resource.file_to_list("talk.txt")
 
+rule_dict = {}
 
 ## Define an expection.
 #class UserClose(TelepotException):
@@ -310,8 +311,17 @@ class TeleBot(telepot.helper.UserHandler):
 
             elif self._text == "/redo":
                 self._answer = "Sorry, but no your last message was found."
+
+            elif self._text == "/rule":
+                self._rule_list = self._text_2.split(None)
+                for self._rule_key in self._rule_list[0:-1]:
+                    rule_dict['/' + self._rule_key] = self._rule_list[-1]
+                self._answer = "Get rule!"
             else:
-                self._answer = None
+                try:
+                    self._answer = rule_dict[self._text]
+                except KeyError:
+                    self._answer = None
 
 
             # Return.
