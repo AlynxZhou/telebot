@@ -292,9 +292,10 @@ class TeleBot(telepot.helper.UserHandler):
                     "resource.py",
                     "ipcn.py",
                     "httpapi.py",
-                    "greeting.txt",
-                    "bhelp.txt",
-                    "joke.txt",
+                    "resources/greeting.txt",
+                    "resources/bhelp.txt",
+                    "resources/joke.txt",
+                    "resources/rule.json",
                     "example_bot.json",
                     "README.md"
                 ]
