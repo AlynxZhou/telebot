@@ -7,8 +7,10 @@
 ### Launch.
 
 ### Importing.
+import os
 import json
 import random
+import zipfile
 import datetime
 import argparse
 import subprocess
@@ -288,11 +290,22 @@ class TeleBot(telepot.helper.UserHandler):
                     "example_bot.json",
                     "README.md"
                 ]
+                ## Zip file.
+                with zipfile.ZipFile('telebot.zip', 'w', zipfile.ZIP_DEFLATED) as self._telebot_zip:
+                    for self._code in codes:
+                        self._telebot_zip.write(self._code, "telebot" + os.sep + self._code)
+                ## Send zip file, can't send as a zipfile object, must file object.
+                with open('telebot.zip', 'rb') as self._codes:
+                    bot.sendChatAction(chat_id, "upload_document")
+                    bot.sendDocument(chat_id, self._codes)
+
+                """
                 for self._code_file in codes:
                     with open(self._code_file) as self._code_byte:
                         bot.sendChatAction(chat_id, "upload_document")
                         bot.sendDocument(chat_id, self._code_byte)
-                self._answer = "Sent code.\nYou should make directories as \"Image/\", \"Video/\", \"Audio/\", \"File/\" before you run it.\nFor more information, click <a href=\"https://github.com/S-X-ShaX/telebot/\">My TeleBot on GitHub</a>."
+                """
+                self._answer = "Sent code.\nYou should extract it to your directories and get your bot token. Then run \"$ python3 ./bot.py YOURBOTNAME.json\".\nFor more information, click <a href=\"https://github.com/S-X-ShaX/telebot/\">My TeleBot on GitHub</a>."
                 self._parse = "HTML"
 
             elif self._text == "/redo":
