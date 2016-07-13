@@ -322,7 +322,8 @@ class TeleBot(telepot.helper.UserHandler):
                         for self._rule_key in self._rule_list[0:-1]:
                             if self._rule_key != '' and self._rule_list[-1] != '':
                                 global rule_dict
-                                rule_dict['/' + self._rule_key] = self._rule_list[-1]
+                                #rule_dict['/' + self._rule_key] = self._rule_list[-1]
+                                rule_dict[self._rule_key] = self._rule_list[-1]
                                 self._answer = "Get rule!"
                             else:
                                 self._answer = "No avalible rule! You should use \"/rule KEY1,,KEY2,,...,,ANSWER\" to set a rule."
@@ -349,9 +350,10 @@ class TeleBot(telepot.helper.UserHandler):
                 bot.sendChatAction(chat_id, "typing")
                 bot.sendMessage(chat_id, self._answer, reply_to_message_id=self._msg_id, parse_mode=self._parse, disable_web_page_preview=self._diswebview)
                 print(">>> %s\nBot: Got text \"%s\" from @%s and answered with \"%s\"."%(self._now, self._text_log, self._username, self._answer))
-            else:
-                print(">>> %s\nBot: Got text \"%s\" from @%s."%(self._now, self._text_log, self._username))
-            print("--------------------------------------------")
+            #else:
+                #print(">>> %s\nBot: Got text \"%s\" from @%s."%(self._now, self._text_log, self._username))
+                print("--------------------------------------------")
+            #print("--------------------------------------------")
 
         """
         ## To judge if the content is a photo.
