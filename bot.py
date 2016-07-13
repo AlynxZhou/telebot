@@ -392,7 +392,10 @@ class TeleBot(telepot.helper.UserHandler):
 
         ## Store message.
         global redo_dict
-        redo_dict[self._username] = self._text_redo
+        try:
+            redo_dict[self._username] = self._text_redo
+        except AttributeError:
+            pass
 
         global rule_dict
         if len(rule_dict) > 77:
