@@ -1,1 +1,0 @@
-{"/exit": "exit()", "/redo": "fuck", "/test": "\u50bb\u903c\u5728\uff01", "/Test": "\u50bb\u903c\u5728\uff01", "/rule": "fuck", "/aaa": "\u554a\u554a\u554a"}

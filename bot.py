@@ -125,14 +125,14 @@ for directory in dirs:
 
 
 ### Get resources.
-bhelp_list = resource.file_to_list("bhelp.txt")
-greeting_list = resource.file_to_list("greeting.txt")
-joke_list = resource.file_to_list("joke.txt")
+bhelp_list = resource.file_to_list("resources/bhelp.txt")
+greeting_list = resource.file_to_list("resources/greeting.txt")
+joke_list = resource.file_to_list("resources/joke.txt")
 fuck_list = resource.fuck_list
-#talk_list = resource.file_to_list("talk.txt")
+#talk_list = resource.file_to_list("resources/talk.txt")
 
 try:
-    with open("rule.txt") as rule_open:
+    with open("resources/rule.json") as rule_open:
         rule_dict = json.loads(rule_open.read())
 except:
     rule_dict = {}
@@ -320,6 +320,7 @@ class TeleBot(telepot.helper.UserHandler):
                     try:
                         self._rule_list = self._text_2.split(",,")
                         for self._rule_key in self._rule_list[0:-1]:
+                            global rule_dict
                             rule_dict['/' + self._rule_key] = self._rule_list[-1]
                         self._answer = "Get rule!"
                     except AttributeError:
@@ -382,6 +383,10 @@ class TeleBot(telepot.helper.UserHandler):
 
     def on_close(self, exception):
         self._now = str(datetime.datetime.now())
+
+        global redo_dict
+        global rule_dict
+
         ## Store message.
         redo_dict[self._username] = self._text_redo
 
@@ -440,6 +445,6 @@ print("--------------------------------------------")
 try:
     bot.message_loop(run_forever=True)
 except KeyboardInterrupt:
-    with open("rule.txt", 'w') as r:
+    with open("resources/rule.json", 'w') as r:
         r.write(json.dumps(rule_dict))
     exit()

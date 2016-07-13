@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "{}" > resources/rule.json
+
 git add .
 
 git commit -m "A commit."
