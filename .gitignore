@@ -1,6 +1,9 @@
 # My config.
 ShaX*Bot.json
 
+# Code zip.
+telebot.zip
+
 # Image
 Image/*
 
@@ -15,6 +18,3 @@ File/*
 
 # Python Cache
 __pycache__
-
-# zip
-telepot.zip
