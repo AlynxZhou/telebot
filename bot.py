@@ -131,13 +131,17 @@ joke_list = resource.file_to_list("joke.txt")
 fuck_list = resource.fuck_list
 #talk_list = resource.file_to_list("talk.txt")
 
-rule_dict = {}
+with open("rule.txt") as rule_open:
+    rule_dict = json.loads(rule_open.read())
+
+#rule_dict = {}
 
 ## Define an expection.
 #class UserClose(TelepotException):
 #    pass
 
 ### Used to store the message when a delegator closed.
+
 redo_dict = {}
 
 ## Define a bot class.
@@ -309,14 +313,15 @@ class TeleBot(telepot.helper.UserHandler):
                 self._answer = "Sent code.\nYou should extract it to your directories and get your bot token. Then run \"$ python3 ./bot.py YOURBOTNAME.json\".\nFor more information, click <a href=\"https://github.com/S-X-ShaX/telebot/\">My TeleBot on GitHub</a>."
                 self._parse = "HTML"
 
-            elif self._text == "/redo":
-                self._answer = "Sorry, but no your last message was found."
-
             elif self._text == "/rule":
                 self._rule_list = self._text_2.split(None)
                 for self._rule_key in self._rule_list[0:-1]:
                     rule_dict['/' + self._rule_key] = self._rule_list[-1]
                 self._answer = "Get rule!"
+
+            elif self._text == "/redo":
+                self._answer = "Sorry, but no your last message was found."
+
             else:
                 try:
                     self._answer = rule_dict[self._text]
@@ -421,4 +426,6 @@ print("--------------------------------------------")
 try:
     bot.message_loop(run_forever=True)
 except KeyboardInterrupt:
+    with open("rule.txt", 'w') as r:
+        r.write(json.dumps(rule_dict))
     exit()
