@@ -131,10 +131,11 @@ joke_list = resource.file_to_list("joke.txt")
 fuck_list = resource.fuck_list
 #talk_list = resource.file_to_list("talk.txt")
 
-with open("rule.txt") as rule_open:
-    rule_dict = json.loads(rule_open.read())
-
-#rule_dict = {}
+try:
+    with open("rule.txt") as rule_open:
+        rule_dict = json.loads(rule_open.read())
+except:
+    rule_dict = {}
 
 ## Define an expection.
 #class UserClose(TelepotException):
