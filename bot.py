@@ -137,6 +137,7 @@ try:
 except:
     rule_dict = {}
 
+
 ## Define an expection.
 #class UserClose(TelepotException):
 #    pass
@@ -382,6 +383,12 @@ class TeleBot(telepot.helper.UserHandler):
         self._now = str(datetime.datetime.now())
         ## Store message.
         redo_dict[self._username] = self._text_redo
+
+        if len(rule_dict) > 77:
+            rule_dict = {}
+        if len(redo_dict) > 77:
+            redo_dict = {}
+
         ## Journal.
         print(">>> %s\nBot: Close an delegator with @%s by calling on_close()."%(self._now, self._username))
         print("--------------------------------------------")
