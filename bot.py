@@ -133,7 +133,7 @@ fuck_list = resource.fuck_list
 
 try:
     with open("assets/rule.json") as rule_open:
-        rule_dict = json.loads(rule_open.read().decode("utf-8"))
+        rule_dict = json.loads(rule_open.read(), ensure_ascii=False)
 except:
     rule_dict = {}
 
@@ -455,5 +455,5 @@ try:
     bot.message_loop(run_forever=True)
 except KeyboardInterrupt:
     with open("assets/rule.json", 'w') as r:
-        r.write(json.dumps(rule_dict).encode("utf-8"))
+        r.write(json.dumps(rule_dict, ensure_ascii=False))
     exit()
