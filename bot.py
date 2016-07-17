@@ -20,23 +20,6 @@ import resource
 import ipcn
 import httpapi
 
-try:
-    import telepot
-    from telepot.delegate import per_from_id, create_open
-    #from telepot.exception import TelepotException
-except ImportError:
-    print("Telepot api is lost...")
-    print("Installing requirement via \"$ sudo pip3 install telepot\"...")
-    try:
-        subprocess.check_output("sudo pip3 install telepot", shell=True, stderr=subprocess.STDOUT, universal_newlines=True)
-    except:
-        print("ERROR: Install failed.")
-        print("Maybe you should run \"$ sudo pip3 install telepot\" by yourself?")
-        exit()
-
-    import telepot
-    from telepot.delegate import per_from_id, create_open
-    #from telepot.exception import TelepotException
 
 
 AUTHOR = "S-X-ShaX"
@@ -57,6 +40,23 @@ print("Starting bot at %s..."%(now))
 
 
 ## Import telepot.
+try:
+    import telepot
+    from telepot.delegate import per_from_id, create_open
+    #from telepot.exception import TelepotException
+except ImportError:
+    print("Telepot api is lost...")
+    print("Installing requirement via \"$ sudo pip3 install telepot\"...")
+    try:
+        subprocess.check_output("sudo pip3 install telepot", shell=True, stderr=subprocess.STDOUT, universal_newlines=True)
+    except:
+        print("ERROR: Install failed.")
+        print("Maybe you should run \"$ sudo pip3 install telepot\" by yourself?")
+        exit()
+
+    import telepot
+    from telepot.delegate import per_from_id, create_open
+    #from telepot.exception import TelepotException
 
 
 ## Deal with args.
