@@ -21,7 +21,6 @@ import ipcn
 import httpapi
 
 
-
 AUTHOR = "S-X-ShaX"
 VERSION = "3.7"
 
