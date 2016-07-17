@@ -70,7 +70,7 @@ if config_file == None:
 
 try:
     with open(config_file) as config_open:
-        bot_json = json.loads(config_open.read())
+        bot_json = json.loads(config_open.read(), encoding="utf-8")
     TOKEN = bot_json["token"]
     ADMIN = bot_json["admin"]
     tuling_api_key = bot_json["tuling_api_key"]
@@ -109,7 +109,7 @@ if tuling_api_key == None or tuling_api_key == '' or tuling_api_key == "get_it_f
 
 if conf_rewrite:
     with open(config_file, 'w') as c:
-        c.write(json.dumps({"token": TOKEN, "admin": ADMIN, "tuling_api_key": "get_it_from_tuling123.com"}))
+        c.write(json.dumps({"token": TOKEN, "admin": ADMIN, "tuling_api_key": "get_it_from_tuling123.com"}, ensure_ascii=False))
 
 
 ### Check directories.
