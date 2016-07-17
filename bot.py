@@ -294,7 +294,7 @@ class TeleBot(telepot.helper.UserHandler):
                     "httpapi.py",
                     "assets/greeting.txt",
                     "assets/bhelp.txt",
-9                    "assets/joke.txt",
+                    "assets/joke.txt",
                     "assets/rule.json",
                     "example_bot.json",
                     "README.md"
