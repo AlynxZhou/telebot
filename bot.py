@@ -125,14 +125,14 @@ for directory in dirs:
 
 
 ### Get resources.
-bhelp_list = resource.file_to_list("resources/bhelp.txt")
-greeting_list = resource.file_to_list("resources/greeting.txt")
-joke_list = resource.file_to_list("resources/joke.txt")
+bhelp_list = resource.file_to_list("assets/bhelp.txt")
+greeting_list = resource.file_to_list("assets/greeting.txt")
+joke_list = resource.file_to_list("assets/joke.txt")
 fuck_list = resource.fuck_list
-#talk_list = resource.file_to_list("resources/talk.txt")
+#talk_list = resource.file_to_list("assets/talk.txt")
 
 try:
-    with open("resources/rule.json") as rule_open:
+    with open("assets/rule.json") as rule_open:
         rule_dict = json.loads(rule_open.read())
 except:
     rule_dict = {}
@@ -292,10 +292,10 @@ class TeleBot(telepot.helper.UserHandler):
                     "resource.py",
                     "ipcn.py",
                     "httpapi.py",
-                    "resources/greeting.txt",
-                    "resources/bhelp.txt",
-                    "resources/joke.txt",
-                    "resources/rule.json",
+                    "assets/greeting.txt",
+                    "assets/bhelp.txt",
+                    "assets/joke.txt",
+                    "assets/rule.json",
                     "example_bot.json",
                     "README.md"
                 ]
@@ -363,7 +363,7 @@ class TeleBot(telepot.helper.UserHandler):
             file_id = msg["photo"][-1]["file_id"]
             if chat_type == "private":
                 if username == ADMIN:
-                    now = datetime.datetime.now().strftime("%Y-%m-%d_%H: %M: %S")
+                    now = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
                     bot.downloadFile(file_id, "Image/IMG_%s.jpg"%(now))
                     bot.sendMessage(chat_id, "Got photo IMG_%s.jpg in Image/."%(now), reply_to_message_id=msg_id)
                     print("Bot: Got photo Image/IMG_%s.jpg from @%s."%(now, username))
@@ -454,6 +454,6 @@ print("--------------------------------------------")
 try:
     bot.message_loop(run_forever=True)
 except KeyboardInterrupt:
-    with open("resources/rule.json", 'w') as r:
+    with open("assets/rule.json", 'w') as r:
         r.write(json.dumps(rule_dict))
     exit()
