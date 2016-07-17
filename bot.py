@@ -133,7 +133,7 @@ fuck_list = resource.fuck_list
 
 try:
     with open("assets/rule.json") as rule_open:
-        rule_dict = json.loads(rule_open.read())
+        rule_dict = json.loads(rule_open.read().decode("utf-8"))
 except:
     rule_dict = {}
 
@@ -294,7 +294,7 @@ class TeleBot(telepot.helper.UserHandler):
                     "httpapi.py",
                     "assets/greeting.txt",
                     "assets/bhelp.txt",
-                    "assets/joke.txt",
+9                    "assets/joke.txt",
                     "assets/rule.json",
                     "example_bot.json",
                     "README.md"
@@ -455,5 +455,5 @@ try:
     bot.message_loop(run_forever=True)
 except KeyboardInterrupt:
     with open("assets/rule.json", 'w') as r:
-        r.write(json.dumps(rule_dict))
+        r.write(json.dumps(rule_dict).encode("utf-8"))
     exit()
