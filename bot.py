@@ -171,6 +171,8 @@ class TeleBot(telepot.helper.UserHandler):
         self._count["chat"] += 1
         self._parse = None
         self._diswebview = None
+        self._file = None
+        self._answer = None
 
         content_type, chat_type, chat_id = telepot.glance(msg)
         self._first_name = msg["from"]["first_name"]
@@ -277,13 +279,7 @@ class TeleBot(telepot.helper.UserHandler):
             elif self._text == "send":
                 if self._text_2 != None:
                     if self._username == ADMIN:
-                        bot.sendChatAction(chat_id, "upload_document")
-                        try:
-                            with open(self._text_2) as self._document:
-                                bot.sendDocument(chat_id, self._document)
-                        except:
-                            with open(self._text_2, "rb") as self._document:
-                                bot.sendDocument(chat_id, self._document)
+                        self._file = self._text_2
                         self._answer = "Sent."
                     else:
                         self._answer = "Sorry, you are not allowed to get a file in order to keep the bot safe."
@@ -299,6 +295,7 @@ class TeleBot(telepot.helper.UserHandler):
                     "assets/greeting.txt",
                     "assets/bhelp.txt",
                     "assets/joke.txt",
+                    "assets/redo.json",
                     "assets/rule.json",
                     "example_bot.json",
                     "README.md"
@@ -307,17 +304,7 @@ class TeleBot(telepot.helper.UserHandler):
                 with zipfile.ZipFile('telebot.zip', 'w', zipfile.ZIP_DEFLATED) as self._telebot_zip:
                     for self._code in codes:
                         self._telebot_zip.write(self._code, "telebot" + os.sep + self._code)
-                ## Send zip file, can't send as a zipfile object, must file object.
-                with open('telebot.zip', 'rb') as self._codes:
-                    bot.sendChatAction(chat_id, "upload_document")
-                    bot.sendDocument(chat_id, self._codes)
-
-                """
-                for self._code_file in codes:
-                    with open(self._code_file) as self._code_byte:
-                        bot.sendChatAction(chat_id, "upload_document")
-                        bot.sendDocument(chat_id, self._code_byte)
-                """
+                self._file = "telebot.zip"
                 self._answer = "Sent code.\nYou should extract it to your directories and get your bot token. Then run \"$ python3 ./bot.py YOURBOTNAME.json\".\nFor more information, click <a href=\"https://github.com/S-X-ShaX/telebot/\">My TeleBot on GitHub</a>."
                 self._parse = "HTML"
 
@@ -344,6 +331,14 @@ class TeleBot(telepot.helper.UserHandler):
 
 
             # Return.
+            if self._file != None:
+                try:
+                    with open(self._file, 'rb') as self._document:
+                        bot.sendChatAction(chat_id, "upload_document")
+                        bot.sendDocument(chat_id, self._document)
+                except:
+                    self._answer = "Upload failed."
+
             if self._answer != None:
                 ## Store redo message.
                 #global redo_dict
