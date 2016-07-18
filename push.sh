@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "{}" > assets/rule.json
+#echo "{}" > assets/rule.json
 
 git add .
 
