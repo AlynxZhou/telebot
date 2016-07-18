@@ -187,41 +187,41 @@ class TeleBot(telepot.helper.UserHandler):
                         pass
 
             try:
-                self._text_list = self._text_orig.split(None, 1)    # When sep was None, it will be any number spaces, and 1 means split once. Be care that S.split(, 1) will get an error,use S.split(None, 1) instead (from the help doc).
-                self._text = self._text_list[0]
+                self._text_list = self._text_orig.split(None, 1)    # When sep was None, it will be any number spaces, and 1 means split once. Be care that S.split(, 1) will get an error, use S.split(None, 1) instead (from the help doc).
+                self._text = self._text_list[0].lstrip('/')
                 self._text_2 = self._text_list[1]
             except IndexError:
-                self._text = self._text_list[0]
+                self._text = self._text_list[0].lstrip('/')
                 self._text_2 = None
             if ('@' + info["username"]) in self._text:
                 self._text = self._text.split('@' + info["username"], 1)[0]
 
 
             # Handle.
-            if self._text == "/start":
+            if self._text == "start":
                 self._answer = "Welcome! \nPlease type \"/help\" to get a help list."
 
-            elif self._text == "/help":
+            elif self._text == "help":
                 self._answer = bhelp_list[0]
                 self._parse = "HTML"
                 self._diswebview = True
 
-            elif self._text == "/hello":
+            elif self._text == "hello":
                 self._answer = "Hello, " + self._first_name + "! " + random.choice(greeting_list)
 
-            elif self._text == "/joke":
+            elif self._text == "joke":
                 self._answer = random.choice(joke_list)
 
-            elif self._text == "/time":
+            elif self._text == "time":
                 self._answer = "Now is " + str(datetime.datetime.now()) + "."
-            elif self._text == "/weather":
+            elif self._text == "weather":
                 if self._text_2 != None:
                     self._answer = httpapi.get_wea(self._text_2)
                     self._parse = "HTML"
                 else:
                     self._answer = "Please add a valid place, for instance, \"/weather 上海\", \"/weather 安徽 合肥\" or \"/weather 中国 辽宁 大连\"."
 
-            elif self._text == "/fuck":
+            elif self._text == "fuck":
                 try:
                     self._answer = fuck_list[self._count["fuck"]]
                     self._count["fuck"] += 1
@@ -230,7 +230,7 @@ class TeleBot(telepot.helper.UserHandler):
                     self._answer = fuck_list[self._count["fuck"]]
                     self._count["fuck"] += 1
 
-            elif self._text == "/talk":
+            elif self._text == "talk":
                 if self._text_2 != None:
                     if tuling_api_key == None:
                         self._answer = httpapi.get_qtalk(self._text_2)
@@ -248,16 +248,16 @@ class TeleBot(telepot.helper.UserHandler):
                     self._count["talk"] += 1
                 """
 
-            elif self._text == "/count":
+            elif self._text == "count":
                 self._answer = self._count["chat"]
 
-            elif self._text == "/ipcn":
+            elif self._text == "ipcn":
                 if self._username == ADMIN:
                     self._answer = ipcn.get_ip()
                 else:
                     self._answer = "Sorry, you are not allowed to obtain the ip address in order to keep the bot safe."
 
-            elif self._text == "/cmd":
+            elif self._text == "cmd":
                 if self._text_2 != None:
                     if self._username == ADMIN:
                         try:
@@ -269,7 +269,7 @@ class TeleBot(telepot.helper.UserHandler):
                 else:
                     self._answer = None
 
-            elif self._text == "/send":
+            elif self._text == "send":
                 if self._text_2 != None:
                     if self._username == ADMIN:
                         bot.sendChatAction(chat_id, "upload_document")
@@ -285,7 +285,7 @@ class TeleBot(telepot.helper.UserHandler):
                 else:
                     self._answer = None
 
-            elif self._text == "/code":
+            elif self._text == "code":
                 codes = [
                     "bot.py",
                     "resource.py",
@@ -316,7 +316,7 @@ class TeleBot(telepot.helper.UserHandler):
                 self._answer = "Sent code.\nYou should extract it to your directories and get your bot token. Then run \"$ python3 ./bot.py YOURBOTNAME.json\".\nFor more information, click <a href=\"https://github.com/S-X-ShaX/telebot/\">My TeleBot on GitHub</a>."
                 self._parse = "HTML"
 
-            elif self._text == "/rule":
+            elif self._text == "rule":
                 if self._text_2 != None and "@@" in self._text_2:
                     try:
                         self._rule_list = self._text_2.split("@@")
@@ -327,13 +327,13 @@ class TeleBot(telepot.helper.UserHandler):
                                 rule_dict[self._rule_key] = self._rule_list[-1]
                                 self._answer = "Get rule!"
                             else:
-                                self._answer = "No avalible rule! You should use \"/rule /KEY1@@/KEY2@@/KEYn@@ANSWER\" to set a rule."
+                                self._answer = "No avalible rule! You should use \"/rule KEY1@@KEY2@@KEYn@@ANSWER\" to set a rule."
                     except AttributeError:
-                        self._answer = "No avalible rule! You should use \"/rule /KEY1@@/KEY2@@/KEYn@@ANSWER\" to set a rule."
+                        self._answer = "No avalible rule! You should use \"/rule KEY1@@KEY2@@KEYn@@ANSWER\" to set a rule."
                 else:
-                    self._answer = "No avalible rule! You should use \"/rule /KEY1@@/KEY2@@/KEYn@@ANSWER\" to set a rule."
+                    self._answer = "No avalible rule! You should use \"/rule KEY1@@KEY2@@KEYn@@ANSWER\" to set a rule."
 
-            elif self._text == "/redo":
+            elif self._text == "redo":
                 self._answer = "Sorry, but no your last message was found."
 
             else:
