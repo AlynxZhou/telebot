@@ -331,7 +331,7 @@ class TeleBot(telepot.helper.UserHandler):
                     except AttributeError:
                         self._answer = "No avalible rule! You should use \"/rule /KEY1@@/KEY2@@/KEYn@@ANSWER\" to set a rule."
                 else:
-                    self._answer = "No avalible rule! You should use \"/rule KEY1,,KEY2,,...,,ANSWER\" to set a rule."
+                    self._answer = "No avalible rule! You should use \"/rule /KEY1@@/KEY2@@/KEYn@@ANSWER\" to set a rule."
 
             elif self._text == "/redo":
                 self._answer = "Sorry, but no your last message was found."
