@@ -32,8 +32,10 @@ class IPCNParser(HTMLParser):
 iparser = IPCNParser()
 
 def get_ip():
-    ipcn = urlopen("http://ip.cn/").read().decode("utf-8")
+    with urlopen("http://ip.cn/") as url_open:
+    ipcn = url_open.read().decode("utf-8")
     iparser.feed(ipcn)
     return iparser.result
 
-#print(get_ip())
+if __name__ == "__main__":
+    print(get_ip())

@@ -108,8 +108,8 @@ if tuling_api_key == None or tuling_api_key == '' or tuling_api_key == "get_it_f
 
 
 if conf_rewrite:
-    with open(config_file, 'w') as c:
-        c.write(json.dumps({"token": TOKEN, "admin": ADMIN, "tuling_api_key": "get_it_from_tuling123.com"}, ensure_ascii=False))
+    with open(config_file, 'w') as config_open:
+        config_open.write(json.dumps({"token": TOKEN, "admin": ADMIN, "tuling_api_key": "get_it_from_tuling123.com"}, ensure_ascii=False))
 
 
 ### Check directories.

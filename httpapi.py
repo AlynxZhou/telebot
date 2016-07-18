@@ -14,7 +14,8 @@ def get_wea(place="上海"):
     base_url = "https://query.yahooapis.com/v1/public/yql?"
     yql_query = "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"%s\") and u='c'"%(place)
     yql_url = base_url + urlencode({'q': yql_query}) + "&format=json"
-    data = json.loads(urlopen(yql_url).read().decode("utf-8"))
+    with urlopen(yql_url) as url_open:
+        data = json.loads(url_open.read().decode("utf-8"))
 
     code_emoji = {
         "0": "🌪",
@@ -87,8 +88,8 @@ def get_ttalk(APIKey, info="你好", user_id=None):
     #post_data = "POST http://www.tuling123.com/ HTTP/1.1\nContent-Type: application/json;charset=utf-8\n\n" + json_data
 
     req = Request(base_url, json_data.encode("utf-8"), headers={"Content-Type": "application/json"})
-    with urlopen(req) as r:
-        result = json.loads(r.read().decode("utf-8"))
+    with urlopen(req) as url_open:
+        result = json.loads(url_open.read().decode("utf-8"))
 
     return result["text"]
 
@@ -97,7 +98,8 @@ def get_ttalk(APIKey, info="你好", user_id=None):
 def get_qtalk(msg="你好"):
     base_url = "http://api.qingyunke.com/api.php?"
     all_url = base_url + urlencode({"key": "free", "appid": "0", "msg": msg})
-    data = json.loads(urlopen(all_url).read().decode("utf-8"))
+    with urlopen(all_url) as url_open:
+        data = json.loads(url_open.read().decode("utf-8"))
 
     if data["result"] == 0:
         result = data["content"]
@@ -111,4 +113,4 @@ if __name__ == "__main__":
 #    from pprint import pprint
 #    pprint(get_wea())
     print(get_wea())
-    print(get_talk(APIKey))
+    print(get_qtalk())
