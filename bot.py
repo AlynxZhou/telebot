@@ -152,7 +152,6 @@ except:
 
 ## Define a bot class.
 class TeleBot(telepot.helper.UserHandler):
-
     def __init__(self, seed_tuple,timeout):
         super(TeleBot, self).__init__(seed_tuple, timeout)
         self._count = {
