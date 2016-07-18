@@ -33,7 +33,7 @@ iparser = IPCNParser()
 
 def get_ip():
     with urlopen("http://ip.cn/") as url_open:
-    ipcn = url_open.read().decode("utf-8")
+        ipcn = url_open.read().decode("utf-8")
     iparser.feed(ipcn)
     return iparser.result
 
