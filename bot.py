@@ -131,6 +131,12 @@ fuck_list = resource.fuck_list
 #talk_list = resource.file_to_list("assets/talk.txt")
 
 try:
+    with open("assets/redo.json") as redo_open:
+        redo_dict = json.loads(redo_open.read(), encoding="utf-8")
+except:
+    redo_dict = {}
+
+try:
     with open("assets/rule.json") as rule_open:
         rule_dict = json.loads(rule_open.read(), encoding="utf-8")
 except:
@@ -143,7 +149,6 @@ except:
 
 ### Used to store the message when a delegator closed.
 
-redo_dict = {}
 
 ## Define a bot class.
 class TeleBot(telepot.helper.UserHandler):
@@ -159,6 +164,9 @@ class TeleBot(telepot.helper.UserHandler):
 
     def on_chat_message(self, msg):
         self._now = str(datetime.datetime.now())
+
+        global redo_dict
+        global rule_dict
 
         self._count["chat"] += 1
         self._parse = None
@@ -177,14 +185,11 @@ class TeleBot(telepot.helper.UserHandler):
             ## Redo message?
             if self._text_orig == "/redo" or (self._text_orig == "/redo@" + info["username"]):
                 try:
-                    self._text_orig = self._text_redo
-                except AttributeError:
-                    try:
-                        self._text_orig = self._text_redo = redo_dict[self._username]
-                        redo_dict.pop(self._username)
-                    except KeyError:
-                        #self._answer = "Sorry, but no your last message was found."
-                        pass
+                    self._text_orig = redo_dict[self._username]
+                    redo_dict.pop(self._username)
+                except KeyError:
+                    #self._answer = "Sorry, but no your last message was found."
+                    pass
 
             try:
                 self._text_list = self._text_orig.split(None, 1)    # When sep was None, it will be any number spaces, and 1 means split once. Be care that S.split(, 1) will get an error, use S.split(None, 1) instead (from the help doc).
@@ -321,13 +326,8 @@ class TeleBot(telepot.helper.UserHandler):
                     try:
                         self._rule_list = self._text_2.split("@@")
                         for self._rule_key in self._rule_list[0:-1]:
-                            if self._rule_key != '' and self._rule_list[-1] != '':
-                                global rule_dict
-                                #rule_dict['/' + self._rule_key] = self._rule_list[-1]
-                                rule_dict[self._rule_key] = self._rule_list[-1]
-                                self._answer = "Get rule!"
-                            else:
-                                self._answer = "No avalible rule! You should use \"/rule KEY1@@KEY2@@KEYn@@ANSWER\" to set a rule."
+                            rule_dict[self._rule_key] = self._rule_list[-1]
+                        self._answer = "Get rule!"
                     except AttributeError:
                         self._answer = "No avalible rule! You should use \"/rule KEY1@@KEY2@@KEYn@@ANSWER\" to set a rule."
                 else:
@@ -346,7 +346,8 @@ class TeleBot(telepot.helper.UserHandler):
             # Return.
             if self._answer != None:
                 ## Store redo message.
-                self._text_redo = self._text_orig
+                #global redo_dict
+                redo_dict[self._username] = self._text_orig
                 ## Send result.
                 bot.sendChatAction(chat_id, "typing")
                 bot.sendMessage(chat_id, self._answer, reply_to_message_id=self._msg_id, parse_mode=self._parse, disable_web_page_preview=self._diswebview)
@@ -390,18 +391,13 @@ class TeleBot(telepot.helper.UserHandler):
     def on_close(self, exception):
         self._now = str(datetime.datetime.now())
 
-        ## Store message.
         global redo_dict
-        try:
-            redo_dict[self._username] = self._text_redo
-        except AttributeError:
-            pass
-
         global rule_dict
-        if len(rule_dict) > 77:
-            rule_dict = {}
+
         if len(redo_dict) > 77:
             redo_dict = {}
+        if len(rule_dict) > 77:
+            rule_dict = {}
 
         ## Journal.
         print(">>> %s\nBot: Close an delegator with @%s by calling on_close()."%(self._now, self._username))
@@ -453,6 +449,8 @@ print("--------------------------------------------")
 try:
     bot.message_loop(run_forever=True)
 except KeyboardInterrupt:
+    with open("assets/redo.json", 'w') as redo_open:
+        redo_open.write(json.dumps(redo_dict, ensure_ascii=False))
     with open("assets/rule.json", 'w') as rule_open:
         rule_open.write(json.dumps(rule_dict, ensure_ascii=False))
     exit()

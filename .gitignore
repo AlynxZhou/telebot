@@ -19,5 +19,6 @@ File/*
 # Python Cache
 __pycache__
 
-# Custom rules
+# Custom file
 assets/rule.json
+assets/redo.json
