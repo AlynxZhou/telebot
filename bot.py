@@ -193,6 +193,11 @@ class TeleBot(telepot.helper.UserHandler):
                     pass
 
             try:
+                rule_dict.pop("")
+            except:
+                pass
+
+            try:
                 self._text_list = self._text_orig.split(None, 1)    # When sep was None, it will be any number spaces, and 1 means split once. Be care that S.split(, 1) will get an error, use S.split(None, 1) instead (from the help doc).
                 self._text = self._text_list[0].lstrip('/')
                 self._text_2 = self._text_list[1]
@@ -312,7 +317,8 @@ class TeleBot(telepot.helper.UserHandler):
                     try:
                         self._rule_list = self._text_2.split("@@")
                         for self._rule_key in self._rule_list[0:-1]:
-                            rule_dict[self._rule_key] = self._rule_list[-1]
+                            if self._rule_key != '' and self._rule_key != '\n':
+                                rule_dict[self._rule_key] = self._rule_list[-1]
                         self._answer = "Get rule!"
                     except AttributeError:
                         self._answer = "No avalible rule! You should use \"/rule KEY1@@KEY2@@KEYn@@ANSWER\" to set a rule."
@@ -323,11 +329,11 @@ class TeleBot(telepot.helper.UserHandler):
                 self._answer = "Sorry, but no your last message was found."
 
             else:
-                try:
-                    self._answer = rule_dict[self._text]
-                except KeyError:
-                    self._answer = None
-
+                self._answers = ''
+                for key in rule_dict:
+                    if key in self._text:
+                        self._answers += rule_dict[key] + '\n'
+                        self._answer = self._answers.rstrip('\n')
 
             # Return.
             if self._file != None:
