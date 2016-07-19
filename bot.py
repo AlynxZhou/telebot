@@ -332,8 +332,9 @@ class TeleBot(telepot.helper.UserHandler):
                 self._answers = ''
                 for key in rule_dict:
                     if key in self._text:
-                        self._answers += rule_dict[key] + '\n'
-                        self._answer = self._answers.rstrip('\n')
+                        if not rule_dict[key] in self._answers:
+                            self._answers += rule_dict[key] + '\n'
+                            self._answer = self._answers.rstrip('\n')
 
             # Return.
             if self._file != None:
