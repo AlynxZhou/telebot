@@ -29,3 +29,18 @@ fuck_list = [
     "Ah, seems end, so comfortable. 😌",
     "Good boy, now I become your girl. 😁"
 ]
+
+
+code_list = [
+    "bot.py",
+    "resource.py",
+    "ipcn.py",
+    "httpapi.py",
+    "assets/greeting.txt",
+    "assets/bhelp.txt",
+    "assets/joke.txt",
+    "assets/redo.json",
+    "assets/rule.json",
+    "example_bot.json",
+    "README.md"
+]

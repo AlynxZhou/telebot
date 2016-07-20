@@ -128,20 +128,8 @@ bhelp_list = resource.file_to_list("assets/bhelp.txt")
 greeting_list = resource.file_to_list("assets/greeting.txt")
 joke_list = resource.file_to_list("assets/joke.txt")
 fuck_list = resource.fuck_list
+code_list = resource.code_list
 #talk_list = resource.file_to_list("assets/talk.txt")
-codes = [
-    "bot.py",
-    "resource.py",
-    "ipcn.py",
-    "httpapi.py",
-    "assets/greeting.txt",
-    "assets/bhelp.txt",
-    "assets/joke.txt",
-    "assets/redo.json",
-    "assets/rule.json",
-    "example_bot.json",
-    "README.md"
-]
 
 try:
     with open("assets/redo.json") as redo_open:
@@ -165,7 +153,7 @@ except:
 
 ## Define a bot class.
 class TeleBot(telepot.helper.UserHandler):
-    def __init__(self, seed_tuple,timeout):
+    def __init__(self, seed_tuple, timeout):
         super(TeleBot, self).__init__(seed_tuple, timeout)
         self._count = {
             "chat": 0,
@@ -306,7 +294,7 @@ class TeleBot(telepot.helper.UserHandler):
             elif self._text == "code":
                 ## Zip file.
                 with zipfile.ZipFile('telebot.zip', 'w', zipfile.ZIP_DEFLATED) as self._telebot_zip:
-                    for self._code in codes:
+                    for self._code in code_list:
                         self._telebot_zip.write(self._code, "telebot" + os.sep + self._code)
                 self._file = "telebot.zip"
                 self._answer = "Sent code.\nYou should extract it to your directories and get your bot token. Then run \"$ python3 ./bot.py YOURBOTNAME.json\".\nFor more information, click <a href=\"https://github.com/S-X-ShaX/telebot/\">My TeleBot on GitHub</a>."
