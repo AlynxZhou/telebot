@@ -129,6 +129,19 @@ greeting_list = resource.file_to_list("assets/greeting.txt")
 joke_list = resource.file_to_list("assets/joke.txt")
 fuck_list = resource.fuck_list
 #talk_list = resource.file_to_list("assets/talk.txt")
+codes = [
+    "bot.py",
+    "resource.py",
+    "ipcn.py",
+    "httpapi.py",
+    "assets/greeting.txt",
+    "assets/bhelp.txt",
+    "assets/joke.txt",
+    "assets/redo.json",
+    "assets/rule.json",
+    "example_bot.json",
+    "README.md"
+]
 
 try:
     with open("assets/redo.json") as redo_open:
@@ -187,25 +200,25 @@ class TeleBot(telepot.helper.UserHandler):
             if self._text_orig == "/redo" or (self._text_orig == "/redo@" + info["username"]):
                 try:
                     self._text_orig = redo_dict[self._username]
-                    redo_dict.pop(self._username)
+                    #redo_dict.pop(self._username)
                 except KeyError:
                     #self._answer = "Sorry, but no your last message was found."
                     pass
 
             try:
-                rule_dict.pop("")
+                rule_dict.pop('')
             except:
                 pass
 
+
+            self._text_list = self._text_orig.split(None, 1)    # When sep was None, it will be any number spaces, and 1 means split once. Be care that S.split(, 1) will get an error, use S.split(None, 1) instead (from the help doc).
             try:
-                self._text_list = self._text_orig.split(None, 1)    # When sep was None, it will be any number spaces, and 1 means split once. Be care that S.split(, 1) will get an error, use S.split(None, 1) instead (from the help doc).
                 self._text = self._text_list[0].lstrip('/')
                 self._text_2 = self._text_list[1]
             except IndexError:
                 self._text = self._text_list[0].lstrip('/')
                 self._text_2 = None
-            if ('@' + info["username"]) in self._text:
-                self._text = self._text.split('@' + info["username"], 1)[0]
+            self._text = self._text.split('@' + info["username"], 1)[0]
 
 
             # Handle.
@@ -291,19 +304,6 @@ class TeleBot(telepot.helper.UserHandler):
                     self._answer = None
 
             elif self._text == "code":
-                codes = [
-                    "bot.py",
-                    "resource.py",
-                    "ipcn.py",
-                    "httpapi.py",
-                    "assets/greeting.txt",
-                    "assets/bhelp.txt",
-                    "assets/joke.txt",
-                    "assets/redo.json",
-                    "assets/rule.json",
-                    "example_bot.json",
-                    "README.md"
-                ]
                 ## Zip file.
                 with zipfile.ZipFile('telebot.zip', 'w', zipfile.ZIP_DEFLATED) as self._telebot_zip:
                     for self._code in codes:
@@ -314,14 +314,18 @@ class TeleBot(telepot.helper.UserHandler):
 
             elif self._text == "rule":
                 if self._text_2 != None and "@@" in self._text_2:
-                    try:
-                        self._rule_list = self._text_2.split("@@")
+                    self._rule_list = self._text_2.split("@@")
+                    if self._rule_list[-1] != '':
                         for self._rule_key in self._rule_list[0:-1]:
                             if self._rule_key != '' and self._rule_key != '\n':
                                 rule_dict[self._rule_key] = self._rule_list[-1]
-                        self._answer = "Get rule!"
-                    except AttributeError:
-                        self._answer = "No avalible rule! You should use \"/rule KEY1@@KEY2@@KEYn@@ANSWER\" to set a rule."
+                    else:
+                        for self._rule_key in self._rule_list[0:-1]:
+                            try:
+                                rule_dict.pop(self._rule_key)
+                            except:
+                                pass
+                    self._answer = "Set rule!"
                 else:
                     self._answer = "No avalible rule! You should use \"/rule KEY1@@KEY2@@KEYn@@ANSWER\" to set a rule."
 
