@@ -299,11 +299,11 @@ class TeleBot(telepot.helper.UserHandler):
                     if self._rule_list[-1] != '':
                         for self._rule_key in self._rule_list[0:-1]:
                             if self._rule_key != '' and self._rule_key != '\n':
-                                rule_dict[self._rule_key] = self._rule_list[-1]
+                                rule_dict[self._rule_key.lower()] = self._rule_list[-1]
                     else:
                         for self._rule_key in self._rule_list[0:-1]:
                             try:
-                                rule_dict.pop(self._rule_key)
+                                rule_dict.pop(self._rule_key.lower())
                             except:
                                 pass
                     self._answer = "Set rule!"
@@ -323,7 +323,7 @@ class TeleBot(telepot.helper.UserHandler):
             else:
                 self._answers = ''
                 for key in rule_dict:
-                    if key in self._text_orig:
+                    if key in self._text_orig.lower():
                         if not rule_dict[key] in self._answers:
                             self._answers += rule_dict[key] + '\n'
                             self._answer = self._answers.rstrip('\n')
@@ -393,9 +393,8 @@ class TeleBot(telepot.helper.UserHandler):
             rule_dict = {}
 
         ## Journal.
-        if self._answer != None:
-            print("\033[33m>>>\033[0m %s\n\033[33mBot\033[0m: Closed an delegator with @\033[34m%s\033[0m by calling on_close()."%(self._now, self._username))
-            print("--------------------------------------------")
+        print("\033[33m>>>\033[0m %s\n\033[33mBot\033[0m: Closed an delegator with @\033[34m%s\033[0m by calling on_close()."%(self._now, self._username))
+        print("--------------------------------------------")
 
 
 ### Now it starts run.
@@ -432,13 +431,13 @@ if conf_rewrite:
 
 
 print("\033[7m############################################\033[0m")
-print("\033[7m#\033[0m")
-print("\033[7m#\033[0m \033[35mconfigfile\033[0m: %s"%(config_file))
-print("\033[7m#\033[0m \033[35mbotid\033[0m: %s"%(info["id"]))
-print("\033[7m#\033[0m \033[35musername\033[0m: %s"%(info["username"]))
-print("\033[7m#\033[0m \033[35mfirstname\033[0m: %s"%(info["first_name"]))
-print("\033[7m#\033[0m \033[35madminuser\033[0m: %s"%(ADMIN))
-print("\033[7m#\033[0m")
+print("\033[7m#\033[0m" + "  ".center(42) + "\033[7m#\033[0m")
+print("\033[7m#\033[0m" + ("\033[35mconfigfile\033[0m: %s"%(config_file)).center(51) + "\033[7m#\033[0m")
+print("\033[7m#\033[0m" + ("\033[35mbotid\033[0m: %s"%(info["id"])).center(51) + "\033[7m#\033[0m")
+print("\033[7m#\033[0m" + ("\033[35musername\033[0m: %s"%(info["username"])).center(51) + "\033[7m#\033[0m")
+print("\033[7m#\033[0m" + ("\033[35mfirstname\033[0m: %s"%(info["first_name"])).center(51) + "\033[7m#\033[0m")
+print("\033[7m#\033[0m" + ("\033[35madminuser\033[0m: %s"%(ADMIN)).center(51) + "\033[7m#\033[0m")
+print("\033[7m#\033[0m" + "  ".center(42) + "\033[7m#\033[0m")
 print("\033[7m############################################\033[0m")
 
 
