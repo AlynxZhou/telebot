@@ -394,7 +394,7 @@ class TeleBot(telepot.helper.UserHandler):
 
         ## Journal.
         if self._answer != None:
-            print("\033[33m>>>\033[0m %s\n\033[33mBot\033[0m: Close an delegator with @\033[34m%s\033[0m by calling on_close()."%(self._now, self._username))
+            print("\033[33m>>>\033[0m %s\n\033[33mBot\033[0m: Closed an delegator with @\033[34m%s\033[0m by calling on_close()."%(self._now, self._username))
             print("--------------------------------------------")
 
 
