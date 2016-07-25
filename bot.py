@@ -323,7 +323,7 @@ class TeleBot(telepot.helper.UserHandler):
             else:
                 self._answers = ''
                 for key in rule_dict:
-                    if key in self._text:
+                    if key in self._text_orig:
                         if not rule_dict[key] in self._answers:
                             self._answers += rule_dict[key] + '\n'
                             self._answer = self._answers.rstrip('\n')
