@@ -16,6 +16,16 @@ import argparse
 import subprocess
 
 ## Custom modules.
+files = [
+    "resource.py",
+    "ipcn.py",
+    "httpapi.py"
+]
+for filename in files:
+    if os.path.exists(filename) == False:
+        print("\033[46m\033[31mERROR\033[0m: No avaliable \"\033[32m%s\033[0m\" was found. Please reinstall telebot."%(filename))
+        exit()
+
 import resource
 import ipcn
 import httpapi
@@ -34,8 +44,8 @@ args = aparser.parse_args()
 
 
 now = str(datetime.datetime.now())
-print("A telegram bot program written by %s, ver %s."%(AUTHOR,VERSION))
-print("Starting bot at %s..."%(now))
+print("A telegram bot program written by \033[32m%s\033[0m, ver \033[32m%s\033[0m."%(AUTHOR,VERSION))
+print("Starting bot at \033[32m%s\033[0m..."%(now))
 
 
 ## Import telepot.
@@ -44,13 +54,13 @@ try:
     from telepot.delegate import per_from_id, create_open
     #from telepot.exception import TelepotException
 except ImportError:
-    print("Telepot api is lost...")
-    print("Installing requirement via \"$ sudo pip3 install telepot\"...")
+    print("\033[44m\033[33mWARNING\033[0m: Telepot api is lost...")
+    print("Installing requirement via \"\033[32m$ sudo pip3 install telepot\033[0m\"...")
     try:
         subprocess.check_output("sudo pip3 install telepot", shell=True, stderr=subprocess.STDOUT, universal_newlines=True)
     except:
-        print("ERROR: Install failed.")
-        print("Maybe you should run \"$ sudo pip3 install telepot\" by yourself?")
+        print("\033[46m\033[31mERROR\033[0m: Install failed.")
+        print("Maybe you should run \"\033[32m$ sudo pip3 install telepot\033[0m\" by yourself?")
         exit()
 
     import telepot
@@ -63,10 +73,9 @@ conf_rewrite = False
 
 config_file = args.config
 if config_file == None:
-    print("\nWARNING: It seems that you haven\'t choose a config file.")
-    print("You are expected to make a config file like YOURBOTNAME.json, which contains you bot token from the BotFather, the admin user name and the Tuling Chat API Key, then run the program again by \"$ python3 ./bot.py YOURBOTNAME.json\".")
+    print("\033[44m\033[33mWARNING\033[0m: It seems that you haven\'t choose a config file.")
+    print("You are expected to make a config file like YOURBOTNAME.json, which contains you bot token from the BotFather, the admin user name and the Tuling Chat API Key, then run the program again by \"\033[32m$ python3 ./bot.py YOURBOTNAME.json\033[0m\".")
     config_file = input("However, you can also type your config file here and then press [ENTER] to make it continue: ")
-    print('\n')
 
 try:
     with open(config_file) as config_open:
@@ -74,42 +83,34 @@ try:
     TOKEN = bot_json["token"]
     ADMIN = bot_json["admin"]
     tuling_api_key = bot_json["tuling_api_key"]
-except FileNotFoundError:
+except:
     TOKEN = None
     ADMIN = None
     tuling_api_key = None
-    print("\nWarning: No avaliable \"%s\" was found."%(config_file))
+    print("\033[44m\033[33mWARNING\033[0m: No avaliable \"\033[32m%s\033[0m\" was found."%(config_file))
     print("Writing a new config file with following settings...")
     conf_rewrite = True
 
 
 if TOKEN == None or TOKEN == '' or TOKEN == "123456789:ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHI":
-    print("\nWARNING: It seems that you doesn't have an avalible bot token.")
+    print("\033[44m\033[33mWARNING\033[0m: It seems that you doesn't have an avalible bot token.")
     print("You are expected to get a bot token from the BotFather. It's a string on behalf of your bot.")
-    print("If you haven\'t got it, you should ask the BotFather, and run the program again by \"$ python3 ./bot.py YOURBOTNAME.json\".")
+    print("If you haven\'t got it, you should ask the BotFather, and run the program again by \"\033[32m$ python3 ./bot.py YOURBOTNAME.json\033[0m\".")
     TOKEN = input("However, you can also type your bot token here and then press [ENTER] to make it continue: ")
-    print('\n')
     conf_rewrite = True
 
 if ADMIN == None or ADMIN == '' or ADMIN == "Nobody":
-    print("\nWARNING: It seems that you haven\'t choose an admin user.")
+    print("\033[44m\033[33mWARNING\033[0m: It seems that you haven\'t choose an admin user.")
     print("You are expected to choose an adminuser to use some advanced functions.")
-    print("The admin user is usually yourself, so you should find your username which maybe also called nickname in the Settings of Telegram, notice the \'@\' is not a part of your username. If you haven\'t set it, you should set a username, and run the program again by \"$ python3 ./bot.py YOURBOTNAME.json\".")
+    print("The admin user is usually yourself, so you should find your username which maybe also called nickname in the Settings of Telegram, notice the \'\033[32m@\033[0m\' is not a part of your username. If you haven\'t set it, you should set a username, and run the program again by \"\033[32m$ python3 ./bot.py YOURBOTNAME.json\033[0m\".")
     ADMIN = input("However, you can also type your admin user name here and then press [ENTER] to make it continue: ")
-    print('\n')
     conf_rewrite = True
 
 if tuling_api_key == None or tuling_api_key == '' or tuling_api_key == "get_it_from_tuling123.com":
-    print("\nWARNING: It seems that you haven\'t set a Tuling Chat Api Key.")
+    print("\033[44m\033[33mWARNING\033[0m: It seems that you haven\'t set a Tuling Chat Api Key.")
     print("If no key the program will fallback to Qingyunke Chat Api, which doesn\'t need a key.")
-    print("For a better chat experience, please go to http://turling123.com, sign up for a key, and run the program again by \"$ python3 ./bot.py YOURBOTNAME.json\".")
-    print('\n')
+    print("For a better chat experience, please go to \033[4mhttp://turling123.com/\033[0m, sign up for a key, and run the program again by \"\033[32m$ python3 ./bot.py YOURBOTNAME.json\033[0m\".")
     tuling_api_key == None
-
-
-if conf_rewrite:
-    with open(config_file, 'w') as config_open:
-        config_open.write(json.dumps({"token": TOKEN, "admin": ADMIN, "tuling_api_key": "get_it_from_tuling123.com"}, ensure_ascii=False))
 
 
 ### Check directories.
@@ -130,18 +131,8 @@ joke_list = resource.file_to_list("assets/joke.txt")
 fuck_list = resource.fuck_list
 code_list = resource.code_list
 #talk_list = resource.file_to_list("assets/talk.txt")
-
-try:
-    with open("assets/redo.json") as redo_open:
-        redo_dict = json.loads(redo_open.read(), encoding="utf-8")
-except:
-    redo_dict = {}
-
-try:
-    with open("assets/rule.json") as rule_open:
-        rule_dict = json.loads(rule_open.read(), encoding="utf-8")
-except:
-    rule_dict = {}
+redo_dict = resource.json_to_dict("assets/redo.json")
+rule_dict = resource.json_to_dict("assets/rule.json")
 
 
 ## Define an expection.
@@ -292,6 +283,8 @@ class TeleBot(telepot.helper.UserHandler):
                     self._answer = None
 
             elif self._text == "code":
+                resource.dict_to_json("assets/redo.json", redo_dict)
+                resource.dict_to_json("assets/rule.json", rule_dict)
                 ## Zip file.
                 with zipfile.ZipFile('telebot.zip', 'w', zipfile.ZIP_DEFLATED) as self._telebot_zip:
                     for self._code in code_list:
@@ -315,7 +308,14 @@ class TeleBot(telepot.helper.UserHandler):
                                 pass
                     self._answer = "Set rule!"
                 else:
-                    self._answer = "No avalible rule! You should use \"/rule KEY1@@KEY2@@KEYn@@ANSWER\" to set a rule."
+                    if len(rule_dict) != 0:
+                        self._answers = "Total rules:\n"
+                        for key in rule_dict:
+                            self._answers += key + " => " + rule_dict[key] + '\n'
+                        self._answer = self._answers.rstrip('\n')
+                    else:
+                        self._answer = "No rule."
+                resource.dict_to_json("assets/rule.json", rule_dict)
 
             elif self._text == "redo":
                 self._answer = "Sorry, but no your last message was found."
@@ -344,9 +344,9 @@ class TeleBot(telepot.helper.UserHandler):
                 ## Send result.
                 bot.sendChatAction(chat_id, "typing")
                 bot.sendMessage(chat_id, self._answer, reply_to_message_id=self._msg_id, parse_mode=self._parse, disable_web_page_preview=self._diswebview)
-                print(">>> %s\nBot: Got text \"%s\" from @%s and answered with \"%s\"."%(self._now, self._text_log, self._username, self._answer))
+                print("\033[33m>>>\033[0m %s\n\033[33mBot\033[0m: Got text \"\033[32m%s\033[0m\" from @\033[34m%s\033[0m and answered with \"\033[32m%s\033[0m\"."%(self._now, self._text_log, self._username, self._answer))
             #else:
-                #print(">>> %s\nBot: Got text \"%s\" from @%s."%(self._now, self._text_log, self._username))
+                #print(""\033[33m>>>\033[0m %s\n\033[33mBot\033[0m: Got text \"\033[32m%s\033[0m\" from @\033[32m%s\033[0m."%(self._now, self._text_log, self._username))
                 print("--------------------------------------------")
             #print("--------------------------------------------")
 
@@ -393,7 +393,7 @@ class TeleBot(telepot.helper.UserHandler):
             rule_dict = {}
 
         ## Journal.
-        print(">>> %s\nBot: Close an delegator with @%s by calling on_close()."%(self._now, self._username))
+        print("\033[33m>>>\033[0m %s\n\033[33mBot\033[0m: Close an delegator with @\033[34m%s\033[0m by calling on_close()."%(self._now, self._username))
         print("--------------------------------------------")
 
 
@@ -418,32 +418,36 @@ try:
 except KeyboardInterrupt:
     exit()
 except:
-    print("ERROR: Your token is invaild.")
+    conf_rewrite = False
+    print("\033[46m\033[31mERROR\033[0m: Your token is invaild.")
     print("Please check what your config file \"%s\" contains."%(config_file))
-    print("It should contain your token string in the token line, without anything else.")
+    print("It should contain your token string in the token line.")
     print("Or you may need to check your network and system time, you can\'t connect to the bot server if your time is wrong or your network is down, and your bot token may also be considered invaild by the program.")
     exit()
 
-print("############################################")
-print("#")
-print("# configfile: %s"%(config_file))
-print("# botid: %s"%(info["id"]))
-print("# username: %s"%(info["username"]))
-print("# firstname: %s"%(info["first_name"]))
-print("# adminuser: %s"%(ADMIN))
-print("#")
-print("############################################")
+if conf_rewrite:
+    with open(config_file, 'w') as config_open:
+        config_open.write(json.dumps({"token": TOKEN, "admin": ADMIN, "tuling_api_key": "get_it_from_tuling123.com"}, ensure_ascii=False))
 
 
-print("Bot: I am listening...")
+print("\033[7m############################################\033[0m")
+print("\033[7m#\033[0m")
+print("\033[7m#\033[0m \033[35mconfigfile\033[0m: %s"%(config_file))
+print("\033[7m#\033[0m \033[35mbotid\033[0m: %s"%(info["id"]))
+print("\033[7m#\033[0m \033[35musername\033[0m: %s"%(info["username"]))
+print("\033[7m#\033[0m \033[35mfirstname\033[0m: %s"%(info["first_name"]))
+print("\033[7m#\033[0m \033[35madminuser\033[0m: %s"%(ADMIN))
+print("\033[7m#\033[0m")
+print("\033[7m############################################\033[0m")
+
+
+print("\033[33mBot\033[0m: I am listening...")
 print("--------------------------------------------")
 
 
 try:
     bot.message_loop(run_forever=True)
 except KeyboardInterrupt:
-    with open("assets/redo.json", 'w') as redo_open:
-        redo_open.write(json.dumps(redo_dict, ensure_ascii=False))
-    with open("assets/rule.json", 'w') as rule_open:
-        rule_open.write(json.dumps(rule_dict, ensure_ascii=False))
+    resource.dict_to_json("assets/redo.json", redo_dict)
+    resource.dict_to_json("assets/rule.json", rule_dict)
     exit()

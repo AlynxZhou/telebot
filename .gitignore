@@ -1,5 +1,5 @@
-# My config.
-ShaX*Bot.json
+# Bot config.
+*.json
 
 # Code zip.
 telebot.zip
