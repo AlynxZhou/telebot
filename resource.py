@@ -7,11 +7,11 @@ import os
 import json
 
 def check_dir(directory):
-    if os.path.exists(directory) == False:
+    if not os.path.exists(directory):
         os.mkdir(directory)
 
 def check_file(filename):
-    if os.path.exists(filename) == False:
+    if not os.path.exists(filename):
         print("\033[46m\033[31mERROR\033[0m: No avaliable \"\033[32m%s\033[0m\" was found. Please reinstall telebot."%(filename))
         exit()
 
