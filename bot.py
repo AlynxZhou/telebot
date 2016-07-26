@@ -22,7 +22,7 @@ files = [
     "httpapi.py"
 ]
 for filename in files:
-    if os.path.exists(filename) == False:
+    if not os.path.exists(filename):
         print("\033[46m\033[31mERROR\033[0m: No avaliable \"\033[32m%s\033[0m\" was found. Please reinstall telebot."%(filename))
         exit()
 
