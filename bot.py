@@ -252,7 +252,7 @@ class TeleBot(telepot.helper.UserHandler):
                 """
 
             elif self._text == "count":
-                self._answer = self._count["chat"]
+                self._answer = self._count["chat"] + 1
 
             elif self._text == "ipcn":
                 if self._username == ADMIN:
@@ -342,6 +342,7 @@ class TeleBot(telepot.helper.UserHandler):
                 ## Store redo message.
                 #global redo_dict
                 redo_dict[self._username] = self._text_orig
+                self._count["chat"] += 1
                 ## Send result.
                 bot.sendChatAction(chat_id, "typing")
                 bot.sendMessage(chat_id, self._answer, reply_to_message_id=self._msg_id, parse_mode=self._parse, disable_web_page_preview=self._diswebview)
