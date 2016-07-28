@@ -159,7 +159,7 @@ class TeleBot(telepot.helper.UserHandler):
         global redo_dict
         global rule_dict
 
-        self._count["chat"] += 1
+
         self._parse = None
         self._diswebview = None
         self._file = None
@@ -321,12 +321,13 @@ class TeleBot(telepot.helper.UserHandler):
                 self._answer = "Sorry, but no your last message was found."
 
             else:
-                self._answers = ''
-                for key in rule_dict:
-                    if key in self._text_orig.lower():
-                        if not rule_dict[key] in self._answers:
-                            self._answers += rule_dict[key] + '\n'
-                            self._answer = self._answers.rstrip('\n')
+                if random.random() <= 0.5:
+                    self._answers = ''
+                    for key in rule_dict:
+                        if key in self._text_orig.lower():
+                            if not rule_dict[key] in self._answers:
+                                self._answers += rule_dict[key] + '\n'
+                                self._answer = self._answers.rstrip('\n')
 
             # Return.
             if self._file != None:
