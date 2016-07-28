@@ -321,7 +321,7 @@ class TeleBot(telepot.helper.UserHandler):
                 self._answer = "Sorry, but no your last message was found."
 
             else:
-                if random.random() <= 0.5:
+                if random.random() <= 0.7:
                     self._answers = ''
                     for key in rule_dict:
                         if key in self._text_orig.lower():
