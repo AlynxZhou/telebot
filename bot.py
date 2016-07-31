@@ -162,17 +162,19 @@ class TeleBot(telepot.helper.UserHandler):
 
         self._parse = None
         self._diswebview = None
-        self._file = None
+        self._upload = None
         self._answer = None
+        self._download = None
+        self._refuse = False
 
-        content_type, chat_type, chat_id = telepot.glance(msg)
+        self._content_type, self._chat_type, self._chat_id = telepot.glance(msg)
         self._first_name = msg["from"]["first_name"]
         self._username = msg["from"]["username"]
         self._user_id = msg["from"]["id"]
         self._msg_id = msg["message_id"]
 
         ## To judge if the content is a text and deal with it.
-        if content_type == "text":
+        if self._content_type == "text":
             self._text_orig = self._text_log = msg["text"]
 
             ## Redo message?
@@ -275,7 +277,7 @@ class TeleBot(telepot.helper.UserHandler):
             elif self._text == "send":
                 if self._text_2 != None:
                     if self._username == ADMIN:
-                        self._file = self._text_2
+                        self._upload = self._text_2
                         self._answer = "Sent."
                     else:
                         self._answer = "Sorry, you are not allowed to get a file in order to keep the bot safe."
@@ -289,7 +291,7 @@ class TeleBot(telepot.helper.UserHandler):
                 with zipfile.ZipFile('telebot.zip', 'w', zipfile.ZIP_DEFLATED) as self._telebot_zip:
                     for self._code in code_list:
                         self._telebot_zip.write(self._code, "telebot" + os.sep + self._code)
-                self._file = "telebot.zip"
+                self._upload = "telebot.zip"
                 self._answer = "Sent code.\nYou should extract it to your directories and get your bot token. Then run \"$ python3 ./bot.py YOURBOTNAME.json\".\nFor more information, click <a href=\"https://github.com/S-X-ShaX/telebot/\">My TeleBot on GitHub</a>."
                 self._parse = "HTML"
 
@@ -329,59 +331,74 @@ class TeleBot(telepot.helper.UserHandler):
                                 self._answers += rule_dict[key] + '\n'
                                 self._answer = self._answers.rstrip('\n')
 
+
+        ## To judge if the content is a photo.
+        elif self._content_type == "photo":
+            if self._chat_type == "private":
+                if self._username == ADMIN:
+                    self._download = msg["photo"][-1]["file_id"]
+                    self._document = "Image/IMG_" + datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S") + ".jpg"
+                    self._answer = "Got photo IMG_%s.jpg in Image/."%(self._document)
+                else:
+                    self._refuse = True
+                    self._answer = "Sorry, only the admin user can save a photo on the bot."
+
+
+        ## To judge if the content is a document.
+        elif self._content_type == "document":
+            if self._chat_type == "private":
+                if self._username == ADMIN:
+                    self._download = msg["document"]["file_id"]
+                    self._document = "File/" + msg["document"]["file_name"]
+                    self._answer = "Got file %s in File/."%(self._document)
+                else:
+                    self._refuse = True
+                    self._answer = "Sorry, only the admin user can save a file on the bot."
+
+
             # Return.
-            if self._file != None:
+            if self._upload != None:
                 try:
-                    with open(self._file, 'rb') as self._document:
-                        bot.sendChatAction(chat_id, "upload_document")
-                        bot.sendDocument(chat_id, self._document)
+                    with open(self._upload, 'rb') as self._filename:
+                        bot.sendChatAction(self._chat_id, "upload_document")
+                        bot.sendDocument(self._chat_id, self._filename)
                 except:
                     self._answer = "Upload failed."
 
+            if self._download != None:
+                try:
+                    bot.downloadFile(self._download, self._document)
+                except:
+                    self._answer = "Download failed."
+
             if self._answer != None:
-                ## Store redo message.
-                #global redo_dict
-                redo_dict[self._username] = self._text_orig
                 self._count["chat"] += 1
                 ## Send result.
-                bot.sendChatAction(chat_id, "typing")
-                bot.sendMessage(chat_id, self._answer, reply_to_message_id=self._msg_id, parse_mode=self._parse, disable_web_page_preview=self._diswebview)
-                print("\033[33m>>>\033[0m %s\n\033[33mBot\033[0m: Got text \"\033[32m%s\033[0m\" from @\033[34m%s\033[0m and answered with \"\033[32m%s\033[0m\"."%(self._now, self._text_log, self._username, self._answer))
-            #else:
-                #print(""\033[33m>>>\033[0m %s\n\033[33mBot\033[0m: Got text \"\033[32m%s\033[0m\" from @\033[32m%s\033[0m."%(self._now, self._text_log, self._username))
+                if self._content_type == "text":
+                    ## Store redo message.
+                    #global redo_dict
+                    redo_dict[self._username] = self._text_orig
+                    bot.sendChatAction(self._chat_id, "typing")
+                    bot.sendMessage(self._chat_id, self._answer, reply_to_message_id=self._msg_id, parse_mode=self._parse, disable_web_page_preview=self._diswebview)
+                    print("\033[33m>>>\033[0m %s\n\033[33mBot\033[0m: Got text \"\033[32m%s\033[0m\" from @\033[34m%s\033[0m and answered with \"\033[32m%s\033[0m\"."%(self._now, self._text_log, self._username, self._answer))
+
+                elif self._content_type == "photo":
+                    bot.sendChatAction(self._chat_id, "typing")
+                    bot.sendMessage(self._chat_id, self._answer, reply_to_message_id=self._msg_id, parse_mode=self._parse, disable_web_page_preview=self._diswebview)
+                    if not self._refuse:
+                        print("\033[33m>>>\033[0m %s\n\033[33mBot\033[0m: Got photo \"\033[32m%s\033[0m\" from @\033[34m%s\033[0m and answered with \"\033[32m%s\033[0m\"."%(self._now, self._document, self._username, self._answer))
+                    else:
+                        print("\033[33m>>>\033[0m %s\n\033[33mBot\033[0m: Refused to save a photo from from @\033[34m%s\033[0m and answered with \"\033[32m%s\033[0m\"."%(self._now, self._username, self._answer))
+
+                elif self._content_type == "document":
+                    bot.sendChatAction(self._chat_id, "typing")
+                    bot.sendMessage(self._chat_id, self._answer, reply_to_message_id=self._msg_id, parse_mode=self._parse, disable_web_page_preview=self._diswebview)
+                    if not self._refuse:
+                        print("\033[33m>>>\033[0m %s\n\033[33mBot\033[0m: Got photo \"\033[32m%s\033[0m\" from @\033[34m%s\033[0m and answered with \"\033[32m%s\033[0m\"."%(self._now, self._document, self._username, self._answer))
+                    else:
+                        print("\033[33m>>>\033[0m %s\n\033[33mBot\033[0m: Refused to save a photo from from @\033[34m%s\033[0m and answered with \"\033[32m%s\033[0m\"."%(self._now, self._username, self._answer))
                 print("--------------------------------------------")
-            #print("--------------------------------------------")
 
-        """
-        ## To judge if the content is a photo.
-        elif content_type == "photo":
-            file_id = msg["photo"][-1]["file_id"]
-            if chat_type == "private":
-                if username == ADMIN:
-                    now = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
-                    bot.downloadFile(file_id, "Image/IMG_%s.jpg"%(now))
-                    bot.sendMessage(chat_id, "Got photo IMG_%s.jpg in Image/."%(now), reply_to_message_id=msg_id)
-                    print("Bot: Got photo Image/IMG_%s.jpg from @%s."%(now, username))
-                else:
-                    answer = "Sorry, only the admin user can save a photo on the bot."
-                    bot.sendMessage(chat_id, "%s"%(answer), reply_to_message_id=msg_id)
-                    print("Bot: Refused save a photo from @%s."%(username))
-
-
-        elif content_type == "document":
-            file_id = msg["document"]["file_id"]
-            file_name = msg["document"]["file_name"]
-            if chat_type == "private":
-                if username == ADMIN:
-                    bot.downloadFile(file_id,  "File/%s"%(file_name))
-                    bot.sendMessage(chat_id, "Got file %s in File/."%(file_name), reply_to_message_id=msg_id)
-                    print("Bot: Got file File/%s from @%s."%(file_name, username))
-                else:
-                    answer = "Sorry, only the admin user can save a file on the bot."
-                    bot.sendMessage(chat_id, "%s"%(answer), reply_to_message_id=msg_id)
-                    print("Bot: Refused save a file from @%s."%(username))
-        print("--------------------------------------------")
-        """
 
     def on_close(self, exception):
         self._now = str(datetime.datetime.now())
