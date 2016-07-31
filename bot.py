@@ -309,9 +309,9 @@ class TeleBot(telepot.helper.UserHandler):
                     self._answer = "Set rule!"
                 else:
                     if len(rule_dict) != 0:
-                        self._answers = "Total rules:\n"
-                        for key in rule_dict:
-                            self._answers += key + " => " + rule_dict[key] + '\n'
+                        self._answers = "Total rules (case insensitive):\n"
+                        for key in sorted(rule_dict, key=str.lower):
+                            self._answers += (key + " => " + rule_dict[key] + '\n')
                         self._answer = self._answers.rstrip('\n')
                     else:
                         self._answer = "No rule."
@@ -428,9 +428,9 @@ except:
     exit()
 
 if conf_rewrite:
-    with open(config_file, 'w') as config_open:
-        config_open.write(json.dumps({"token": TOKEN, "admin": ADMIN, "tuling_api_key": "get_it_from_tuling123.com"}, ensure_ascii=False))
-
+    #with open(config_file, 'w') as config_open:
+        #config_open.write(json.dumps({"token": TOKEN, "admin": ADMIN, "tuling_api_key": "get_it_from_tuling123.com"}, ensure_ascii=False))
+    resource.dict_to_json(config_file, {"token": TOKEN, "admin": ADMIN, "tuling_api_key": "get_it_from_tuling123.com"})
 
 print("\033[7m############################################\033[0m")
 print("\033[7m#\033[0m" + "  ".center(42) + "\033[7m#\033[0m")
