@@ -16,8 +16,11 @@ Audio/*
 # File
 File/*
 
-# Python Cache
+# Python cache
 __pycache__
+
+# Emacs cache
+.\#*
 
 # Custom file
 assets/rule.json
