@@ -1,11 +1,12 @@
 #!/bin/bash
 
-#echo "{}" > assets/rule.json
-
 git add .
 
-git commit -m "A commit."
+if [ -n "${*}" ]; then
+    git commit -m "${*}"
+else
+    git commit -m "A commit."
+fi
 
 git push -u origin master
 
-echo ${1}
