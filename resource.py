@@ -2,6 +2,8 @@
 #-*- coding: utf-8 -*-
 
 ### Filename: prepare.py
+## Created by 请叫我喵 | S-X-ShaX
+# sxshax@gmail.com, http://sxshax.xyz/
 
 import os
 import json
