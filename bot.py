@@ -472,3 +472,5 @@ except KeyboardInterrupt:
     resource.dict_to_json("assets/redo.json", redo_dict)
     resource.dict_to_json("assets/rule.json", rule_dict)
     exit()
+except:
+    pass
