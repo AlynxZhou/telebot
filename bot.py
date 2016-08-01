@@ -254,7 +254,7 @@ class TeleBot(telepot.helper.UserHandler):
                 """
 
             elif self._text == "count":
-                self._answer = self._count["chat"] + 1
+                self._answer = "Total chat: %d"%(self._count["chat"] + 1)
 
             elif self._text == "ipcn":
                 if self._username == ADMIN:
@@ -338,7 +338,7 @@ class TeleBot(telepot.helper.UserHandler):
                 if self._username == ADMIN:
                     self._download = msg["photo"][-1]["file_id"]
                     self._document = "Image/IMG_" + datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S") + ".jpg"
-                    self._answer = "Got photo IMG_%s.jpg in Image/."%(self._document)
+                    self._answer = "Got photo \"%s\"."%(self._document)
                 else:
                     self._refuse = True
                     self._answer = "Sorry, only the admin user can save a photo on the bot."
@@ -350,7 +350,7 @@ class TeleBot(telepot.helper.UserHandler):
                 if self._username == ADMIN:
                     self._download = msg["document"]["file_id"]
                     self._document = "File/" + msg["document"]["file_name"]
-                    self._answer = "Got file %s in File/."%(self._document)
+                    self._answer = "Got document \"%s\"."%(self._document)
                 else:
                     self._refuse = True
                     self._answer = "Sorry, only the admin user can save a file on the bot."
@@ -396,7 +396,7 @@ class TeleBot(telepot.helper.UserHandler):
                 bot.sendChatAction(self._chat_id, "typing")
                 bot.sendMessage(self._chat_id, self._answer, reply_to_message_id=self._msg_id, parse_mode=self._parse, disable_web_page_preview=self._diswebview)
                 if not self._refuse:
-                    print("\033[33m>>>\033[0m %s\n\033[33mBot\033[0m: Got photo \"\033[32m%s\033[0m\" from @\033[34m%s\033[0m and answered with \"\033[32m%s\033[0m\"."%(self._now, self._document, self._username, self._answer))
+                    print("\033[33m>>>\033[0m %s\n\033[33mBot\033[0m: Got document \"\033[32m%s\033[0m\" from @\033[34m%s\033[0m and answered with \"\033[32m%s\033[0m\"."%(self._now, self._document, self._username, self._answer))
                 else:
                     print("\033[33m>>>\033[0m %s\n\033[33mBot\033[0m: Refused to save a document from from @\033[34m%s\033[0m and answered with \"\033[32m%s\033[0m\"."%(self._now, self._username, self._answer))
             print("--------------------------------------------")
