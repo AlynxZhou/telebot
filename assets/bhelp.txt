@@ -1,6 +1,6 @@
 ### DO NOT DELETE THIS LINE! PLEASE KEEP IT IN LINE 1! This file contains a help list for user, you can write any help you like after the following $.
-$<strong>Help List</strong>
-You can use following word to communicate with me:
+$<strong>Help List:</strong>
+You can use following word to communicate with me.
 <em>/start</em> - To begin a talk.
 <em>/help</em> - I'll show you a help list.
 <em>/hello</em> - I'll say a random greeting to you.

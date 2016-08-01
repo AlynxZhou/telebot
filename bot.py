@@ -256,7 +256,8 @@ class TeleBot(telepot.helper.UserHandler):
                 """
 
             elif self._text == "count":
-                self._answer = "Total chat: %d"%(self._count["chat"] + 1)
+                self._answer = "<strong>Total chat:</strong>\n%d"%(self._count["chat"] + 1)
+                self._parse = "HTML"
 
             elif self._text == "ipcn":
                 if self._username == ADMIN:
@@ -268,7 +269,8 @@ class TeleBot(telepot.helper.UserHandler):
                 if self._text_2 != None:
                     if self._username == ADMIN:
                         try:
-                            self._answer = subprocess.check_output(self._text_2, shell=True, stderr=subprocess.STDOUT, universal_newlines=True)
+                            self._answer = "<strong>Result:</strong>\n" + subprocess.check_output(self._text_2, shell=True, stderr=subprocess.STDOUT, universal_newlines=True)
+                            self._parse = "HTML"
                         except subprocess.CalledProcessError:
                             self._answer = "Sorry, invalid command."
                     else:
@@ -313,10 +315,11 @@ class TeleBot(telepot.helper.UserHandler):
                     self._answer = "Set rule!"
                 else:
                     if len(rule_dict) != 0:
-                        self._answers = "Total rules (case insensitive):\n"
+                        self._answers = "<strong>Total rules (case insensitive):</strong>\n"
                         for key in sorted(rule_dict, key=str.lower):
-                            self._answers += (key + " => " + rule_dict[key] + '\n')
+                            self._answers += (key + " <em>=></em> " + rule_dict[key] + '\n')
                         self._answer = self._answers.rstrip('\n')
+                        self._parse = "HTML"
                     else:
                         self._answer = "No rule."
                 resource.dict_to_json("assets/rule.json", rule_dict)
@@ -340,7 +343,8 @@ class TeleBot(telepot.helper.UserHandler):
                 if self._username == ADMIN:
                     self._download = msg["photo"][-1]["file_id"]
                     self._document = "Image/IMG_" + datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S") + ".jpg"
-                    self._answer = "Got photo \"%s\"."%(self._document)
+                    self._answer = "Got photo \"<em>%s</em>\"."%(self._document)
+                    self._parse = "HTML"
                 else:
                     self._refuse = True
                     self._answer = "Sorry, only the admin user can save a photo on the bot."
@@ -352,7 +356,8 @@ class TeleBot(telepot.helper.UserHandler):
                 if self._username == ADMIN:
                     self._download = msg["document"]["file_id"]
                     self._document = "File/" + msg["document"]["file_name"]
-                    self._answer = "Got document \"%s\"."%(self._document)
+                    self._answer = "Got document \"<em>%s</em>\"."%(self._document)
+                    self._parse = "HTML"
                 else:
                     self._refuse = True
                     self._answer = "Sorry, only the admin user can save a document on the bot."
