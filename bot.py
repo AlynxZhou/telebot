@@ -353,7 +353,7 @@ class TeleBot(telepot.helper.UserHandler):
                     self._answer = "Got document \"%s\"."%(self._document)
                 else:
                     self._refuse = True
-                    self._answer = "Sorry, only the admin user can save a file on the bot."
+                    self._answer = "Sorry, only the admin user can save a document on the bot."
 
 
         # Return.
