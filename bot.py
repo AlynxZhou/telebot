@@ -260,10 +260,13 @@ class TeleBot(telepot.helper.UserHandler):
                 self._parse = "HTML"
 
             elif self._text == "ipcn":
-                if self._username == ADMIN:
-                    self._answer = ipcn.get_ip()
+                if self._chat_type == "private":
+                    if self._username == ADMIN:
+                        self._answer = ipcn.get_ip()
+                    else:
+                        self._answer = "Sorry, you are not allowed to obtain the ip address in order to keep the bot safe."
                 else:
-                    self._answer = "Sorry, you are not allowed to obtain the ip address in order to keep the bot safe."
+                    self._answer = "Sorry, you should obtain the ip address via private chat in order to keep the bot safe."
 
             elif self._text == "cmd":
                 if self._text_2 != None:
