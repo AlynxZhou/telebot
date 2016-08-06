@@ -63,3 +63,38 @@ code_list = [
     "example_bot.json",
     "README.md"
 ]
+
+sticker_dict = {
+    '😏': "BQADBQAD8wADLKMJAwIAASAwWY6tcQI",
+    '😆': "BQADBQAD9wADLKMJA8ZcQcFMToG0Ag",
+    '😈': "BQADBQAEAQACLKMJA3-06f6jb96LAg",
+    '😨': "BQADBQADKwADpgZdBmTxGppaYRBuAg",
+    '😅': "BQADBQADMwADpgZdBpqFuimq1w5hAg",
+    '😱': "BQADBQADNQADpgZdBmKVEXNJr2kaAg",
+    '😒': "BQADBQADNwADpgZdBhcQ3HscfB5lAg",
+    '😎': "BQADBQADOQADpgZdBl8cN3R575QyAg",
+    '😡': "BQADBQADOwADpgZdBoLZI9Y7COR9Ag",
+    '😂': "BQADBQADPQADpgZdBk7bfJ2yYUyYAg",
+    '😐': "BQADBQADPwADpgZdBo9txTncldVUAg",
+    '😓': "BQADBQADQQADpgZdBpwl1GACX9VfAg",
+    '😌': "BQADAQAD2QADvDyABZvpsisEqR7kAg",
+    '☺️': "BQADAQAD2wADvDyABW9CLusYOiCoAg",
+    '😝': "BQADAQAD-QADvDyABW4uCIg0LKHRAg",
+    '😏': "BQADAQAD-wADvDyABXXfezhl0kIjAg",
+    '😚': "BQADAQADEgEAArw8gAWXT_Qf4ljrcAI",
+    '😮': "BQADAQADGgEAArw8gAVWAryCbQ5_VgI",
+    '😀': "BQADAQADGAEAArw8gAUni8NOF1AX2wI",
+    '😦': "BQADAQADzQADvDyABYJGrUt7qIfmAg"
+}
+
+red_sticker_dict = {
+    '😈': "BQADAQAD8QADvDyABUxkJzm7ogVbAg",
+    '😡': "BQADAQAD9QADvDyABWyO3YV_OpA6Ag",
+    '😤': "BQADAQAD0wADvDyABWaQlvbgXycbAg",
+    '😈': "BQADBQADGQQAAkKpAAEFIaGohi4vhFoC",
+    '😡': "BQADBQADFwQAAkKpAAEF7ptGl5jK0ykC",
+    '😈': "BQADBQAEAQACLKMJA3-06f6jb96LAg",
+    '😨': "BQADBQADKwADpgZdBmTxGppaYRBuAg",
+    '😎': "BQADBQADOQADpgZdBl8cN3R575QyAg",
+    '😱': "BQADBQADNQADpgZdBmKVEXNJr2kaAg"
+}

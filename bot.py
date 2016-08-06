@@ -161,15 +161,16 @@ class TeleBot(telepot.helper.UserHandler):
         global redo_dict
         global rule_dict
 
-
         self._parse = None
         self._diswebview = None
+        self._sticker = None
         self._upload = None
-        self._answer = None
         self._download = None
+        self._answer = None
         self._refuse = False
 
         self._content_type, self._chat_type, self._chat_id = telepot.glance(msg)
+
         self._first_name = msg["from"]["first_name"]
         self._username = msg["from"]["username"]
         self._user_id = msg["from"]["id"]
@@ -318,7 +319,7 @@ class TeleBot(telepot.helper.UserHandler):
                     self._answer = "Set rule!"
                 else:
                     if len(rule_dict) != 0:
-                        self._answers = "<strong>Total rules (case insensitive):</strong>\n"
+                        self._answers = "<strong>Total rules:</strong>\nFollowings are case insensitive.\n"
                         for key in sorted(rule_dict, key=str.lower):
                             self._answers += (key + " <em>=></em> " + rule_dict[key] + '\n')
                         self._answer = self._answers.rstrip('\n')
@@ -338,7 +339,20 @@ class TeleBot(telepot.helper.UserHandler):
                             if not rule_dict[key] in self._answers:
                                 self._answers += rule_dict[key] + '\n'
                                 self._answer = self._answers.rstrip('\n')
+                else:
+                    self._answer = random.choice(list(resource.sticker_dict.keys()))
+                    self._sticker = resource.sticker_dict[self._answer]
 
+
+        ## To judge if the content is a sticker.
+        elif self._content_type == "sticker":
+            self._sticker_emoji = msg["sticker"]["emoji"]
+            self._sticker_id = msg["sticker"]["file_id"]
+            #print("\'%s\': \"%s\","%(self._sticker_emoji, self._sticker_id))
+            if (self._sticker_emoji, self._sticker_id) in resource.red_sticker_dict.items():
+                self._answer = "红脸的关公战长沙！"
+            #else:
+                #print("\'%s\': \"%s\","%(self._sticker_emoji, self._sticker_id))
 
         ## To judge if the content is a photo.
         elif self._content_type == "photo":
@@ -367,6 +381,10 @@ class TeleBot(telepot.helper.UserHandler):
 
 
         # Return.
+        if self._sticker != None:
+            bot.sendChatAction(self._chat_id, "typing")
+            bot.sendSticker(self._chat_id, self._sticker, disable_notification=None, reply_to_message_id=None, reply_markup=None)
+
         if self._upload != None:
             try:
                 with open(self._upload, 'rb') as self._filename:
@@ -391,8 +409,14 @@ class TeleBot(telepot.helper.UserHandler):
                 redo_dict[self._username] = self._text_orig
 
                 bot.sendChatAction(self._chat_id, "typing")
-                bot.sendMessage(self._chat_id, self._answer, reply_to_message_id=self._msg_id, parse_mode=self._parse, disable_web_page_preview=self._diswebview)
+                if self._sticker == None:
+                    bot.sendMessage(self._chat_id, self._answer, reply_to_message_id=self._msg_id, parse_mode=self._parse, disable_web_page_preview=self._diswebview)
                 print("\033[33m>>>\033[0m %s\n\033[33mBot\033[0m: Got text \"\033[32m%s\033[0m\" from @\033[34m%s\033[0m and answered with \"\033[32m%s\033[0m\"."%(self._now, self._text_log, self._username, self._answer))
+
+            elif self._content_type == "sticker":
+                bot.sendChatAction(self._chat_id, "typing")
+                bot.sendMessage(self._chat_id, self._answer, reply_to_message_id=self._msg_id, parse_mode=self._parse, disable_web_page_preview=self._diswebview)
+                print("\033[33m>>>\033[0m %s\n\033[33mBot\033[0m: Got sticker \"\033[32m%s\033[0m\" from @\033[34m%s\033[0m and answered with \"\033[32m%s\033[0m\"."%(self._now, self._sticker_emoji, self._username, self._answer))
 
             elif self._content_type == "photo":
                 bot.sendChatAction(self._chat_id, "typing")
