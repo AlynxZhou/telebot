@@ -332,14 +332,14 @@ class TeleBot(telepot.helper.UserHandler):
                 self._answer = "Sorry, but no your last message was found."
 
             else:
-                if random.random() <= 0.7:
+                if random.random() <= 0.5:
                     self._answers = ''
                     for key in rule_dict:
                         if key in self._text_orig.lower():
-                            if not rule_dict[key] in self._answers:
-                                self._answers += rule_dict[key] + '\n'
-                                self._answer = self._answers.rstrip('\n')
-                else:
+                                if not rule_dict[key] in self._answers:
+                                    self._answers += rule_dict[key] + '\n'
+                                    self._answer = self._answers.rstrip('\n')
+                elif random.random() <= 0.5:
                     self._answer = random.choice(list(resource.sticker_dict.keys()))
                     self._sticker = resource.sticker_dict[self._answer]
 
@@ -383,13 +383,13 @@ class TeleBot(telepot.helper.UserHandler):
         # Return.
         if self._sticker != None:
             bot.sendChatAction(self._chat_id, "typing")
-            bot.sendSticker(self._chat_id, self._sticker, disable_notification=None, reply_to_message_id=None, reply_markup=None)
+            bot.sendSticker(self._chat_id, self._sticker, disable_notification=None, reply_to_message_id=self._msg_id, reply_markup=None)
 
         if self._upload != None:
             try:
                 with open(self._upload, 'rb') as self._filename:
                     bot.sendChatAction(self._chat_id, "upload_document")
-                    bot.sendDocument(self._chat_id, self._filename)
+                    bot.sendDocument(self._chat_id, self._filename, reply_to_message_id=self._msg_id)
             except:
                 self._answer = "Upload failed."
 
