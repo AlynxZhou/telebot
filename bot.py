@@ -339,7 +339,7 @@ class TeleBot(telepot.helper.UserHandler):
                                 if not rule_dict[key] in self._answers:
                                     self._answers += rule_dict[key] + '\n'
                                     self._answer = self._answers.rstrip('\n')
-                elif random.random() <= 0.3:
+                elif random.random() <= 0.5:
                     self._answer = random.choice(list(resource.sticker_dict.keys()))
                     self._sticker = resource.sticker_dict[self._answer]
 
@@ -350,7 +350,7 @@ class TeleBot(telepot.helper.UserHandler):
             self._sticker_id = msg["sticker"]["file_id"]
             #print("\'%s\': \"%s\","%(self._sticker_emoji, self._sticker_id))
             if (self._sticker_emoji, self._sticker_id) in resource.red_sticker_dict.items():
-                self._answer = "红脸的关公战长沙！"
+                self._answer = random.choice(["红脸的关公战长沙！", "红脸哥～我是你的超级粉丝～", "红脸哥我要给你生一车猴子🐒！"])
             #else:
                 #print("\'%s\': \"%s\","%(self._sticker_emoji, self._sticker_id))
 
