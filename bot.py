@@ -340,19 +340,19 @@ class TeleBot(telepot.helper.UserHandler):
                                     self._answers += rule_dict[key] + '\n'
                                     self._answer = self._answers.rstrip('\n')
                 elif random.random() <= 0.5:
-                    self._answer = random.choice(list(resource.sticker_dict.keys()))
-                    self._sticker = resource.sticker_dict[self._answer]
+                    self._sticker = random.choice(list(resource.sticker_dict.keys()))
+                    self._answer = resource.sticker_dict[self._sticker]
 
 
         ## To judge if the content is a sticker.
         elif self._content_type == "sticker":
             self._sticker_emoji = msg["sticker"]["emoji"]
             self._sticker_id = msg["sticker"]["file_id"]
-            #print("\'%s\': \"%s\","%(self._sticker_emoji, self._sticker_id))
-            if (self._sticker_emoji, self._sticker_id) in resource.red_sticker_dict.items():
+            #print("\"%s\": \'%s\',"%(self._sticker_id, self._sticker_emoji))
+            if (self._sticker_id, self._sticker_emoji) in resource.red_sticker_dict.items():
                 self._answer = random.choice(["红脸的关公战长沙！", "红脸哥～我是你的超级粉丝～", "红脸哥我要给你生一车猴子🐒！"])
             #else:
-                #print("\'%s\': \"%s\","%(self._sticker_emoji, self._sticker_id))
+                #print("\"%s\": \'%s\',"%(self._sticker_id, self._sticker_emoji))
 
         ## To judge if the content is a photo.
         elif self._content_type == "photo":
