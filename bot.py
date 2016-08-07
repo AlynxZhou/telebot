@@ -346,8 +346,8 @@ class TeleBot(telepot.helper.UserHandler):
 
         ## To judge if the content is a sticker.
         elif self._content_type == "sticker":
-            self._sticker_emoji = msg["sticker"]["emoji"]
             self._sticker_id = msg["sticker"]["file_id"]
+            self._sticker_emoji = msg["sticker"]["emoji"]
             #print("\"%s\": \'%s\',"%(self._sticker_id, self._sticker_emoji))
             if (self._sticker_id, self._sticker_emoji) in resource.red_sticker_dict.items():
                 self._answer = random.choice(["红脸的关公战长沙！", "红脸哥～我是你的超级粉丝～", "红脸哥我要给你生一车猴子🐒！"])
