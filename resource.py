@@ -91,10 +91,10 @@ red_sticker_dict = {
     '😈': "BQADAQAD8QADvDyABUxkJzm7ogVbAg",
     '😡': "BQADAQAD9QADvDyABWyO3YV_OpA6Ag",
     '😤': "BQADAQAD0wADvDyABWaQlvbgXycbAg",
-    '😈': "BQADBQADGQQAAkKpAAEFIaGohi4vhFoC",
     '😡': "BQADBQADFwQAAkKpAAEF7ptGl5jK0ykC",
     '😈': "BQADBQAEAQACLKMJA3-06f6jb96LAg",
     '😨': "BQADBQADKwADpgZdBmTxGppaYRBuAg",
     '😎': "BQADBQADOQADpgZdBl8cN3R575QyAg",
-    '😱': "BQADBQADNQADpgZdBmKVEXNJr2kaAg"
+    '😱': "BQADBQADNQADpgZdBmKVEXNJr2kaAg",
+    '😈': "BQADBQADGQQAAkKpAAEFIaGohi4vhFoC"
 }
