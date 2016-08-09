@@ -16,6 +16,4 @@ You can use following word to communicate with me.
 <em>/code</em> - I'll send myself to you.
 <em>/rule</em> - You type "/rule <em>KEY1</em>@@<em>KEY2</em>@@<em>KEYn</em>@@<strong>ANSWER</strong> to set a rule, then when you type "/KEY*", I'll answer with ANSWER.
 <em>/redo</em> - I'll redo the last command.
-$<em>/fuckagain</em> - If you have sent a "/fuck", you can send this in follow.
-<em>/close</em> - I'll close a delegator.
- (powered by <a href="http://api.qingyunke.com/">Qingyunke Chat Api</a>)
+$
