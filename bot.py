@@ -141,8 +141,6 @@ rule_dict = resource.json_to_dict("assets/rule.json")
 #class UserClose(TelepotException):
 #    pass
 
-### Used to store the message when a delegator closed.
-
 
 ## Define a bot class.
 class TeleBot(telepot.helper.UserHandler):
