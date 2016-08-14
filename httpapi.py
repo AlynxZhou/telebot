@@ -71,7 +71,7 @@ def get_wea(place="上海"):
 	}
 
 	des = "<strong>" + data["query"]["results"]["channel"]["description"] + ":</strong>\n\n"
-	c = '℃'
+	c = '°C'
 	now = data["query"]["results"]["channel"]["item"]["condition"]["date"] + ":\n" + data["query"]["results"]["channel"]["item"]["condition"]["temp"] + c + ' ' +  code_emoji[data["query"]["results"]["channel"]["item"]["condition"]["code"]] + ' ' + data["query"]["results"]["channel"]["item"]["condition"]["text"] + "\n\n"
 	fore = ''
 	for x in data["query"]["results"]["channel"]["item"]["forecast"]:
