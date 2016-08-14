@@ -71,11 +71,11 @@ def get_wea(place="上海"):
 	}
 
 	des = "<strong>" + data["query"]["results"]["channel"]["description"] + ":</strong>\n\n"
-	c = '°C'
-	now = data["query"]["results"]["channel"]["item"]["condition"]["date"] + ":\n" + data["query"]["results"]["channel"]["item"]["condition"]["temp"] + c + ' ' +  code_emoji[data["query"]["results"]["channel"]["item"]["condition"]["code"]] + ' ' + data["query"]["results"]["channel"]["item"]["condition"]["text"] + "\n\n"
+	unit = '°C'
+	now = data["query"]["results"]["channel"]["item"]["condition"]["date"] + ":\n" + data["query"]["results"]["channel"]["item"]["condition"]["temp"] + unit + ' ' +  code_emoji[data["query"]["results"]["channel"]["item"]["condition"]["code"]] + ' ' + data["query"]["results"]["channel"]["item"]["condition"]["text"] + "\n\n"
 	fore = ''
 	for x in data["query"]["results"]["channel"]["item"]["forecast"]:
-		a = x["day"] + ", " + x["date"] + ":\n" + x["low"] + c + " - " + x["high"] + c + ' ' + code_emoji[x["code"]] + ' ' + x["text"] + "\n\n"
+		a = x["day"] + ", " + x["date"] + ":\n" + x["low"] + unit + " - " + x["high"] + unit + ' ' + code_emoji[x["code"]] + ' ' + x["text"] + "\n\n"
 		fore += a
 	answer = des + now + fore.rstrip("\n\n")
 
