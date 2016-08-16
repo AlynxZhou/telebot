@@ -382,6 +382,7 @@ class TeleBot(telepot.helper.UserHandler):
 		if self._sticker != None:
 			bot.sendChatAction(self._chat_id, "typing")
 			bot.sendSticker(self._chat_id, self._sticker, disable_notification=None, reply_to_message_id=self._msg_id, reply_markup=None)
+			print("\033[33m>>>\033[0m %s\n\033[33mBot\033[0m: Got text \"\033[32m%s\033[0m\" from @\033[34m%s\033[0m and answered with sticker \"\033[32m%s\033[0m\"."%(self._now, self._text_log, self._username, self._answer))
 
 		if self._upload != None:
 			try:
@@ -401,14 +402,13 @@ class TeleBot(telepot.helper.UserHandler):
 		if self._answer != None:
 			self._count["chat"] += 1
 			## Send result.
-			if self._content_type == "text":
+			if (self._content_type == "text" and self._sticker == None):
 				## Store redo message.
 				#global redo_dict
 				redo_dict[self._username] = self._text_orig
 
-				if self._sticker == None:
-					bot.sendChatAction(self._chat_id, "typing")
-					bot.sendMessage(self._chat_id, self._answer, reply_to_message_id=self._msg_id, parse_mode=self._parse, disable_web_page_preview=self._diswebview)
+				bot.sendChatAction(self._chat_id, "typing")
+				bot.sendMessage(self._chat_id, self._answer, reply_to_message_id=self._msg_id, parse_mode=self._parse, disable_web_page_preview=self._diswebview)
 				print("\033[33m>>>\033[0m %s\n\033[33mBot\033[0m: Got text \"\033[32m%s\033[0m\" from @\033[34m%s\033[0m and answered with \"\033[32m%s\033[0m\"."%(self._now, self._text_log, self._username, self._answer))
 
 			elif self._content_type == "sticker":
