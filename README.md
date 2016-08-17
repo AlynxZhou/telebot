@@ -1,6 +1,6 @@
 # TeleBot
 
-A telegram bot program\.
+A telegram bot program\. Powered by Python\.
 
 ## Usage:
 
