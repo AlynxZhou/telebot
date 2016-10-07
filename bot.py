@@ -298,7 +298,7 @@ class TeleBot(telepot.helper.UserHandler):
                     for self._code in code_list:
                         self._telebot_zip.write(self._code, "telebot" + os.sep + self._code)
                 self._upload = "telebot.zip"
-                self._answer = "Sent code.\nYou should extract it to your directories and get your bot token. Then run \"$ python3 ./bot.py YOURBOTNAME.json\".\nFor more information, click <a href=\"https://github.com/S-X-ShaX/telebot/\">My TeleBot on GitHub</a>."
+                self._answer = "Sent code.\nYou should extract it to your directories and get your bot token. Then run \"$ python3 ./bot.py YOURBOTNAME.json\".\nFor more information, click <a href=\"https://github.com/AlynxZhou/telebot/\">My TeleBot on GitHub</a>."
                 self._parse = "HTML"
 
             elif self._text == "rule":
