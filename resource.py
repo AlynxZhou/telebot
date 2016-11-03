@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
 
-### Filename: prepare.py
-## Created by 请叫我喵 | S-X-ShaX
-# sxshax@gmail.com, http://sxshax.xyz/
+### Filename: resource.py
+## Created by 请叫我喵 Alynx
+# sxshax@gmail.com, http://alynx.xyz/
 
 import os
 import json
@@ -16,7 +16,6 @@ def check_file(filename):
     if not os.path.exists(filename):
         print("\033[46m\033[31mERROR\033[0m: No avaliable \"\033[32m%s\033[0m\" was found. Please reinstall telebot."%(filename))
         exit()
-
 
 def file_to_list(filename):
     try:
@@ -48,7 +47,6 @@ fuck_list = [
     "Ah, seems end, so comfortable. 😌",
     "Good boy, now I become your girl. 😁"
 ]
-
 
 code_list = [
     "bot.py",

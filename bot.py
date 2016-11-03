@@ -2,8 +2,8 @@
 #-*- coding: utf-8 -*-
 
 ### Filename: bot.py
-## Created by 请叫我喵 | S-X-ShaX
-# sxshax@gmail.com, http://sxshax.xyz/
+## Created by 请叫我喵 Alynx
+# sxshax@gmail.com, http://alynx.xyz/
 
 
 ### Launch.
@@ -154,6 +154,8 @@ class TeleBot(telepot.helper.UserHandler):
 
 
     def on_chat_message(self, msg):
+        pass
+
         self._now = str(datetime.datetime.now())
 
         global redo_dict
@@ -455,8 +457,7 @@ print("Getting bot information...")
 
 ### Generate a bot object.
 bot = telepot.DelegatorBot(
-    TOKEN,
-    [
+    TOKEN, [
         (
             per_from_id(),
             create_open(TeleBot, timeout=30)
