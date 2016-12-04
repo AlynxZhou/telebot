@@ -4,10 +4,9 @@ A telegram bot program\. Powered by Python\.
 
 ## Usage:
 
-First clone it via git.
-
+First clone it via git\.
 ```bash
-$ git clone https://github.com/S-X-ShaX/telebot.git
+$ git clone https://github.com/AlynxZhou/telebot.git
 ````
 
 You need to install python3, pip3 and use pip to install telepot, if you forget to install telepot, the program will install by itself\. Such as:
