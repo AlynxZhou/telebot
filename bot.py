@@ -246,15 +246,14 @@ class TeleBot(telepot.helper.UserHandler):
                         self._answer = httpapi.get_ttalk(tuling_api_key, self._text_2, str(self._user_id))
                 else:
                     self._answer = "Please add what you want to talk about, for example \"/talk 你好\"."
-                """
-                try:
-                    self._answer = talk_list[self._count["talk"]]
-                    self._count["talk"] += 1
-                except IndexError:
-                    self._count["talk"] = 0
-                    self._answer = talk_list[self._count["talk"]]
-                    self._count["talk"] += 1
-                """
+
+#                try:
+#                    self._answer = talk_list[self._count["talk"]]
+#                    self._count["talk"] += 1
+#                except IndexError:
+#                    self._count["talk"] = 0
+#                    self._answer = talk_list[self._count["talk"]]
+#                    self._count["talk"] += 1
 
             elif self._text == "count":
                 self._answer = "<strong>Total chat:</strong>\n%d"%(self._count["chat"] + 1)
