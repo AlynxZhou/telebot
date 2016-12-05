@@ -149,7 +149,7 @@ class TeleBot(telepot.helper.UserHandler):
         self._count = {
             "chat": 0,
             "fuck": 0
-#            "talk": 0
+            #"talk": 0
         }
 
 
@@ -247,13 +247,13 @@ class TeleBot(telepot.helper.UserHandler):
                 else:
                     self._answer = "Please add what you want to talk about, for example \"/talk 你好\"."
 
-#                try:
-#                    self._answer = talk_list[self._count["talk"]]
-#                    self._count["talk"] += 1
-#                except IndexError:
-#                    self._count["talk"] = 0
-#                    self._answer = talk_list[self._count["talk"]]
-#                    self._count["talk"] += 1
+                #try:
+                    #self._answer = talk_list[self._count["talk"]]
+                    #self._count["talk"] += 1
+                #except IndexError:
+                    #self._count["talk"] = 0
+                    #self._answer = talk_list[self._count["talk"]]
+                    #self._count["talk"] += 1
 
             elif self._text == "count":
                 self._answer = "<strong>Total chat:</strong>\n%d"%(self._count["chat"] + 1)
@@ -338,9 +338,9 @@ class TeleBot(telepot.helper.UserHandler):
                                 if not rule_dict[key] in self._answers:
                                     self._answers += rule_dict[key] + '\n'
                                     self._answer = self._answers.rstrip('\n')
-                elif random.random() <= 0.33:
-                    self._sticker = random.choice(list(resource.sticker_dict.keys()))
-                    self._answer = resource.sticker_dict[self._sticker]
+                #elif random.random() <= 0.33:
+                    #self._sticker = random.choice(list(resource.sticker_dict.keys()))
+                    #self._answer = resource.sticker_dict[self._sticker]
 
 
         ## To judge if the content is a sticker.
