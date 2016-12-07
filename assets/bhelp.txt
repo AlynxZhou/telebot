@@ -15,5 +15,6 @@ You can use following word to communicate with me.
 <em>/cmd</em> - You type "/cmd <em>XXX</em>" and I will run the command "XXX" in shell (<strong>only for special users for safety</strong>).
 <em>/code</em> - I'll send myself to you.
 <em>/rule</em> - You type "/rule <em>KEY1</em>@@<em>KEY2</em>@@<em>KEYn</em>@@<strong>ANSWER</strong> to set a rule, then when you type "/KEY*", I'll answer with ANSWER.
+<em>/switch</em> - This will switch the status between ON and OFF (<strong>only the admin user can switch it to OFF</strong>).
 <em>/redo</em> - I'll redo the last command.
 $

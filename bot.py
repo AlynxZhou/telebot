@@ -142,6 +142,10 @@ rule_dict = resource.json_to_dict("assets/rule.json")
 #    pass
 
 
+## A switch of bot.
+switch = True
+
+
 ## Define a bot class.
 class TeleBot(telepot.helper.UserHandler):
     def __init__(self, seed_tuple, timeout):
@@ -154,12 +158,11 @@ class TeleBot(telepot.helper.UserHandler):
 
 
     def on_chat_message(self, msg):
-        pass
-
         self._now = str(datetime.datetime.now())
 
         global redo_dict
         global rule_dict
+        global switch
 
         self._parse = None
         self._diswebview = None
@@ -203,6 +206,33 @@ class TeleBot(telepot.helper.UserHandler):
                 self._text = self._text_list[0].lstrip('/')
                 self._text_2 = None
             self._text = self._text.split('@' + info["username"], 1)[0]
+
+
+            if self._text == "switch" and switch:
+                if self._username == ADMIN:
+                    switch = False
+                    self._answer = "<strong>Status:</strong> Turned <em>OFF</em>."
+                    self._parse = "HTML"
+                    redo_dict[self._username] = self._text_orig
+
+                    bot.sendChatAction(self._chat_id, "typing")
+                    bot.sendMessage(self._chat_id, self._answer, reply_to_message_id=self._msg_id, parse_mode=self._parse, disable_web_page_preview=self._diswebview)
+                    print("\033[33m>>>\033[0m %s\n\033[33mBot\033[0m: Got text \"\033[32m%s\033[0m\" from @\033[34m%s\033[0m and answered with \"\033[32m%s\033[0m\" and turned \033[30;41mOFF\033[0m."%(self._now, self._text_log, self._username, self._answer))
+                    print("--------------------------------------------")
+                else:
+                    self._answer = "Sorry, only the admin user can switch the bot to OFF."
+
+            elif self._text == "switch" and not switch:
+                switch = True
+                self._answer = "<strong>Status:</strong> Turned <em>ON</em>."
+                self._parse = "HTML"
+                redo_dict[self._username] = self._text_orig
+
+                bot.sendChatAction(self._chat_id, "typing")
+                bot.sendMessage(self._chat_id, self._answer, reply_to_message_id=self._msg_id, parse_mode=self._parse, disable_web_page_preview=self._diswebview)
+                print("\033[33m>>>\033[0m %s\n\033[33mBot\033[0m: Got text \"\033[32m%s\033[0m\" from @\033[34m%s\033[0m and answered with \"\033[32m%s\033[0m\" and turned \033[30;46mON\033[0m."%(self._now, self._text_log, self._username, self._answer))
+                print("--------------------------------------------")
+                self._answer = None    # Or it will answer twice.
 
 
             # Handle.
@@ -380,12 +410,12 @@ class TeleBot(telepot.helper.UserHandler):
 
 
         # Return.
-        if self._sticker != None:
+        if self._sticker != None and switch:
             bot.sendChatAction(self._chat_id, "typing")
             bot.sendSticker(self._chat_id, self._sticker, disable_notification=None, reply_to_message_id=self._msg_id, reply_markup=None)
             print("\033[33m>>>\033[0m %s\n\033[33mBot\033[0m: Got text \"\033[32m%s\033[0m\" from @\033[34m%s\033[0m and answered with sticker \"\033[32m%s\033[0m\"."%(self._now, self._text_log, self._username, self._answer))
 
-        if self._upload != None:
+        if self._upload != None and switch:
             try:
                 with open(self._upload, 'rb') as self._filename:
                     bot.sendChatAction(self._chat_id, "upload_document")
@@ -393,14 +423,14 @@ class TeleBot(telepot.helper.UserHandler):
             except:
                 self._answer = "Upload failed."
 
-        if self._download != None:
+        if self._download != None and switch:
             try:
                 bot.download_file(self._download, self._document)
             except:
                 self._answer = "Download failed."
                 self._refuse = True
 
-        if self._answer != None:
+        if self._answer != None and switch:
             self._count["chat"] += 1
             ## Send result.
             if (self._content_type == "text" and self._sticker == None):
