@@ -200,15 +200,15 @@ class TeleBot(telepot.helper.UserHandler):
 
             self._text_list = self._text_orig.split(None, 1)    # When sep was None, it will be any number spaces, and 1 means split once. Be care that S.split(, 1) will get an error, use S.split(None, 1) instead (from the help doc).
             try:
-                self._text = self._text_list[0].lstrip('/')
+                self._text = self._text_list[0]#.lstrip('/')
                 self._text_2 = self._text_list[1]
             except IndexError:
-                self._text = self._text_list[0].lstrip('/')
+                self._text = self._text_list[0]#.lstrip('/')
                 self._text_2 = None
             self._text = self._text.split('@' + info["username"], 1)[0]
 
 
-            if self._text == "switch" and switch:
+            if self._text == "/switch" and switch:
                 if self._username == ADMIN:
                     switch = False
                     self._answer = "<strong>Status:</strong> Turned <em>OFF</em>."
@@ -222,7 +222,7 @@ class TeleBot(telepot.helper.UserHandler):
                 else:
                     self._answer = "Sorry, only the admin user can switch the bot to OFF."
 
-            elif self._text == "switch" and not switch:
+            elif self._text == "/switch" and not switch:
                 switch = True
                 self._answer = "<strong>Status:</strong> Turned <em>ON</em>."
                 self._parse = "HTML"
@@ -236,21 +236,21 @@ class TeleBot(telepot.helper.UserHandler):
 
 
             # Handle.
-            if self._text == "start":
+            if self._text == "/start":
                 self._answer = "Welcome! \nPlease type \"/help\" to get a help list."
 
-            elif self._text == "help":
+            elif self._text == "/help":
                 self._answer = bhelp_list[0]
                 self._parse = "HTML"
                 self._diswebview = True
 
-            elif self._text == "hello":
+            elif self._text == "/hello":
                 self._answer = "Hello, " + self._first_name + "! " + random.choice(greeting_list)
 
-            elif self._text == "joke":
+            elif self._text == "/joke":
                 self._answer = random.choice(joke_list)
 
-            elif self._text == "time":
+            elif self._text == "/time":
                 self._answer = "Now is " + str(datetime.datetime.now()) + "."
             elif self._text == "weather":
                 if self._text_2 != None:
@@ -259,7 +259,7 @@ class TeleBot(telepot.helper.UserHandler):
                 else:
                     self._answer = "Please add a valid place, for instance, \"/weather 上海\", \"/weather 安徽 合肥\" or \"/weather 中国 辽宁 大连\"."
 
-            elif self._text == "fuck":
+            elif self._text == "/fuck":
                 try:
                     self._answer = fuck_list[self._count["fuck"]]
                     self._count["fuck"] += 1
@@ -268,7 +268,7 @@ class TeleBot(telepot.helper.UserHandler):
                     self._answer = fuck_list[self._count["fuck"]]
                     self._count["fuck"] += 1
 
-            elif self._text == "talk":
+            elif self._text == "/talk":
                 if self._text_2 != None:
                     if tuling_api_key == None:
                         self._answer = httpapi.get_qtalk(self._text_2)
@@ -285,11 +285,11 @@ class TeleBot(telepot.helper.UserHandler):
                     #self._answer = talk_list[self._count["talk"]]
                     #self._count["talk"] += 1
 
-            elif self._text == "count":
+            elif self._text == "/count":
                 self._answer = "<strong>Total chat:</strong>\n%d"%(self._count["chat"] + 1)
                 self._parse = "HTML"
 
-            elif self._text == "ipcn":
+            elif self._text == "/ipcn":
                 if self._username == ADMIN:
                     if self._chat_type == "private":
                         self._answer = ipcn.get_ip()
@@ -298,7 +298,7 @@ class TeleBot(telepot.helper.UserHandler):
                 else:
                     self._answer = "Sorry, you are not allowed to obtain the ip address in order to keep the bot safe."
 
-            elif self._text == "cmd":
+            elif self._text == "/cmd":
                 if self._text_2 != None:
                     if self._username == ADMIN:
                         try:
@@ -311,7 +311,7 @@ class TeleBot(telepot.helper.UserHandler):
                 else:
                     self._answer = None
 
-            elif self._text == "send":
+            elif self._text == "/send":
                 if self._text_2 != None:
                     if self._username == ADMIN:
                         self._upload = self._text_2
@@ -321,7 +321,7 @@ class TeleBot(telepot.helper.UserHandler):
                 else:
                     self._answer = None
 
-            elif self._text == "code":
+            elif self._text == "/code":
                 resource.dict_to_json("assets/redo.json", redo_dict)
                 resource.dict_to_json("assets/rule.json", rule_dict)
                 ## Zip file.
@@ -332,7 +332,7 @@ class TeleBot(telepot.helper.UserHandler):
                 self._answer = "Sent code.\nYou should extract it to your directories and get your bot token. Then run \"$ python3 ./bot.py YOURBOTNAME.json\".\nFor more information, click <a href=\"https://github.com/AlynxZhou/telebot/\">My TeleBot on GitHub</a>."
                 self._parse = "HTML"
 
-            elif self._text == "rule":
+            elif self._text == "/rule":
                 if self._text_2 != None and "@@" in self._text_2:
                     self._rule_list = self._text_2.split("@@")
                     if self._rule_list[-1] != '':
@@ -357,7 +357,7 @@ class TeleBot(telepot.helper.UserHandler):
                         self._answer = "No rule."
                 resource.dict_to_json("assets/rule.json", rule_dict)
 
-            elif self._text == "redo":
+            elif self._text == "/redo":
                 self._answer = "Sorry, but no your last message was found."
 
             else:
