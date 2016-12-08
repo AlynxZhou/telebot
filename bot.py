@@ -252,6 +252,7 @@ class TeleBot(telepot.helper.UserHandler):
 
             elif self._text == "/time":
                 self._answer = "Now is " + str(datetime.datetime.now()) + "."
+
             elif self._text == "weather":
                 if self._text_2 != None:
                     self._answer = httpapi.get_wea(self._text_2)
