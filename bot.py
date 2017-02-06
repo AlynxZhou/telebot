@@ -53,7 +53,7 @@ print("Starting bot at \033[32m%s\033[0m..."%(now))
 ## Import telepot.
 try:
     import telepot
-    from telepot.delegate import per_from_id, create_open
+    from telepot.delegate import pave_event_space, per_from_id, create_open
     #from telepot.exception import TelepotException
 except ImportError:
     print("\033[44m\033[33mWARNING\033[0m: Telepot api is lost...")
@@ -148,8 +148,8 @@ switch = True
 
 ## Define a bot class.
 class TeleBot(telepot.helper.UserHandler):
-    def __init__(self, seed_tuple, timeout):
-        super(TeleBot, self).__init__(seed_tuple, timeout)
+    def __init__(self, *args, **kwargs):
+        super(TeleBot, self).__init__(*args, **kwargs)
         self._count = {
             "chat": 0,
             "fuck": 0
@@ -488,9 +488,9 @@ print("Getting bot information...")
 ### Generate a bot object.
 bot = telepot.DelegatorBot(
     TOKEN, [
-        (
+            pave_event_space()(
             per_from_id(),
-            create_open(TeleBot, timeout=30)
+            create_open, TeleBot, timeout=30
         )
     ]
 )
