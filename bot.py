@@ -34,7 +34,7 @@ import httpapi
 
 
 AUTHOR = "S-X-ShaX"
-VERSION = "3.7"
+VERSION = "4.0"
 
 
 ## Get args.
