@@ -25,3 +25,4 @@ __pycache__
 # Custom file
 assets/rule.json
 assets/redo.json
+assets/echo.txt

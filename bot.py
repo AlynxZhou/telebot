@@ -69,7 +69,6 @@ except ImportError:
     from telepot.delegate import per_from_id, create_open
     #from telepot.exception import TelepotException
 
-
 ## Deal with args.
 conf_rewrite = False
 
@@ -135,7 +134,7 @@ code_list = resource.code_list
 #talk_list = resource.file_to_list("assets/talk.txt")
 redo_dict = resource.json_to_dict("assets/redo.json")
 rule_dict = resource.json_to_dict("assets/rule.json")
-
+echo_list = resource.eval_to_list("assets/echo.txt")
 
 ## Define an expection.
 #class UserClose(TelepotException):
@@ -163,6 +162,7 @@ class TeleBot(telepot.helper.UserHandler):
         global redo_dict
         global rule_dict
         global switch
+        global echo_list
 
         self._parse = None
         self._diswebview = None
@@ -312,6 +312,22 @@ class TeleBot(telepot.helper.UserHandler):
                 else:
                     self._answer = None
 
+            elif self._text == "/echo":
+                temp_list = []
+                for chat_id in echo_list:
+                    if not chat_id in temp_list:
+                        temp_list.append(chat_id)
+                echo_list = temp_list
+                if self._text_2 != None:
+                    if self._username == ADMIN:
+                        for chat_id in echo_list:
+                            bot.sendChatAction(chat_id, "typing")
+                            bot.sendMessage(chat_id, self._text_2)
+                        self._answer = "Echoed."
+                    else:
+                        self._answer = "Sorry, only the ADMIN user can send an echo."
+                resource.list_to_file("assets/echo.txt", echo_list)
+
             elif self._text == "/send":
                 if self._text_2 != None:
                     if self._username == ADMIN:
@@ -438,6 +454,7 @@ class TeleBot(telepot.helper.UserHandler):
                 ## Store redo message.
                 #global redo_dict
                 redo_dict[self._username] = self._text_orig
+                echo_list.append(self._chat_id)
 
                 bot.sendChatAction(self._chat_id, "typing")
                 bot.sendMessage(self._chat_id, self._answer, reply_to_message_id=self._msg_id, parse_mode=self._parse, disable_web_page_preview=self._diswebview)
@@ -471,11 +488,14 @@ class TeleBot(telepot.helper.UserHandler):
 
         global redo_dict
         global rule_dict
+        global echo_list
 
         if len(redo_dict) > 77:
             redo_dict = {}
         if len(rule_dict) > 77:
             rule_dict = {}
+        if len(echo_list) > 7:
+            echo_list.pop(0)
 
         ## Journal.
         print("\033[33m>>>\033[0m %s\n\033[33mBot\033[0m: Closed an delegator with @\033[34m%s\033[0m by calling on_close()."%(self._now, self._username))
@@ -534,6 +554,7 @@ try:
 except KeyboardInterrupt:
     resource.dict_to_json("assets/redo.json", redo_dict)
     resource.dict_to_json("assets/rule.json", rule_dict)
+    resource.list_to_file("assets/echo.txt", echo_list)
     exit()
 except:
     pass

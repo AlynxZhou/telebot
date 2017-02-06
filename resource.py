@@ -17,6 +17,14 @@ def check_file(filename):
         print("\033[46m\033[31mERROR\033[0m: No avaliable \"\033[32m%s\033[0m\" was found. Please reinstall telebot."%(filename))
         exit()
 
+def eval_to_list(filename):
+    try:
+        with open(filename) as file_open:
+            file_list = eval(file_open.read())
+    except:
+        file_list = []
+    return file_list
+
 def file_to_list(filename):
     try:
         with open(filename) as file_open:
@@ -37,6 +45,10 @@ def json_to_dict(jsonname):
 def dict_to_json(jsonname, json_dict):
     with open(jsonname, 'w') as json_open:
         json_open.write(json.dumps(json_dict, ensure_ascii=False))
+
+def list_to_file(filename, echo_list):
+    with open(filename, 'w') as file_open:
+        file_open.write(str(echo_list))
 
 fuck_list = [
     "NO! I'm not a bad girl and I haven't! 😡",
