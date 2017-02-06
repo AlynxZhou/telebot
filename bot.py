@@ -33,7 +33,7 @@ import ipcn
 import httpapi
 
 
-AUTHOR = "S-X-ShaX"
+AUTHOR = "AlynxZhou"
 VERSION = "4.0"
 
 
