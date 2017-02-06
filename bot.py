@@ -155,6 +155,263 @@ class TeleBot(telepot.helper.UserHandler):
             #"talk": 0
         }
 
+    def on_start(self):
+        self._answer = "Welcome! \nPlease type \"/help\" to get a help list."
+
+    def on_help(self):
+        self._answer = bhelp_list[0]
+        self._parse = "HTML"
+        self._diswebview = True
+
+    def on_hello(self):
+        self._answer = "Hello, " + self._first_name + "! " + random.choice(greeting_list)
+
+    def on_joke(self):
+        self._answer = random.choice(joke_list)
+
+    def on_time(self):
+        self._answer = "Now is " + str(datetime.datetime.now()) + "."
+
+    def on_weather(self):
+        if self._text_2 != None:
+            self._answer = httpapi.get_wea(self._text_2)
+            self._parse = "HTML"
+        else:
+            self._answer = "Please add a valid place, for instance, \"/weather 上海\", \"/weather 安徽 合肥\" or \"/weather 中国 辽宁 大连\"."
+
+    def on_fuck(self):
+        try:
+            self._answer = fuck_list[self._count["fuck"]]
+            self._count["fuck"] += 1
+        except IndexError:
+            self._count["fuck"] = 0
+            self._answer = fuck_list[self._count["fuck"]]
+            self._count["fuck"] += 1
+
+    def on_talk(self):
+        if self._text_2 != None:
+            if tuling_api_key == None:
+                self._answer = httpapi.get_qtalk(self._text_2)
+            else:
+                self._answer = httpapi.get_ttalk(tuling_api_key, self._text_2, str(self._user_id))
+        else:
+            self._answer = "Please add what you want to talk about, for example \"/talk 你好\"."
+
+    def on_count(self):
+        self._answer = "<strong>Total chat:</strong>\n%d"%(self._count["chat"] + 1)
+        self._parse = "HTML"
+
+    def on_ipcn(self):
+        if self._username == ADMIN:
+            if self._chat_type == "private":
+                self._answer = ipcn.get_ip()
+            else:
+                self._answer = "Sorry, you should obtain the ip address via private chat in order to keep the bot safe."
+        else:
+            self._answer = "Sorry, you are not allowed to obtain the ip address in order to keep the bot safe."
+
+    def on_cmd(self):
+        if self._text_2 != None:
+            if self._username == ADMIN:
+                try:
+                    self._answer = "<strong>Result:</strong>\n" + subprocess.check_output(self._text_2, shell=True, stderr=subprocess.STDOUT, universal_newlines=True)
+                    self._parse = "HTML"
+                except subprocess.CalledProcessError:
+                    self._answer = "Sorry, invalid command."
+            else:
+                self._answer = "Sorry, you are not allowed to run a command in order to keep the bot safe."
+
+    def on_echo(self):
+        global echo_list
+        temp_list = []
+        for chat_id in echo_list:
+            if not chat_id in temp_list:
+                temp_list.append(chat_id)
+        echo_list = temp_list
+        if self._text_2 != None:
+            if self._username == ADMIN:
+                for chat_id in echo_list:
+                    bot.sendChatAction(chat_id, "typing")
+                    bot.sendMessage(chat_id, self._text_2)
+                self._answer = "Echoed."
+            else:
+                self._answer = "Sorry, only the ADMIN user can send an echo."
+        resource.list_to_file("assets/echo.txt", echo_list)
+
+    def on_send(self):
+        if self._text_2 != None:
+            if self._username == ADMIN:
+                self._upload = self._text_2
+                self._answer = "Sent."
+            else:
+                self._answer = "Sorry, you are not allowed to get a file in order to keep the bot safe."
+
+    def on_code(self):
+        global redo_dict
+        global rule_dict
+        global echo_list
+        resource.dict_to_json("assets/redo.json", redo_dict)
+        resource.dict_to_json("assets/rule.json", rule_dict)
+        resource.list_to_file("assets/echo.txt", echo_list)
+        ## Zip file.
+        with zipfile.ZipFile('telebot.zip', 'w', zipfile.ZIP_DEFLATED) as self._telebot_zip:
+            for self._code in code_list:
+                self._telebot_zip.write(self._code, "telebot" + os.sep + self._code)
+        self._upload = "telebot.zip"
+        self._answer = "Sent code.\nYou should extract it to your directories and get your bot token. Then run \"$ python3 ./bot.py YOURBOTNAME.json\".\nFor more information, click <a href=\"https://github.com/AlynxZhou/telebot/\">My TeleBot on GitHub</a>."
+        self._parse = "HTML"
+
+    def on_rule(self):
+        global rule_dict
+        if self._text_2 != None and "@@" in self._text_2:
+            self._rule_list = self._text_2.split("@@")
+            if self._rule_list[-1] != '':
+                for self._rule_key in self._rule_list[0:-1]:
+                    if self._rule_key != '' and self._rule_key != '\n':
+                        rule_dict[self._rule_key.lower()] = self._rule_list[-1]
+            else:
+                for self._rule_key in self._rule_list[0:-1]:
+                    try:
+                        rule_dict.pop(self._rule_key.lower())
+                    except:
+                        pass
+            self._answer = "Set rule!"
+        else:
+            if len(rule_dict) != 0:
+                self._answers = "<strong>Total rules:</strong>\nFollowings are case insensitive.\n"
+                for key in sorted(rule_dict, key=str.lower):
+                    self._answers += (key + " <em>=></em> " + rule_dict[key] + '\n')
+                self._answer = self._answers.rstrip('\n')
+                self._parse = "HTML"
+            else:
+                self._answer = "No rule."
+        resource.dict_to_json("assets/rule.json", rule_dict)
+
+    def on_redo(self):
+        self._answer = "Sorry, but no your last message was found."
+
+    def on_text(self, msg):
+        global redo_dict
+
+        self._text_orig = self._text_log = msg["text"]
+
+        ## Redo message?
+        if self._text_orig == "/redo" or (self._text_orig == "/redo@" + info["username"]):
+            try:
+                self._text_orig = redo_dict[self._username]
+                #redo_dict.pop(self._username)
+            except KeyError:
+                #self._answer = "Sorry, but no your last message was found."
+                pass
+
+        try:
+            rule_dict.pop('')
+        except:
+            pass
+
+
+        self._text_list = self._text_orig.split(None, 1)    # When sep was None, it will be any number spaces, and 1 means split once. Be care that S.split(, 1) will get an error, use S.split(None, 1) instead (from the help doc).
+        try:
+            self._text = self._text_list[0]#.lstrip('/')
+            self._text_2 = self._text_list[1]
+        except IndexError:
+            self._text = self._text_list[0]#.lstrip('/')
+            self._text_2 = None
+        self._text = self._text.split('@' + info["username"], 1)[0]
+
+
+        if self._text == "/switch" and switch:
+            if self._username == ADMIN:
+                switch = False
+                self._answer = "<strong>Status:</strong> Turned <em>OFF</em>."
+                self._parse = "HTML"
+                redo_dict[self._username] = self._text_orig
+
+                bot.sendChatAction(self._chat_id, "typing")
+                bot.sendMessage(self._chat_id, self._answer, reply_to_message_id=self._msg_id, parse_mode=self._parse, disable_web_page_preview=self._diswebview)
+                print("\033[33m>>>\033[0m %s\n\033[33mBot\033[0m: Got text \"\033[32m%s\033[0m\" from @\033[34m%s\033[0m and answered with \"\033[32m%s\033[0m\" and turned \033[30;41mOFF\033[0m."%(self._now, self._text_log, self._username, self._answer))
+                print("--------------------------------------------")
+            else:
+                self._answer = "Sorry, only the admin user can switch the bot to OFF."
+
+        elif self._text == "/switch" and not switch:
+            switch = True
+            self._answer = "<strong>Status:</strong> Turned <em>ON</em>."
+            self._parse = "HTML"
+            redo_dict[self._username] = self._text_orig
+
+            bot.sendChatAction(self._chat_id, "typing")
+            bot.sendMessage(self._chat_id, self._answer, reply_to_message_id=self._msg_id, parse_mode=self._parse, disable_web_page_preview=self._diswebview)
+            print("\033[33m>>>\033[0m %s\n\033[33mBot\033[0m: Got text \"\033[32m%s\033[0m\" from @\033[34m%s\033[0m and answered with \"\033[32m%s\033[0m\" and turned \033[30;46mON\033[0m."%(self._now, self._text_log, self._username, self._answer))
+            print("--------------------------------------------")
+            self._answer = None    # Or it will answer twice.
+
+
+        # Handle.
+        try:
+            {
+                "/start": self.on_start,
+                "/help": self.on_help,
+                "/hello": self.on_hello,
+                "/joke": self.on_joke,
+                "/time": self.on_time,
+                "/weather": self.on_weather,
+                "/fuck": self.on_fuck,
+                "/talk": self.on_talk,
+                "/count": self.on_count,
+                "/ipcn": self.on_ipcn,
+                "/cmd": self.on_cmd,
+                "/echo": self.on_echo,
+                "/send": self.on_send,
+                "/code": self.on_code,
+                "/rule": self.on_rule,
+                "/redo": self.on_redo
+            }[self._text]()
+        except KeyError:
+            if self._text.lstrip('/')[0] == '-':
+                self._text_2 = self._text_orig.lstrip('/').lstrip('-')
+                self.on_talk()
+            else:
+                self._answers = ''
+                for key in rule_dict:
+                    if key in self._text_orig.lower():
+                        if not rule_dict[key] in self._answers:
+                            self._answers += rule_dict[key] + '\n'
+                            self._answer = self._answers.rstrip('\n')
+                #elif random.random() <= 0.33:
+                    #self._sticker = random.choice(list(resource.sticker_dict.keys()))
+                    #self._answer = resource.sticker_dict[self._sticker]
+
+    def on_sticker(self, msg):
+        self._sticker_id = msg["sticker"]["file_id"]
+        self._sticker_emoji = msg["sticker"]["emoji"]
+        #print("\"%s\": \'%s\',"%(self._sticker_id, self._sticker_emoji))
+        if (self._sticker_id, self._sticker_emoji) in resource.red_sticker_dict.items():
+            self._answer = random.choice(["红脸的关公战长沙！", "红脸哥～我是你的超级粉丝～", "红脸哥我要给你生一车猴子🐒！"])
+        #else:
+            #print("\"%s\": \'%s\',"%(self._sticker_id, self._sticker_emoji))
+
+    def on_photo(self, msg):
+        if self._chat_type == "private":
+            if self._username == ADMIN:
+                self._download = msg["photo"][-1]["file_id"]
+                self._document = "Image/IMG_" + datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S") + ".jpg"
+                self._answer = "Got photo \"<em>%s</em>\"."%(self._document)
+                self._parse = "HTML"
+            else:
+                self._refuse = True
+                self._answer = "Sorry, only the admin user can save a photo on the bot."
+
+    def on_document(self, msg):
+        if self._chat_type == "private":
+            if self._username == ADMIN:
+                self._download = msg["document"]["file_id"]
+                self._document = "File/" + msg["document"]["file_name"]
+                self._answer = "Got document \"<em>%s</em>\"."%(self._document)
+                self._parse = "HTML"
+            else:
+                self._refuse = True
+                self._answer = "Sorry, only the admin user can save a document on the bot."
 
     def on_chat_message(self, msg):
         self._now = str(datetime.datetime.now())
@@ -179,252 +436,15 @@ class TeleBot(telepot.helper.UserHandler):
         self._user_id = msg["from"]["id"]
         self._msg_id = msg["message_id"]
 
-        ## To judge if the content is a text and deal with it.
-        if self._content_type == "text":
-            self._text_orig = self._text_log = msg["text"]
-
-            ## Redo message?
-            if self._text_orig == "/redo" or (self._text_orig == "/redo@" + info["username"]):
-                try:
-                    self._text_orig = redo_dict[self._username]
-                    #redo_dict.pop(self._username)
-                except KeyError:
-                    #self._answer = "Sorry, but no your last message was found."
-                    pass
-
-            try:
-                rule_dict.pop('')
-            except:
-                pass
-
-
-            self._text_list = self._text_orig.split(None, 1)    # When sep was None, it will be any number spaces, and 1 means split once. Be care that S.split(, 1) will get an error, use S.split(None, 1) instead (from the help doc).
-            try:
-                self._text = self._text_list[0]#.lstrip('/')
-                self._text_2 = self._text_list[1]
-            except IndexError:
-                self._text = self._text_list[0]#.lstrip('/')
-                self._text_2 = None
-            self._text = self._text.split('@' + info["username"], 1)[0]
-
-
-            if self._text == "/switch" and switch:
-                if self._username == ADMIN:
-                    switch = False
-                    self._answer = "<strong>Status:</strong> Turned <em>OFF</em>."
-                    self._parse = "HTML"
-                    redo_dict[self._username] = self._text_orig
-
-                    bot.sendChatAction(self._chat_id, "typing")
-                    bot.sendMessage(self._chat_id, self._answer, reply_to_message_id=self._msg_id, parse_mode=self._parse, disable_web_page_preview=self._diswebview)
-                    print("\033[33m>>>\033[0m %s\n\033[33mBot\033[0m: Got text \"\033[32m%s\033[0m\" from @\033[34m%s\033[0m and answered with \"\033[32m%s\033[0m\" and turned \033[30;41mOFF\033[0m."%(self._now, self._text_log, self._username, self._answer))
-                    print("--------------------------------------------")
-                else:
-                    self._answer = "Sorry, only the admin user can switch the bot to OFF."
-
-            elif self._text == "/switch" and not switch:
-                switch = True
-                self._answer = "<strong>Status:</strong> Turned <em>ON</em>."
-                self._parse = "HTML"
-                redo_dict[self._username] = self._text_orig
-
-                bot.sendChatAction(self._chat_id, "typing")
-                bot.sendMessage(self._chat_id, self._answer, reply_to_message_id=self._msg_id, parse_mode=self._parse, disable_web_page_preview=self._diswebview)
-                print("\033[33m>>>\033[0m %s\n\033[33mBot\033[0m: Got text \"\033[32m%s\033[0m\" from @\033[34m%s\033[0m and answered with \"\033[32m%s\033[0m\" and turned \033[30;46mON\033[0m."%(self._now, self._text_log, self._username, self._answer))
-                print("--------------------------------------------")
-                self._answer = None    # Or it will answer twice.
-
-
-            # Handle.
-            if self._text == "/start":
-                self._answer = "Welcome! \nPlease type \"/help\" to get a help list."
-
-            elif self._text == "/help":
-                self._answer = bhelp_list[0]
-                self._parse = "HTML"
-                self._diswebview = True
-
-            elif self._text == "/hello":
-                self._answer = "Hello, " + self._first_name + "! " + random.choice(greeting_list)
-
-            elif self._text == "/joke":
-                self._answer = random.choice(joke_list)
-
-            elif self._text == "/time":
-                self._answer = "Now is " + str(datetime.datetime.now()) + "."
-
-            elif self._text == "weather":
-                if self._text_2 != None:
-                    self._answer = httpapi.get_wea(self._text_2)
-                    self._parse = "HTML"
-                else:
-                    self._answer = "Please add a valid place, for instance, \"/weather 上海\", \"/weather 安徽 合肥\" or \"/weather 中国 辽宁 大连\"."
-
-            elif self._text == "/fuck":
-                try:
-                    self._answer = fuck_list[self._count["fuck"]]
-                    self._count["fuck"] += 1
-                except IndexError:
-                    self._count["fuck"] = 0
-                    self._answer = fuck_list[self._count["fuck"]]
-                    self._count["fuck"] += 1
-
-            elif self._text == "/talk":
-                if self._text_2 != None:
-                    if tuling_api_key == None:
-                        self._answer = httpapi.get_qtalk(self._text_2)
-                    else:
-                        self._answer = httpapi.get_ttalk(tuling_api_key, self._text_2, str(self._user_id))
-                else:
-                    self._answer = "Please add what you want to talk about, for example \"/talk 你好\"."
-
-                #try:
-                    #self._answer = talk_list[self._count["talk"]]
-                    #self._count["talk"] += 1
-                #except IndexError:
-                    #self._count["talk"] = 0
-                    #self._answer = talk_list[self._count["talk"]]
-                    #self._count["talk"] += 1
-
-            elif self._text == "/count":
-                self._answer = "<strong>Total chat:</strong>\n%d"%(self._count["chat"] + 1)
-                self._parse = "HTML"
-
-            elif self._text == "/ipcn":
-                if self._username == ADMIN:
-                    if self._chat_type == "private":
-                        self._answer = ipcn.get_ip()
-                    else:
-                        self._answer = "Sorry, you should obtain the ip address via private chat in order to keep the bot safe."
-                else:
-                    self._answer = "Sorry, you are not allowed to obtain the ip address in order to keep the bot safe."
-
-            elif self._text == "/cmd":
-                if self._text_2 != None:
-                    if self._username == ADMIN:
-                        try:
-                            self._answer = "<strong>Result:</strong>\n" + subprocess.check_output(self._text_2, shell=True, stderr=subprocess.STDOUT, universal_newlines=True)
-                            self._parse = "HTML"
-                        except subprocess.CalledProcessError:
-                            self._answer = "Sorry, invalid command."
-                    else:
-                        self._answer = "Sorry, you are not allowed to run a command in order to keep the bot safe."
-                else:
-                    self._answer = None
-
-            elif self._text == "/echo":
-                temp_list = []
-                for chat_id in echo_list:
-                    if not chat_id in temp_list:
-                        temp_list.append(chat_id)
-                echo_list = temp_list
-                if self._text_2 != None:
-                    if self._username == ADMIN:
-                        for chat_id in echo_list:
-                            bot.sendChatAction(chat_id, "typing")
-                            bot.sendMessage(chat_id, self._text_2)
-                        self._answer = "Echoed."
-                    else:
-                        self._answer = "Sorry, only the ADMIN user can send an echo."
-                resource.list_to_file("assets/echo.txt", echo_list)
-
-            elif self._text == "/send":
-                if self._text_2 != None:
-                    if self._username == ADMIN:
-                        self._upload = self._text_2
-                        self._answer = "Sent."
-                    else:
-                        self._answer = "Sorry, you are not allowed to get a file in order to keep the bot safe."
-                else:
-                    self._answer = None
-
-            elif self._text == "/code":
-                resource.dict_to_json("assets/redo.json", redo_dict)
-                resource.dict_to_json("assets/rule.json", rule_dict)
-                ## Zip file.
-                with zipfile.ZipFile('telebot.zip', 'w', zipfile.ZIP_DEFLATED) as self._telebot_zip:
-                    for self._code in code_list:
-                        self._telebot_zip.write(self._code, "telebot" + os.sep + self._code)
-                self._upload = "telebot.zip"
-                self._answer = "Sent code.\nYou should extract it to your directories and get your bot token. Then run \"$ python3 ./bot.py YOURBOTNAME.json\".\nFor more information, click <a href=\"https://github.com/AlynxZhou/telebot/\">My TeleBot on GitHub</a>."
-                self._parse = "HTML"
-
-            elif self._text == "/rule":
-                if self._text_2 != None and "@@" in self._text_2:
-                    self._rule_list = self._text_2.split("@@")
-                    if self._rule_list[-1] != '':
-                        for self._rule_key in self._rule_list[0:-1]:
-                            if self._rule_key != '' and self._rule_key != '\n':
-                                rule_dict[self._rule_key.lower()] = self._rule_list[-1]
-                    else:
-                        for self._rule_key in self._rule_list[0:-1]:
-                            try:
-                                rule_dict.pop(self._rule_key.lower())
-                            except:
-                                pass
-                    self._answer = "Set rule!"
-                else:
-                    if len(rule_dict) != 0:
-                        self._answers = "<strong>Total rules:</strong>\nFollowings are case insensitive.\n"
-                        for key in sorted(rule_dict, key=str.lower):
-                            self._answers += (key + " <em>=></em> " + rule_dict[key] + '\n')
-                        self._answer = self._answers.rstrip('\n')
-                        self._parse = "HTML"
-                    else:
-                        self._answer = "No rule."
-                resource.dict_to_json("assets/rule.json", rule_dict)
-
-            elif self._text == "/redo":
-                self._answer = "Sorry, but no your last message was found."
-
-            else:
-                if random.random() <= 0.77:
-                    self._answers = ''
-                    for key in rule_dict:
-                        if key in self._text_orig.lower():
-                                if not rule_dict[key] in self._answers:
-                                    self._answers += rule_dict[key] + '\n'
-                                    self._answer = self._answers.rstrip('\n')
-                #elif random.random() <= 0.33:
-                    #self._sticker = random.choice(list(resource.sticker_dict.keys()))
-                    #self._answer = resource.sticker_dict[self._sticker]
-
-
-        ## To judge if the content is a sticker.
-        elif self._content_type == "sticker":
-            self._sticker_id = msg["sticker"]["file_id"]
-            self._sticker_emoji = msg["sticker"]["emoji"]
-            #print("\"%s\": \'%s\',"%(self._sticker_id, self._sticker_emoji))
-            if (self._sticker_id, self._sticker_emoji) in resource.red_sticker_dict.items():
-                self._answer = random.choice(["红脸的关公战长沙！", "红脸哥～我是你的超级粉丝～", "红脸哥我要给你生一车猴子🐒！"])
-            #else:
-                #print("\"%s\": \'%s\',"%(self._sticker_id, self._sticker_emoji))
-
-        ## To judge if the content is a photo.
-        elif self._content_type == "photo":
-            if self._chat_type == "private":
-                if self._username == ADMIN:
-                    self._download = msg["photo"][-1]["file_id"]
-                    self._document = "Image/IMG_" + datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S") + ".jpg"
-                    self._answer = "Got photo \"<em>%s</em>\"."%(self._document)
-                    self._parse = "HTML"
-                else:
-                    self._refuse = True
-                    self._answer = "Sorry, only the admin user can save a photo on the bot."
-
-
-        ## To judge if the content is a document.
-        elif self._content_type == "document":
-            if self._chat_type == "private":
-                if self._username == ADMIN:
-                    self._download = msg["document"]["file_id"]
-                    self._document = "File/" + msg["document"]["file_name"]
-                    self._answer = "Got document \"<em>%s</em>\"."%(self._document)
-                    self._parse = "HTML"
-                else:
-                    self._refuse = True
-                    self._answer = "Sorry, only the admin user can save a document on the bot."
-
+        try:
+            {
+                "text": self.on_text,
+                "sticker": self.on_sticker,
+                "photo": self.on_photo,
+                "document": self.on_document
+            }[self._content_type](msg)
+        except KeyError:
+            pass
 
         # Return.
         if self._sticker != None and switch:
@@ -499,7 +519,10 @@ class TeleBot(telepot.helper.UserHandler):
             echo_list.pop(0)
 
         ## Journal.
-        print("\033[33m>>>\033[0m %s\n\033[33mBot\033[0m: Closed an delegator with @\033[34m%s\033[0m by calling on_close()."%(self._now, self._username))
+        try:
+            print("\033[33m>>>\033[0m %s\n\033[33mBot\033[0m: Closed an delegator with @\033[34m%s\033[0m by calling on_close()."%(self._now, self._username))
+        except:
+            print("\033[33m>>>\033[0m %s\n\033[33mBot\033[0m: Closed an delegator by calling on_close()."%(self._now))
         print("--------------------------------------------")
 
 
