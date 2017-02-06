@@ -454,7 +454,8 @@ class TeleBot(telepot.helper.UserHandler):
                 ## Store redo message.
                 #global redo_dict
                 redo_dict[self._username] = self._text_orig
-                echo_list.append(self._chat_id)
+                if not self._chat_id in echo_list:
+                    echo_list.append(self._chat_id)
 
                 bot.sendChatAction(self._chat_id, "typing")
                 bot.sendMessage(self._chat_id, self._answer, reply_to_message_id=self._msg_id, parse_mode=self._parse, disable_web_page_preview=self._diswebview)
