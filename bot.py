@@ -432,7 +432,10 @@ class TeleBot(telepot.helper.UserHandler):
         self._content_type, self._chat_type, self._chat_id = telepot.glance(msg)
 
         self._first_name = msg["from"]["first_name"]
-        self._username = msg["from"]["username"]
+        try:
+            self._username = msg["from"]["username"]
+        except KeyError as e:
+            self.on_close(e)
         self._user_id = msg["from"]["id"]
         self._msg_id = msg["message_id"]
 
