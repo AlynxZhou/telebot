@@ -562,13 +562,13 @@ if conf_rewrite:
 	resource.dict_to_json(config_file, {"token": TOKEN, "admin": ADMIN, "tuling_api_key": "get_it_from_tuling123.com"})
 
 print("\033[7m############################################\033[0m")
-print("\033[7m#\033[0m" + "	  ".center(42) + "\033[7m#\033[0m")
+print("\033[7m#\033[0m" + "      ".center(42) + "\033[7m#\033[0m")
 print("\033[7m#\033[0m" + ("\033[35mconfigfile\033[0m: %s"%(config_file)).center(51) + "\033[7m#\033[0m")
 print("\033[7m#\033[0m" + ("\033[35mbotid\033[0m: %s"%(info["id"])).center(51) + "\033[7m#\033[0m")
 print("\033[7m#\033[0m" + ("\033[35musername\033[0m: %s"%(info["username"])).center(51) + "\033[7m#\033[0m")
 print("\033[7m#\033[0m" + ("\033[35mfirstname\033[0m: %s"%(info["first_name"])).center(51) + "\033[7m#\033[0m")
 print("\033[7m#\033[0m" + ("\033[35madminuser\033[0m: %s"%(ADMIN)).center(51) + "\033[7m#\033[0m")
-print("\033[7m#\033[0m" + "	  ".center(42) + "\033[7m#\033[0m")
+print("\033[7m#\033[0m" + "      ".center(42) + "\033[7m#\033[0m")
 print("\033[7m############################################\033[0m")
 
 
