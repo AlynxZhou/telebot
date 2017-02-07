@@ -8,9 +8,9 @@
 git add .
 
 if [[ -n "${*}" ]]; then
-    git commit -m "${*}"
+	git commit -m "${*}"
 else
-    git commit -m "A commit."
+	git commit -m "A commit."
 fi
 
 git push -u origin master
