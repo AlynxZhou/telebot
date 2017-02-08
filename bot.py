@@ -192,9 +192,9 @@ class TeleBot(telepot.helper.UserHandler):
 		if self._text_2 != None:
 			if tuling_api_key == None:
 				self._answer = httpapi.get_qtalk(self._text_2)
-				self._parse = "HTML"
 			else:
 				self._answer = httpapi.get_ttalk(tuling_api_key, self._text_2, str(self._user_id))
+				self._parse = "HTML"
 		else:
 			self._answer = "Please add what you want to talk about, for example \"/talk 你好\"."
 

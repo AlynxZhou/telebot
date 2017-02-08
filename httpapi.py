@@ -91,8 +91,8 @@ def get_ttalk(APIKey, info="你好", user_id=None):
 	req = Request(base_url, json_data.encode("utf-8"), headers={"Content-Type": "application/json"})
 	with urlopen(req) as url_open:
 		result = json.loads(url_open.read().decode("utf-8"))
-	if resule["code"] == 200000:
-		return result["text"] +"\n<a href=\""+ result["url"]+"\">点击这里链接查看详情</a>"
+	if result["code"] == 200000:
+		return result["text"] +":\n<a href=\""+ result["url"] + "\">点击这里链接查看详情</a>."
 	else:
 		return result["text"]
 
