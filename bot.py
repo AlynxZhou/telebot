@@ -255,7 +255,7 @@ class TeleBot(telepot.helper.UserHandler):
 		resource.dict_to_json("assets/rule.json", rule_dict)
 		resource.list_to_file("assets/echo.txt", echo_list)
 		## Zip file.
-		with zipfile.ZipFile('telebot.zip', 'w', zipfile.ZIP_DEFLATED) as self._telebot_zip:
+		with zipfile.ZipFile("telebot.zip", 'w', zipfile.ZIP_DEFLATED) as self._telebot_zip:
 			for self._code in code_list:
 				self._telebot_zip.write(self._code, "telebot" + os.sep + self._code)
 		self._upload = "telebot.zip"
@@ -519,7 +519,7 @@ class TeleBot(telepot.helper.UserHandler):
 			redo_dict = {}
 		if len(rule_dict) > 77:
 			rule_dict = {}
-		if len(echo_list) > 7:
+		while len(echo_list) > 7:
 			echo_list.pop(0)
 
 		## Journal.
@@ -558,8 +558,6 @@ except:
 	exit()
 
 if conf_rewrite:
-	#with open(config_file, 'w') as config_open:
-		#config_open.write(json.dumps({"token": TOKEN, "admin": ADMIN, "tuling_api_key": "get_it_from_tuling123.com"}, ensure_ascii=False))
 	resource.dict_to_json(config_file, {"token": TOKEN, "admin": ADMIN, "tuling_api_key": "get_it_from_tuling123.com"})
 
 print("\033[7m############################################\033[0m")
