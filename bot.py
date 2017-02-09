@@ -293,6 +293,7 @@ class TeleBot(telepot.helper.UserHandler):
 
 	def on_text(self, msg):
 		global redo_dict
+		global switch
 
 		self._text_orig = self._text_log = msg["text"]
 
