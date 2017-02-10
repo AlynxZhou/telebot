@@ -232,8 +232,11 @@ class TeleBot(telepot.helper.UserHandler):
 		if self._text_2 != None:
 			if self._username == ADMIN:
 				for chat_id in echo_list:
-					bot.sendChatAction(chat_id, "typing")
-					bot.sendMessage(chat_id, self._text_2)
+                                        try:
+                                                bot.sendChatAction(chat_id, "typing")
+                                                bot.sendMessage(chat_id, self._text_2)
+                                        except:
+                                                pass
 				self._answer = "Echoed."
 			else:
 				self._answer = "Sorry, only the ADMIN user can send an echo."
