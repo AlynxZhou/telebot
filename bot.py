@@ -3,7 +3,7 @@
 
 ### Filename: bot.py
 ## Created by 请叫我喵 Alynx
-# sxshax@gmail.com, http://alynx.xyz/
+# alynx.zhou@gmail.com, http://alynx.xyz/
 
 
 ### Launch.
